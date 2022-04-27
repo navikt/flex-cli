@@ -16,17 +16,15 @@ const octokit = new Octokit({
 
 const repo = 'flex-testdata-reset'
 
-
 const pulls = await octokit.request('GET /repos/{owner}/{repo}/pulls', {
     owner,
     repo,
 })
 
-
 const choices = pulls.data.map((it) => {
     return {
         title: it.title,
-        value: { number: it.number }
+        value: { number: it.number },
     }
 })
 
@@ -35,17 +33,20 @@ const response = await prompts([
         type: 'multiselect',
         name: 'pr',
         message: 'Godkjenn PRs',
-        choices
-    }
+        choices,
+    },
 ])
 
-await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews', {
-    owner,
-    repo,
-    pull_number: response.pr.number,
-    body: 'Godkjent med flex-github-tools',
-    event: 'APPROVE'
-})
+await octokit.request(
+    'POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews',
+    {
+        owner,
+        repo,
+        pull_number: response.pr.number,
+        body: 'Godkjent med flex-github-tools',
+        event: 'APPROVE',
+    }
+)
 /*
 async function enablePullRequestAutoMerge(pullId: number) {
     const query = `mutation($pullId: ID!, $mergeMethod: PullRequestMergeMethod!, $authorEmail: String!, $commitHeadline: String!, $commitBody: String) {
