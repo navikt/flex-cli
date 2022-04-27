@@ -3,12 +3,13 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "build": "ncc build src/start.ts -o build",
-        "start": "ncc run src/start.ts",
+        "build": "ncc build src/main.ts -o build",
+        "start": "ncc run src/main.ts",
         "lint": "eslint --ext=ts src",
         "lint:fix": "eslint --ext=ts src --fix",
         "prettier:write": "prettier --no-semi --single-quote --write .",
-        "prettier:check": "prettier --no-semi --single-quote --check ."
+        "prettier:check": "prettier --no-semi --single-quote --check .",
+        "format": "npm run lint:fix && npm run prettier:write"
     },
     "dependencies": {
         "@octokit/rest": "^18.12.0",
