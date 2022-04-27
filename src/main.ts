@@ -8,14 +8,23 @@ import { enablePullRequestAutoMerge } from './enableAutoMerge'
 
 console.log('\n\n\n')
 
-const repo = 'flex-testdata-reset'
+const repoer = ['flex-testdata-reset', 'flex-juridisk-vurdering-test-backend']
 
-await verifiserRepo(repo)
-
-const pulls = await octokit.request('GET /repos/{owner}/{repo}/pulls', {
-    owner,
-    repo,
-})
+const repoerTilBehandling = await prompts([
+    {
+        type: 'multiselect',
+        name: 'repoer',
+        message: 'Hvilke pullrequests skal godkjennes?',
+        choices: repoer.map((r) => ({ title: r, value: r })),
+    },
+])
+if (repoerTilBehandling.repoer.length == 0) {
+    console.log('ingen repoer valgt')
+    process.exit(0)
+}
+for (const r of repoerTilBehandling.repoer) {
+    await verifiserRepo(r)
+}
 
 interface ApprovedPr {
     pull_number: number
@@ -24,7 +33,21 @@ interface ApprovedPr {
     auto_merge: object | null
 }
 
-const choices = pulls.data
+const pullsTilBehandling = []
+
+for (const r of repoerTilBehandling.repoer) {
+    const pulls = await octokit.request('GET /repos/{owner}/{repo}/pulls', {
+        owner,
+        repo: r,
+    })
+    pullsTilBehandling.push(...pulls.data)
+}
+
+const choices = pullsTilBehandling
+    .filter(() => {
+        //console.log(it)
+        return true
+    })
     .filter((it) => it.state == 'open')
     .filter((it) => it.user?.login == 'dependabot[bot]')
     .map((it) => {
@@ -32,7 +55,7 @@ const choices = pulls.data
             pull_number: it.number,
             auto_merge: it.auto_merge,
             node_id: it.node_id,
-            repo,
+            repo: it.base.repo.name,
         }
         return {
             title: it.title,
