@@ -1,10 +1,11 @@
-import { owner } from './owner'
 import { octokit } from './octokit'
+import { config } from './config'
+import { RepoConfig } from './types'
 
-export async function verifiserRepo(repoName: string) {
+export async function verifiserRepo(r: RepoConfig) {
     const repo = await octokit.request('GET /repos/{owner}/{repo}', {
-        owner,
-        repo: repoName,
+        owner: config.owner,
+        repo: r.name,
     })
 
     function verifiser(key: string, forventet: boolean) {
@@ -20,17 +21,18 @@ export async function verifiserRepo(repoName: string) {
     verifiser('allow_squash_merge', true)
     verifiser('archived', false)
 
-    await verifiserDefaultBranchProtection(repoName, repo.data.default_branch)
+    await verifiserDefaultBranchProtection(r, repo.data.default_branch)
 }
 
-const påkrevdeChecks = ['Bygg, test og push Docker image']
-
-async function verifiserDefaultBranchProtection(repo: string, branch: string) {
+async function verifiserDefaultBranchProtection(
+    repo: RepoConfig,
+    branch: string
+) {
     const protection = await octokit.request(
         'GET /repos/{owner}/{repo}/branches/{branch}/protection',
         {
-            owner,
-            repo,
+            owner: config.owner,
+            repo: repo.name,
             branch,
         }
     )
@@ -49,10 +51,13 @@ async function verifiserDefaultBranchProtection(repo: string, branch: string) {
             `${repo} har mer enn en status check, vi støtter ikke det i denne koden ennå`
         )
     }
-    const context = protection.data.required_status_checks.contexts[0]
-    if (!påkrevdeChecks.includes(context)) {
-        throw Error(`${repo} sjekk ${context} er ikke forventet`)
+    const context = protection.data.required_status_checks.contexts
+    for (const check of repo.checks) {
+        if (!context.includes(check)) {
+            throw Error(`${repo.name} har ikke ${check} påkrevd`)
+        }
     }
+
     if (!protection.data.required_pull_request_reviews) {
         throw Error(`${repo} har ikke required_pull_request_reviews`)
     }

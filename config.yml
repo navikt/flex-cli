@@ -1,0 +1,25 @@
+owner: navikt
+repos:
+    - name: flex-testdata-reset
+      checks:
+          - Bygg, test og push Docker image
+
+    - name: flex-juridisk-vurdering-test-backend
+      checks:
+          - Bygg, test og push Docker image
+
+    - name: sykepengesoknad-altinn
+      checks:
+          - Bygg, test og push Docker image
+
+    - name: flex-fss-proxy
+      checks:
+          - Bygg, test og push Docker image
+
+    - name: flex-juridisk-vurdering-test-frontend
+      checks:
+          - Bygg, test og push Docker image
+
+    - name: sykepengesoknad-ikke-sendt-altinnvarsel
+      checks:
+          - Bygg, test og push Docker image
