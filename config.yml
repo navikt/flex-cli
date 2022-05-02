@@ -23,3 +23,7 @@ repos:
     - name: sykepengesoknad-ikke-sendt-altinnvarsel
       checks:
           - Bygg, test og push Docker image
+
+    - name: sykepengesoknad-korrigering-metrikk
+      checks:
+          - Bygg, test og push Docker image
