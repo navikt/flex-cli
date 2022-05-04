@@ -7,8 +7,8 @@
         "start": "ncc run src/main.ts",
         "lint": "eslint --ext=ts src",
         "lint:fix": "eslint --ext=ts src --fix",
-        "prettier:write": "prettier --no-semi --single-quote --write .",
-        "prettier:check": "prettier --no-semi --single-quote --check .",
+        "prettier:write": "prettier --write .",
+        "prettier:check": "prettier --check .",
         "format": "npm run lint:fix && npm run prettier:write"
     },
     "dependencies": {
@@ -23,6 +23,8 @@
         "@typescript-eslint/parser": "^5.12.1",
         "@vercel/ncc": "^0.33.4",
         "eslint": "^8.9.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-simple-import-sort": "^7.0.0",
         "prettier": "2.6.2",
         "typescript": "^4.6.3"

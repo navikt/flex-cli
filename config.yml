@@ -27,3 +27,7 @@ repos:
     - name: sykepengesoknad-korrigering-metrikk
       checks:
           - Bygg, test og push Docker image
+
+    - name: sykepengesoknad-backend
+      checks:
+          - Bygg, test og push Docker image

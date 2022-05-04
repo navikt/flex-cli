@@ -8,9 +8,12 @@ export async function verifiserRepo(r: RepoConfig) {
         repo: r.name,
     })
 
+    let ok = true
+
     function verifiser(key: string, forventet: boolean) {
         if ((repo.data as any)[key] !== forventet) {
-            throw Error(`${repo.data.full_name} ${key} != ${forventet}`)
+            ok = false
+            console.log(`${repo.data.full_name} ${key} != ${forventet}`)
         }
     }
 
@@ -20,6 +23,24 @@ export async function verifiserRepo(r: RepoConfig) {
     verifiser('allow_merge_commit', false)
     verifiser('allow_squash_merge', true)
     verifiser('archived', false)
+    verifiser('has_issues', false)
+    verifiser('has_projects', false)
+    verifiser('has_wiki', false)
+    if (!ok) {
+        console.log(`Oppdaterer repo innstillinger for ${r.name}`)
+        await octokit.request('PATCH /repos/{owner}/{repo}', {
+            owner: config.owner,
+            repo: r.name,
+            allow_auto_merge: true,
+            delete_branch_on_merge: true,
+            allow_rebase_merge: false,
+            allow_merge_commit: false,
+            allow_squash_merge: true,
+            has_issues: false,
+            has_projects: false,
+            has_wiki: false,
+        })
+    }
 
     await verifiserDefaultBranchProtection(r, repo.data.default_branch)
 }
