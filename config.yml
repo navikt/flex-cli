@@ -31,3 +31,7 @@ repos:
     - name: sykepengesoknad-backend
       checks:
           - Bygg, test og push Docker image
+
+    - name: flex-gateway
+      checks:
+          - Bygg, test og push Docker image
