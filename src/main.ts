@@ -93,13 +93,27 @@ for (const pr of response.approve) {
         }
     )
 
-    if (
-        prData.data.mergeable_state != 'clean' &&
-        (prData.data.auto_merge as any) == 'null'
-    ) {
-        await enablePullRequestAutoMerge(pr.node_id)
+    if (prData.data.mergeable_state != 'clean') {
+        try {
+            console.log('Automerger ' + pr.repo + ' ' + pr.title)
+            await enablePullRequestAutoMerge(pr.node_id)
+        } catch (e) {
+            console.log('Feil ved enable av automerge', e)
+        }
+        console.log('Approver ' + pr.repo + ' ' + pr.title)
+
         await approvePullrequest(pr)
     } else if (prData.data.mergeable_state == 'clean') {
         await mergePullrequest(pr)
+    } else {
+        console.log(
+            'Gjør ingenting med ' +
+                pr.repo +
+                ' ' +
+                pr.title +
+                ' grunnet mergablestate ' +
+                prData.data.mergeable_state
+        )
+        console.log(prData.data.auto_merge)
     }
 }
