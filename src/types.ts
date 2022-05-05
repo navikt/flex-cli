@@ -3,6 +3,9 @@ export interface ApprovedPr {
     repo: string
     node_id: string
     auto_merge: object | null
+    mergeable_state: string
+    rebaseable: boolean
+    title: string
 }
 
 export interface RepoConfig {

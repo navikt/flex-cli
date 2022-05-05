@@ -6,6 +6,7 @@ import { approvePullrequest } from './approvePullrequest'
 import { enablePullRequestAutoMerge } from './enableAutoMerge'
 import { config } from './config'
 import { ApprovedPr, RepoConfig } from './types'
+import { mergePullrequest } from './mergePullrequest'
 
 console.log('\n\n')
 
@@ -24,21 +25,23 @@ if (!repoerTilBehandling || repoerTilBehandling.length == 0) {
     process.exit(0)
 }
 
-for (const r of repoerTilBehandling) {
-    await verifiserRepo(r)
-}
+await Promise.all(repoerTilBehandling.map((r) => verifiserRepo(r)))
 
-const pullsTilBehandling = []
+const pulls = await Promise.all(
+    repoerTilBehandling.map((r) =>
+        octokit.request('GET /repos/{owner}/{repo}/pulls', {
+            owner: config.owner,
+            repo: r.name,
+        })
+    )
+)
 
-for (const r of repoerTilBehandling) {
-    const pulls = await octokit.request('GET /repos/{owner}/{repo}/pulls', {
-        owner: config.owner,
-        repo: r.name,
-    })
-    pullsTilBehandling.push(...pulls.data)
-}
+const allePrs = pulls.reduce(
+    (accumulator, value) => accumulator.concat(value.data),
+    [] as any[]
+)
 
-const choices = pullsTilBehandling
+const choices = allePrs
     .filter(() => {
         //console.log(it)
         return true
@@ -47,10 +50,13 @@ const choices = pullsTilBehandling
     .filter((it) => it.user?.login == 'dependabot[bot]')
     .map((it) => {
         const value: ApprovedPr = {
+            title: it.title,
             pull_number: it.number,
             auto_merge: it.auto_merge,
             node_id: it.node_id,
             repo: it.base.repo.name,
+            mergeable_state: it.mergeable_state,
+            rebaseable: it.rebaseable,
         }
         return {
             title: it.base.repo.name + ' ' + it.title,
@@ -77,9 +83,23 @@ if (!response.approve || response.approve.length == 0) {
     process.exit()
 }
 
-response.approve.forEach(async (pr: ApprovedPr) => {
-    if (pr.auto_merge == null) {
+for (const pr of response.approve) {
+    const prData = await octokit.request(
+        'GET /repos/{owner}/{repo}/pulls/{pull_number}',
+        {
+            owner: config.owner,
+            repo: pr.repo,
+            pull_number: pr.pull_number,
+        }
+    )
+
+    if (
+        prData.data.mergeable_state != 'clean' &&
+        (prData.data.auto_merge as any) == 'null'
+    ) {
         await enablePullRequestAutoMerge(pr.node_id)
+        await approvePullrequest(pr)
+    } else if (prData.data.mergeable_state == 'clean') {
+        await mergePullrequest(pr)
     }
-    await approvePullrequest(pr)
-})
+}
