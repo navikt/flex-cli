@@ -51,3 +51,19 @@ repos:
     - name: sykepengesoknad-lovme-filter
       checks:
           - Bygg, test og push Docker image
+
+    - name: sykepengesoknad-narmesteleder-varsler
+      checks:
+          - Bygg, test og push Docker image
+
+    - name: spinnsyn-backend
+      checks:
+          - Checkout code and create docker tag
+
+    - name: syfosoknadbrukernotifikasjon
+      checks:
+          - Checkout code and create docker tag
+          -
+    - name: ditt-sykefravaer-backend
+      checks:
+          - bygg-test-deploy / Bygg, test og push Docker image
