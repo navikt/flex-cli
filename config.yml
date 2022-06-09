@@ -1,9 +1,5 @@
 owner: navikt
 repos:
-    - name: flex-testdata-reset
-      checks:
-          - Bygg, test og push Docker image
-
     - name: flex-juridisk-vurdering-test-backend
       checks:
           - Bygg, test og push Docker image
@@ -33,10 +29,6 @@ repos:
           - Bygg, test og push Docker image
 
     - name: flex-gateway
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: flex-vedtak-mock
       checks:
           - Bygg, test og push Docker image
 
