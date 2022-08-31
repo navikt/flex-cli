@@ -17,7 +17,7 @@ repos:
           - sykepengesoknad-narmesteleder-varsler
           - syfosoknadbrukernotifikasjon
       checks:
-          - bygg-test-deploy / Bygg, test og publiser docker image
+          - felles-workflow / Bygg, test og publiser docker image
 
     - reponame:
           - flex-fss-proxy
