@@ -11,6 +11,7 @@ export interface ApprovedPr {
 export interface RepoConfig {
     name: string
     checks: string[]
+    patch: boolean
 }
 
 export interface Config {

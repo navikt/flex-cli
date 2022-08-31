@@ -1,65 +1,35 @@
 owner: navikt
 repos:
-    - name: flex-juridisk-vurdering-test-backend
+    - reponame:
+          - ditt-sykefravaer-backend
+          - spinnsyn-arkivering
+          - spinnsyn-backend
+          - spinnsyn-brukernotifikasjon
+          - flex-intern-gateway
+          - flex-bucket-uploader
+          - flex-inntektsmelding-status
+          - flex-syketilfelle
+          - sykepengesoknad-altinn
+          - sykepengesoknad-arkivering-oppgave
+          - sykepengesoknad-backend
+          - sykepengesoknad-ikke-sendt-altinnvarsel
+          - sykepengesoknad-korrigering-metrikk
+          - sykepengesoknad-narmesteleder-varsler
+          - syfosoknadbrukernotifikasjon
+      checks:
+          - bygg-test-deploy / Bygg, test og publiser docker image
+
+    - reponame:
+          - flex-fss-proxy
       checks:
           - Bygg, test og push Docker image
 
-    - name: sykepengesoknad-altinn
+    - reponame:
+          - flex-juridisk-vurdering-test-frontend
       checks:
           - Bygg, test og push Docker image
 
-    - name: flex-fss-proxy
+    - reponame:
+          - flex-juridisk-vurdering-test-backend
       checks:
           - Bygg, test og push Docker image
-
-    - name: flex-juridisk-vurdering-test-frontend
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: sykepengesoknad-ikke-sendt-altinnvarsel
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: sykepengesoknad-korrigering-metrikk
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: sykepengesoknad-backend
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: flex-gateway
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: flex-syketilfelle
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: spinnsyn-arkivering
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: sykepengesoknad-lovme-filter
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: sykepengesoknad-narmesteleder-varsler
-      checks:
-          - Bygg, test og push Docker image
-
-    - name: spinnsyn-backend
-      checks:
-          - Checkout code and create docker tag
-
-    - name: syfosoknadbrukernotifikasjon
-      checks:
-          - Checkout code and create docker tag
-
-    - name: ditt-sykefravaer-backend
-      checks:
-          - bygg-test-deploy / Bygg, test og push Docker image
-
-    - name: flex-inntektsmelding-status
-      checks:
-          - bygg-test-deploy / Bygg, test og push Docker image

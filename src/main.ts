@@ -20,6 +20,7 @@ const repoerTilBehandling = (
         },
     ])
 ).repoer as RepoConfig[]
+
 if (!repoerTilBehandling || repoerTilBehandling.length == 0) {
     console.log('ingen repoer valgt')
     process.exit(0)
