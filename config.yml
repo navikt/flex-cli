@@ -25,7 +25,10 @@ repos:
           - spinnsyn-frontend
       checks:
           - felles-workflow / Bygg, test og publiser docker image
-          - felles-workflow / cypress
+          - felles-workflow / cypress (0)
+          - felles-workflow / cypress (1)
+          - felles-workflow / cypress (2)
+          - felles-workflow / cypress (3)
 
     - reponame:
           - flex-fss-proxy
