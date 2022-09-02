@@ -20,6 +20,14 @@ repos:
           - felles-workflow / Bygg, test og publiser docker image
 
     - reponame:
+          - ditt-sykefravaer
+          - sykepengesoknad-frontend
+          - spinnsyn-frontend
+      checks:
+          - felles-workflow / Bygg, test og publiser docker image
+          - felles-workflow / cypress
+
+    - reponame:
           - flex-fss-proxy
       checks:
           - Bygg, test og push Docker image
