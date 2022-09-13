@@ -9,6 +9,7 @@ repos:
           - flex-bucket-uploader
           - flex-inntektsmelding-status
           - flex-syketilfelle
+          - flex-fss-proxy
           - sykepengesoknad-altinn
           - sykepengesoknad-arkivering-oppgave
           - sykepengesoknad-backend
@@ -31,9 +32,12 @@ repos:
           - felles-workflow / cypress (3)
 
     - reponame:
-          - flex-fss-proxy
+          - flex-static-files
+          - flex-sykepengesoknad-pdfgen
+          - flex-bildeprosessering
+          - flex-joark-mottak
       checks:
-          - Bygg, test og push Docker image
+          - Bygg, test og publiser docker image
 
     - reponame:
           - flex-juridisk-vurdering-test-frontend
