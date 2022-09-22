@@ -1,10 +1,9 @@
 import { octokit } from './octokit'
 import { config } from './config'
 import { ApprovedPr } from './types'
-import { sleep } from './sleep'
 
 export async function mergePullrequest(opts: ApprovedPr) {
-    console.log('Merger ' + opts.title)
+    console.log(`Merger ${opts.title} i ${opts.repo}`)
 
     await octokit.request(
         'PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge',
@@ -15,5 +14,4 @@ export async function mergePullrequest(opts: ApprovedPr) {
             merge_method: 'squash',
         }
     )
-    await sleep(2000)
 }

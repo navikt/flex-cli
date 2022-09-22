@@ -3,33 +3,17 @@ import * as prompts from 'prompts'
 import { verifiserRepo } from './verifiserRepo'
 import { octokit } from './octokit'
 import { approvePullrequest } from './approvePullrequest'
-import { enablePullRequestAutoMerge } from './enableAutoMerge'
 import { config } from './config'
-import { ApprovedPr, RepoConfig } from './types'
+import { ApprovedPr } from './types'
 import { mergePullrequest } from './mergePullrequest'
+import { sleep } from './sleep'
 
-console.log('\n\n')
+console.log('\n\nHenter alle dependabot PRs')
 
-const repoerTilBehandling = (
-    await prompts([
-        {
-            type: 'multiselect',
-            name: 'repoer',
-            message: 'Hvilke pullrequests skal godkjennes?',
-            choices: config.repos.map((r) => ({ title: r.name, value: r })),
-        },
-    ])
-).repoer as RepoConfig[]
-
-if (!repoerTilBehandling || repoerTilBehandling.length == 0) {
-    console.log('ingen repoer valgt')
-    process.exit(0)
-}
-
-await Promise.all(repoerTilBehandling.map((r) => verifiserRepo(r)))
+await Promise.all(config.repos.map((r) => verifiserRepo(r)))
 
 const pulls = await Promise.all(
-    repoerTilBehandling.map((r) =>
+    config.repos.map((r) =>
         octokit.request('GET /repos/{owner}/{repo}/pulls', {
             owner: config.owner,
             repo: r.name,
@@ -72,7 +56,7 @@ if (choices.length == 0) {
 
 const response = await prompts([
     {
-        type: 'multiselect',
+        type: 'autocompleteMultiselect',
         name: 'approve',
         message: 'Hvilke pullrequests skal godkjennes?',
         choices,
@@ -85,7 +69,8 @@ if (!response.approve || response.approve.length == 0) {
 }
 
 for (const pr of response.approve) {
-    const prData = await octokit.request(
+    let retries = 10
+    let prData = await octokit.request(
         'GET /repos/{owner}/{repo}/pulls/{pull_number}',
         {
             owner: config.owner,
@@ -93,28 +78,48 @@ for (const pr of response.approve) {
             pull_number: pr.pull_number,
         }
     )
-
-    if (prData.data.mergeable_state != 'clean') {
-        try {
-            console.log('Automerger ' + pr.repo + ' ' + pr.title)
-            await enablePullRequestAutoMerge(pr.node_id)
-        } catch (e) {
-            console.log('Feil ved enable av automerge', e)
+    const reviews = await octokit.request(
+        'GET /repos/{owner}/{repo}/pulls/{pull_number}/reviews',
+        {
+            owner: config.owner,
+            repo: pr.repo,
+            pull_number: pr.pull_number,
         }
-        console.log('Approver ' + pr.repo + ' ' + pr.title)
-
+    )
+    if (
+        prData.data.mergeable == false ||
+        !reviews.data.some((r) => r.state == 'APPROVED')
+    ) {
         await approvePullrequest(pr)
-    } else if (prData.data.mergeable_state == 'clean') {
+    }
+    while (retries > 0 && prData.data.mergeable != true) {
+        prData = await octokit.request(
+            'GET /repos/{owner}/{repo}/pulls/{pull_number}',
+            {
+                owner: config.owner,
+                repo: pr.repo,
+                pull_number: pr.pull_number,
+            }
+        )
+        retries--
+        await sleep(100)
+    }
+
+    if (prData.data.mergeable == true) {
         await mergePullrequest(pr)
     } else {
         console.log(
-            'Gjør ingenting med ' +
-                pr.repo +
-                ' ' +
-                pr.title +
-                ' grunnet mergablestate ' +
-                prData.data.mergeable_state
+            `Gjør ingenting med ${pr.repo} ${pr.title} grunnet mergeable ${prData.data.mergeable}`
         )
-        console.log(prData.data.auto_merge)
+        console.log('Ta en titt på ' + prData.data.html_url)
+        if (prData.data.mergeable_state == 'dirty') {
+            console.log('Ber dependabot rebase')
+            await octokit.rest.issues.createComment({
+                owner: config.owner,
+                repo: pr.repo,
+                issue_number: pr.pull_number,
+                body: '@dependabot rebase',
+            })
+        }
     }
 }
