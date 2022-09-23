@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "ncc build src/main.ts -o build",
-        "start": "ncc run src/main.ts",
+        "start": "node build/index.js",
+        "dev": "ncc run src/main.ts",
         "verifiser": "ncc run src/verifiser.ts",
         "patch": "ncc run src/patch-alle.ts",
         "lint": "eslint --ext=ts src",
