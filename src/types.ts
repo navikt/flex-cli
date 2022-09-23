@@ -1,11 +1,8 @@
 export interface ApprovedPr {
     pull_number: number
     repo: string
-    node_id: string
-    auto_merge: object | null
-    mergeable_state: string
-    rebaseable: boolean
     title: string
+    checksOk: boolean
 }
 
 export interface RepoConfig {

@@ -7,6 +7,7 @@ import { config } from './config'
 import { ApprovedPr } from './types'
 import { mergePullrequest } from './mergePullrequest'
 import { sleep } from './sleep'
+import { getCombinedSuccess } from './combinedStatus'
 
 console.log('\n\nHenter alle dependabot PRs')
 
@@ -26,28 +27,39 @@ const allePrs = pulls.reduce(
     [] as any[]
 )
 
-const choices = allePrs
+const filtrert = allePrs
     .filter(() => {
         //console.log(it)
         return true
     })
     .filter((it) => it.state == 'open')
     .filter((it) => it.user?.login == 'dependabot[bot]')
-    .map((it) => {
-        const value: ApprovedPr = {
-            title: it.title,
-            pull_number: it.number,
-            auto_merge: it.auto_merge,
-            node_id: it.node_id,
-            repo: it.base.repo.name,
-            mergeable_state: it.mergeable_state,
-            rebaseable: it.rebaseable,
-        }
-        return {
-            title: it.base.repo.name + ' ' + it.title,
-            value,
-        }
+
+console.log(`Henter pullrequest status for ${filtrert.length} pull requests`)
+
+const choices = await Promise.all(
+    filtrert.map((f) => {
+        return new Promise<{ title: string; value: ApprovedPr }>(
+            (resolve, reject) => {
+                getCombinedSuccess(config.owner, f.base.repo.name, f.number)
+                    .then((checksOk) => {
+                        const value: ApprovedPr = {
+                            title: f.title,
+                            pull_number: f.number,
+                            repo: f.base.repo.name,
+                            checksOk,
+                        }
+                        const status = checksOk ? '✅' : '❌'
+                        resolve({
+                            title: `${status}  ${f.base.repo.name} ${f.title}`,
+                            value,
+                        })
+                    })
+                    .catch(() => reject('oops'))
+            }
+        )
     })
+)
 
 if (choices.length == 0) {
     console.log('Ingen PR å behandle')
@@ -68,7 +80,21 @@ if (!response.approve || response.approve.length == 0) {
     process.exit()
 }
 
-for (const pr of response.approve) {
+async function behandlePr(pr: any) {
+    if (pr.checksOk == false) {
+        const bekreft = await prompts([
+            {
+                type: 'confirm',
+                name: 'svar',
+                message: `${pr.repo} ${pr.title} har feilet status sjekker, sikker på at du vil merge?`,
+                choices,
+            },
+        ])
+        if (bekreft.svar == false) {
+            return
+        }
+    }
+
     let retries = 10
     let prData = await octokit.request(
         'GET /repos/{owner}/{repo}/pulls/{pull_number}',
@@ -105,6 +131,12 @@ for (const pr of response.approve) {
         await sleep(100)
     }
 
+    const checks = await getCombinedSuccess(
+        config.owner,
+        pr.repo,
+        pr.pull_number
+    )
+    console.log(checks)
     if (prData.data.mergeable == true) {
         await mergePullrequest(pr)
     } else {
@@ -122,4 +154,8 @@ for (const pr of response.approve) {
             })
         }
     }
+}
+
+for (const pr of response.approve) {
+    await behandlePr(pr)
 }
