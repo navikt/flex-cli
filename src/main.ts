@@ -131,12 +131,6 @@ async function behandlePr(pr: any) {
         await sleep(100)
     }
 
-    const checks = await getCombinedSuccess(
-        config.owner,
-        pr.repo,
-        pr.pull_number
-    )
-    console.log(checks)
     if (prData.data.mergeable == true) {
         await mergePullrequest(pr)
     } else {
