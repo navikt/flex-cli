@@ -9,6 +9,16 @@ import { mergePullrequest } from './mergePullrequest'
 import { sleep } from './sleep'
 import { getCombinedSuccess } from './combinedStatus'
 
+const inkluderRøde: boolean = (
+    await prompts([
+        {
+            type: 'confirm',
+            name: 'svar',
+            message: 'Vil du også se pullrequests som ikke er bygd grønt ✅?',
+        },
+    ])
+).svar
+
 console.log('\n\nHenter alle dependabot PRs')
 
 await Promise.all(config.repos.map((r) => verifiserRepo(r)))
@@ -37,29 +47,36 @@ const filtrert = allePrs
 
 console.log(`Henter pullrequest status for ${filtrert.length} pull requests`)
 
-const choices = await Promise.all(
-    filtrert.map((f) => {
-        return new Promise<{ title: string; value: ApprovedPr }>(
-            (resolve, reject) => {
-                getCombinedSuccess(config.owner, f.base.repo.name, f.number)
-                    .then((checksOk) => {
-                        const value: ApprovedPr = {
-                            title: f.title,
-                            pull_number: f.number,
-                            repo: f.base.repo.name,
-                            checksOk,
-                        }
-                        const status = checksOk ? '✅' : '❌'
-                        resolve({
-                            title: `${status}  ${f.base.repo.name} ${f.title}`,
-                            value,
+const choices = (
+    await Promise.all(
+        filtrert.map((f) => {
+            return new Promise<{ title: string; value: ApprovedPr }>(
+                (resolve, reject) => {
+                    getCombinedSuccess(config.owner, f.base.repo.name, f.number)
+                        .then((checksOk) => {
+                            const value: ApprovedPr = {
+                                title: f.title,
+                                pull_number: f.number,
+                                repo: f.base.repo.name,
+                                checksOk,
+                            }
+                            const status = checksOk ? '✅' : '❌'
+                            resolve({
+                                title: `${status}  ${f.base.repo.name} ${f.title}`,
+                                value,
+                            })
                         })
-                    })
-                    .catch(() => reject('oops'))
-            }
-        )
-    })
-)
+                        .catch(() => reject('oops'))
+                }
+            )
+        })
+    )
+).filter((c) => {
+    if (inkluderRøde) {
+        return true
+    }
+    return c.value.checksOk
+})
 
 if (choices.length == 0) {
     console.log('Ingen PR å behandle')
