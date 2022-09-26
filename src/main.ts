@@ -1,13 +1,11 @@
 import * as prompts from 'prompts'
 
-import { verifiserRepo } from './verifiserRepo'
 import { octokit } from './octokit'
 import { approvePullrequest } from './approvePullrequest'
 import { config } from './config'
-import { ApprovedPr } from './types'
 import { mergePullrequest } from './mergePullrequest'
 import { sleep } from './sleep'
-import { getCombinedSuccess } from './combinedStatus'
+import { hentPullrequests } from './hentPullrequests'
 
 const inkluderRøde: boolean = (
     await prompts([
@@ -19,59 +17,7 @@ const inkluderRøde: boolean = (
     ])
 ).svar
 
-console.log('\n\nHenter alle dependabot PRs')
-
-await Promise.all(config.repos.map((r) => verifiserRepo(r)))
-
-const pulls = await Promise.all(
-    config.repos.map((r) =>
-        octokit.request('GET /repos/{owner}/{repo}/pulls', {
-            owner: config.owner,
-            repo: r.name,
-        })
-    )
-)
-
-const allePrs = pulls.reduce(
-    (accumulator, value) => accumulator.concat(value.data),
-    [] as any[]
-)
-
-const filtrert = allePrs
-    .filter(() => {
-        //console.log(it)
-        return true
-    })
-    .filter((it) => it.state == 'open')
-    .filter((it) => it.user?.login == 'dependabot[bot]')
-
-console.log(`Henter pullrequest status for ${filtrert.length} pull requests`)
-
-const choices = (
-    await Promise.all(
-        filtrert.map((f) => {
-            return new Promise<{ title: string; value: ApprovedPr }>(
-                (resolve, reject) => {
-                    getCombinedSuccess(config.owner, f.base.repo.name, f.number)
-                        .then((checksOk) => {
-                            const value: ApprovedPr = {
-                                title: f.title,
-                                pull_number: f.number,
-                                repo: f.base.repo.name,
-                                checksOk,
-                            }
-                            const status = checksOk ? '✅' : '❌'
-                            resolve({
-                                title: `${status}  ${f.base.repo.name} ${f.title}`,
-                                value,
-                            })
-                        })
-                        .catch(() => reject('oops'))
-                }
-            )
-        })
-    )
-).filter((c) => {
+const choices = (await hentPullrequests()).filter((c) => {
     if (inkluderRøde) {
         return true
     }

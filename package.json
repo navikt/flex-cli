@@ -6,6 +6,7 @@
         "build": "ncc build src/main.ts -o build",
         "start": "node build/index.js",
         "dev": "ncc run src/main.ts",
+        "rebase-red": "ncc run src/rebaseRed.ts",
         "verifiser": "ncc run src/verifiser.ts",
         "patch": "ncc run src/patch-alle.ts",
         "lint": "eslint --ext=ts src",
