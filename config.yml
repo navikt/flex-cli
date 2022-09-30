@@ -6,13 +6,13 @@ repos:
           - spinnsyn-backend
           - spinnsyn-brukernotifikasjon
           - flex-intern-gateway
-          - flex-bucket-uploader
           - flex-inntektsmelding-status
           - flex-syketilfelle
           - flex-fss-proxy
           - sykepengesoknad-altinn
           - sykepengesoknad-arkivering-oppgave
           - sykepengesoknad-backend
+          - sykepengesoknad-kvitteringer
           - sykepengesoknad-ikke-sendt-altinnvarsel
           - sykepengesoknad-korrigering-metrikk
           - sykepengesoknad-narmesteleder-varsler
@@ -34,7 +34,6 @@ repos:
     - reponame:
           - flex-static-files
           - flex-sykepengesoknad-pdfgen
-          - flex-bildeprosessering
           - flex-joark-mottak
       checks:
           - Bygg, test og publiser docker image
