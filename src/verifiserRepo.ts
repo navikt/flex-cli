@@ -16,6 +16,7 @@ export async function verifiserRepo(r: RepoConfig) {
             console.log(`${repo.data.full_name} ${key} != ${forventet}`)
         }
     }
+
     verifiser('default_branch', 'master')
     verifiser('allow_auto_merge', true)
     verifiser('delete_branch_on_merge', true)
@@ -26,6 +27,17 @@ export async function verifiserRepo(r: RepoConfig) {
     verifiser('has_issues', false)
     verifiser('has_projects', false)
     verifiser('has_wiki', false)
+
+    if (!(repo.data.topics as string[]).includes('team-flex')) {
+        console.log(
+            `${repo.data.full_name} mangler team-flex topic i ${repo.data.topics}`
+        )
+        await octokit.request('PUT /repos/{owner}/{repo}/topics', {
+            owner: config.owner,
+            repo: r.name,
+            names: ['team-flex'],
+        } as any)
+    }
     if (!ok) {
         if (r.patch) {
             console.log(`Oppdaterer repo innstillinger for ${r.name}`)
