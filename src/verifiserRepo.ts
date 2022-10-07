@@ -107,10 +107,12 @@ async function verifiserDefaultBranchProtection(
         }
 
         const context = protection.data.required_status_checks?.contexts
-        for (const check of repo.checks) {
-            if (!context || !context.includes(check)) {
-                console.log(`${repo.name} har ikke ${check} påkrevd`)
-                ok = false
+        if (repo.checks) {
+            for (const check of repo.checks) {
+                if (!context || !context.includes(check)) {
+                    console.log(`${repo.name} har ikke ${check} påkrevd`)
+                    ok = false
+                }
             }
         }
 
@@ -149,7 +151,7 @@ async function verifiserDefaultBranchProtection(
                     branch,
                     required_status_checks: {
                         strict: false,
-                        contexts: repo.checks,
+                        contexts: repo.checks || [],
                     },
                     enforce_admins: false,
                     required_pull_request_reviews: {
