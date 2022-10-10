@@ -51,4 +51,4 @@ repos:
     - reponame:
           - flex-github-tools
           - flex-github-actions-workflows
-
+          - flex-testdata-generator
