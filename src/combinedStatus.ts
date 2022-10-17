@@ -29,7 +29,7 @@ export async function getCombinedSuccess(
         })
         const [{ commit: lastCommit }] =
             result.repository.pullRequest.commits.nodes
-        return lastCommit.statusCheckRollup.state === 'SUCCESS'
+        return lastCommit.statusCheckRollup?.state === 'SUCCESS'
     } catch (e) {
         console.error(`Fikk ikke henta status for ${repo} ${pull_number}`, e)
         return false
