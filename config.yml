@@ -32,7 +32,6 @@ repos:
           - felles-workflow / cypress (3)
 
     - reponame:
-          - flex-static-files
           - flex-sykepengesoknad-pdfgen
           - flex-joark-mottak
       checks:
