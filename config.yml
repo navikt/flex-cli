@@ -53,3 +53,4 @@ repos:
           - flex-github-actions-workflows
           - flex-testdata-generator
           - flex-wcag-rapporter
+          - flex-hotjar-parsing
