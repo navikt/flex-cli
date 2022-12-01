@@ -9,6 +9,7 @@ repos:
           - flex-inntektsmelding-status
           - flex-syketilfelle
           - flex-fss-proxy
+          - flex-hotjar-emotions
           - sykepengesoknad-altinn
           - sykepengesoknad-arkivering-oppgave
           - sykepengesoknad-backend
