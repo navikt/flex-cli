@@ -23,7 +23,7 @@
     },
     "devDependencies": {
         "@types/prompts": "^2.4.1",
-        "@typescript-eslint/eslint-plugin": "^5.40.0",
+        "@typescript-eslint/eslint-plugin": "^5.45.0",
         "@typescript-eslint/parser": "^5.40.0",
         "@vercel/ncc": "^0.34.0",
         "eslint": "^8.27.0",
