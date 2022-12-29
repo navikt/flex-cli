@@ -47,12 +47,12 @@ repos:
 
   - reponame:
       - flex-juridisk-vurdering-test-backend
+      - flex-testdata-generator
     checks:
       - Bygg, test og push Docker image
 
   - reponame:
       - flex-github-actions-workflows
-      - flex-testdata-generator
       - flex-wcag-rapporter
       - flex-hotjar-parsing
       - flex-bigquery-terraform
