@@ -55,7 +55,10 @@ repos:
           - flex-testdata-generator
           - flex-wcag-rapporter
           - flex-hotjar-parsing
-          - flex-biqquery-terraform
+          - flex-bigquery-terraform
+          - sykepengesoknad-kafka
+          - flex-alerts
+          - flex-cloud-sql-tools
 
     - reponame:
           - flex-github-tools

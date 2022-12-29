@@ -29,5 +29,3 @@ if (manglerFraDisk.length > 0) {
 } else {
     console.log('Ingen repoer mangler fra disk')
 }
-
-console.log('\n\nAlt patchet')
