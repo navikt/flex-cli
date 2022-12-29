@@ -16,7 +16,7 @@ for (const r of config.repos) {
         )
         console.log(`Startet workflow i ${r.name}`)
     } catch (e: any) {
-        if (e.status != 404) {
+        if (!(e.status == 404 || e.status == 422)) {
             console.log('Kunne ikke starte workflow i ' + r.name, e)
         } else {
             console.log(`Startet ikke workflow i ${r.name}`)
