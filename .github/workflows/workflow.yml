@@ -1,21 +1,21 @@
 name: Push
 on:
-    workflow_dispatch:
-    push:
+  workflow_dispatch:
+  push:
 env:
-    APP: flex-github-tools
+  APP: flex-github-tools
 jobs:
-    build-and-lint:
-        name: Bygg og lint
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3
-            - name: Install npm dependencies
-              run: npm ci
-            - name: Run prettier
-              run: npm run prettier:check
-            - name: Run lint
-              run: npm run lint
-            - name: Build
-              run: npm run build
+  build-and-lint:
+    name: Bygg og lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install npm dependencies
+        run: npm ci
+      - name: Run prettier
+        run: npm run prettier:check
+      - name: Run lint
+        run: npm run lint
+      - name: Build
+        run: npm run build

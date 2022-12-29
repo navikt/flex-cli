@@ -1,66 +1,66 @@
 owner: navikt
 antallFlexMembers: 7
 repos:
-    - reponame:
-          - ditt-sykefravaer-backend
-          - spinnsyn-arkivering
-          - spinnsyn-backend
-          - spinnsyn-brukernotifikasjon
-          - flex-intern-gateway
-          - flex-inntektsmelding-status
-          - flex-syketilfelle
-          - flex-fss-proxy
-          - flex-hotjar-emotions
-          - sykepengesoknad-altinn
-          - sykepengesoknad-arkivering-oppgave
-          - sykepengesoknad-backend
-          - sykepengesoknad-kvitteringer
-          - sykepengesoknad-ikke-sendt-altinnvarsel
-          - sykepengesoknad-korrigering-metrikk
-          - sykepengesoknad-narmesteleder-varsler
-          - syfosoknadbrukernotifikasjon
-      checks:
-          - felles-workflow / Bygg, test og publiser docker image
+  - reponame:
+      - ditt-sykefravaer-backend
+      - spinnsyn-arkivering
+      - spinnsyn-backend
+      - spinnsyn-brukernotifikasjon
+      - flex-intern-gateway
+      - flex-inntektsmelding-status
+      - flex-syketilfelle
+      - flex-fss-proxy
+      - flex-hotjar-emotions
+      - sykepengesoknad-altinn
+      - sykepengesoknad-arkivering-oppgave
+      - sykepengesoknad-backend
+      - sykepengesoknad-kvitteringer
+      - sykepengesoknad-ikke-sendt-altinnvarsel
+      - sykepengesoknad-korrigering-metrikk
+      - sykepengesoknad-narmesteleder-varsler
+      - syfosoknadbrukernotifikasjon
+    checks:
+      - felles-workflow / Bygg, test og publiser docker image
 
-    - reponame:
-          - ditt-sykefravaer
-          - sykepengesoknad-frontend
-          - spinnsyn-frontend
-      checks:
-          - felles-workflow / Bygg, test og publiser docker image
-          - felles-workflow / cypress (0)
-          - felles-workflow / cypress (1)
-          - felles-workflow / cypress (2)
-          - felles-workflow / cypress (3)
+  - reponame:
+      - ditt-sykefravaer
+      - sykepengesoknad-frontend
+      - spinnsyn-frontend
+    checks:
+      - felles-workflow / Bygg, test og publiser docker image
+      - felles-workflow / cypress (0)
+      - felles-workflow / cypress (1)
+      - felles-workflow / cypress (2)
+      - felles-workflow / cypress (3)
 
-    - reponame:
-          - flex-sykepengesoknad-pdfgen
-          - flex-joark-mottak
-          - flex-docs
-      checks:
-          - Bygg, test og publiser docker image
+  - reponame:
+      - flex-sykepengesoknad-pdfgen
+      - flex-joark-mottak
+      - flex-docs
+    checks:
+      - Bygg, test og publiser docker image
 
-    - reponame:
-          - flex-juridisk-vurdering-test-frontend
-      checks:
-          - Bygg, test og push Docker image
+  - reponame:
+      - flex-juridisk-vurdering-test-frontend
+    checks:
+      - Bygg, test og push Docker image
 
-    - reponame:
-          - flex-juridisk-vurdering-test-backend
-      checks:
-          - Bygg, test og push Docker image
+  - reponame:
+      - flex-juridisk-vurdering-test-backend
+    checks:
+      - Bygg, test og push Docker image
 
-    - reponame:
-          - flex-github-actions-workflows
-          - flex-testdata-generator
-          - flex-wcag-rapporter
-          - flex-hotjar-parsing
-          - flex-bigquery-terraform
-          - sykepengesoknad-kafka
-          - flex-alerts
-          - flex-cloud-sql-tools
+  - reponame:
+      - flex-github-actions-workflows
+      - flex-testdata-generator
+      - flex-wcag-rapporter
+      - flex-hotjar-parsing
+      - flex-bigquery-terraform
+      - sykepengesoknad-kafka
+      - flex-alerts
+      - flex-cloud-sql-tools
 
-    - reponame:
-          - flex-github-tools
-      checks:
-          - Bygg og lint
+  - reponame:
+      - flex-github-tools
+    checks:
+      - Bygg og lint
