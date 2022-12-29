@@ -36,6 +36,7 @@ repos:
     - reponame:
           - flex-sykepengesoknad-pdfgen
           - flex-joark-mottak
+          - flex-docs
       checks:
           - Bygg, test og publiser docker image
 
@@ -50,8 +51,13 @@ repos:
           - Bygg, test og push Docker image
 
     - reponame:
-          - flex-github-tools
           - flex-github-actions-workflows
           - flex-testdata-generator
           - flex-wcag-rapporter
           - flex-hotjar-parsing
+          - flex-biqquery-terraform
+
+    - reponame:
+          - flex-github-tools
+      checks:
+          - Bygg og lint
