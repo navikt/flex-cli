@@ -1,5 +1,7 @@
 name: Push
-on: push
+on:
+    workflow_dispatch:
+    push:
 env:
     APP: flex-github-tools
 jobs:
