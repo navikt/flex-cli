@@ -3,11 +3,13 @@ import { verifiserRepo } from './verifiserRepo'
 import { octokit } from './octokit'
 import { ApprovedPr } from './types'
 import { getCombinedSuccess } from './combinedStatus'
+import { hentAntallOrgAdmins } from './orgAdmins'
 
 export async function hentPullrequests() {
     console.log('\n\nVerifiserer repo status')
+    const antallAdmins = await hentAntallOrgAdmins()
 
-    await Promise.all(config.repos.map((r) => verifiserRepo(r)))
+    await Promise.all(config.repos.map((r) => verifiserRepo(r, antallAdmins)))
     console.log('\n\nHenter alle dependabot PRs')
 
     const pulls = await Promise.all(

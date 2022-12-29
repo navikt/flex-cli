@@ -2,7 +2,7 @@ import { octokit } from './octokit'
 import { config } from './config'
 import { RepoConfig } from './types'
 
-export async function verifiserRepo(r: RepoConfig) {
+export async function verifiserRepo(r: RepoConfig, antallOrgAdmins: number) {
     const repo = await octokit.request('GET /repos/{owner}/{repo}', {
         owner: config.owner,
         repo: r.name,
@@ -63,6 +63,10 @@ export async function verifiserRepo(r: RepoConfig) {
         r,
         repo.data.default_branch
     )
+    await verifiserCollaborators(r.name, 'admin', antallOrgAdmins)
+    await verifiserCollaborators(r.name, 'maintain', antallOrgAdmins)
+    await verifiserCollaborators(r.name, 'push', antallOrgAdmins)
+
     if (!ok) {
         return false
     }
@@ -70,6 +74,28 @@ export async function verifiserRepo(r: RepoConfig) {
         return false
     }
     return true
+}
+
+async function verifiserCollaborators(
+    repo: string,
+    permission: string,
+    antallOrgAdmins: number
+) {
+    const collab = await octokit.request(
+        'GET /repos/{owner}/{repo}/collaborators{?permission}',
+        {
+            owner: config.owner,
+            repo: repo,
+            permission: permission,
+        }
+    )
+    if (collab.data.length != antallOrgAdmins + config.antallFlexMembers) {
+        console.error(
+            `Repo ${repo} har feil antall ${permission} collaborators. Forventet ${
+                antallOrgAdmins + config.antallFlexMembers
+            }. Fant ${collab.data.length}`
+        )
+    }
 }
 
 async function verifiserDefaultBranchProtection(
@@ -122,16 +148,16 @@ async function verifiserDefaultBranchProtection(
         }
         if (
             protection.data.required_pull_request_reviews
-                ?.required_approving_review_count != 1
+                ?.required_approving_review_count != 0
         ) {
-            console.log(`${repo.name} har required_approving_review_count != 1`)
+            console.log(`${repo.name} har required_approving_review_count != 0`)
             ok = false
         }
         if (
             protection.data.required_pull_request_reviews
-                ?.require_code_owner_reviews != true
+                ?.require_code_owner_reviews != false
         ) {
-            console.log(`${repo.name} har require_code_owner_reviews != true`)
+            console.log(`${repo.name} har require_code_owner_reviews != false`)
             ok = false
         }
     } catch (e) {
@@ -156,13 +182,10 @@ async function verifiserDefaultBranchProtection(
                     enforce_admins: false,
                     required_pull_request_reviews: {
                         dismiss_stale_reviews: false,
-                        require_code_owner_reviews: true,
-                        required_approving_review_count: 1,
+                        require_code_owner_reviews: false,
+                        required_approving_review_count: 0,
                     },
-                    restrictions: {
-                        users: [],
-                        teams: [],
-                    },
+                    restrictions: null,
                     required_linear_history: true,
                     allow_force_pushes: false,
                     allow_deletions: false,

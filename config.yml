@@ -1,4 +1,5 @@
 owner: navikt
+antallFlexMembers: 7
 repos:
     - reponame:
           - ditt-sykefravaer-backend
