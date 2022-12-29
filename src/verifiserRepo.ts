@@ -164,6 +164,22 @@ async function verifiserDefaultBranchProtection(
         console.error('Feil med branch protection', e)
         ok = false
     }
+
+    const labels = await octokit.request('GET /repos/{owner}/{repo}/labels', {
+        owner: config.owner,
+        repo: repo.name,
+    })
+    if (!labels.data.map((l) => l.name).includes('automerge')) {
+        console.log(`Lager automerge label i repoet ${repo.name}`)
+
+        await octokit.request('POST /repos/{owner}/{repo}/labels', {
+            owner: config.owner,
+            repo: repo.name,
+            name: 'automerge',
+            description: 'Kandidat for automerging hvis alt går grønt',
+            color: 'f29513',
+        })
+    }
     if (!ok) {
         if (repo.patch) {
             console.log(
