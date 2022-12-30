@@ -8,6 +8,7 @@
         "dev": "ncc run src/main.ts",
         "sjekk-mappestruktur": "ncc run src/sjekk-mappestruktur.ts",
         "automerge": "ncc run src/start-dependabot-merge.ts",
+        "gha-workspace": "ncc run src/github-actions-workspace.ts",
         "slack": "ncc run src/slack-integration.ts",
         "rebase-red": "ncc run src/rebaseRed.ts",
         "verifiser": "ncc run src/verifiser.ts",
