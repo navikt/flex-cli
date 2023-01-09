@@ -15,6 +15,7 @@ repos:
       - sykepengesoknad-arkivering-oppgave
       - sykepengesoknad-backend
       - sykepengesoknad-kvitteringer
+      - sykepengesoknad-sak-status-metrikk
       - sykepengesoknad-ikke-sendt-altinnvarsel
       - sykepengesoknad-korrigering-metrikk
       - sykepengesoknad-narmesteleder-varsler
