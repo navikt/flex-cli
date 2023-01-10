@@ -11,6 +11,7 @@ repos:
       - flex-syketilfelle
       - flex-fss-proxy
       - flex-hotjar-emotions
+      - flex-frontend-feilmeldinger
       - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
       - sykepengesoknad-backend
