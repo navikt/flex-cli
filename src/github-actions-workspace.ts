@@ -4,7 +4,7 @@ const github = octokit
 const context = {
     repo: {
         owner: 'navikt',
-        repo: 'sykepengesoknad-frontend',
+        repo: 'sykepengesoknad-backend',
     },
 }
 
@@ -18,6 +18,15 @@ const pulls = await github.request('GET /repos/{owner}/{repo}/pulls', {
 const filtrert = pulls.data
     .filter((it) => it.state == 'open')
     .filter((it) => it.user?.login == 'dependabot[bot]')
+    .filter((it) => {
+        const prCreated = new Date(it.created_at)
+        if (it.title.includes('navikt')) {
+            const twoDays = 2 * 24 * 60 * 60 * 1000
+            return prCreated.getTime() < Date.now() - twoDays
+        }
+        const oneWeek = 7 * 24 * 60 * 60 * 1000
+        return prCreated.getTime() < Date.now() - oneWeek
+    })
     .filter((it) => it.labels.some((l) => l.name == 'automerge'))
     .map((it) => {
         return {
