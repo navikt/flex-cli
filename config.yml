@@ -1,5 +1,5 @@
 owner: navikt
-antallFlexMembers: 7
+antallFlexMembers: 6
 repos:
   - reponame:
       - ditt-sykefravaer-backend
@@ -21,6 +21,7 @@ repos:
       - sykepengesoknad-korrigering-metrikk
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
+      - sykepengesoknad-yrkesskade-analyse
     checks:
       - felles-workflow / Bygg, test og publiser docker image
 
