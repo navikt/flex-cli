@@ -13,6 +13,7 @@
         "rebase-red": "ncc run src/rebaseRed.ts",
         "verifiser": "ncc run src/verifiser.ts",
         "patch": "ncc run src/patch-alle.ts",
+        "klon": "ncc run src/klon-alle.ts",
         "lint": "eslint --ext=ts src",
         "lint:fix": "eslint --ext=ts src --fix",
         "prettier:write": "prettier --write .",
