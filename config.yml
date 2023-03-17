@@ -21,7 +21,6 @@ repos:
       - sykepengesoknad-korrigering-metrikk
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
-      - sykepengesoknad-yrkesskade-analyse
     checks:
       - felles-workflow / Bygg, test og publiser docker image
 
