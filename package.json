@@ -27,7 +27,7 @@
         "yaml": "^2.2.1"
     },
     "devDependencies": {
-        "@types/prompts": "^2.4.2",
+        "@types/prompts": "^2.4.3",
         "@typescript-eslint/eslint-plugin": "^5.49.0",
         "@typescript-eslint/parser": "^5.49.0",
         "@vercel/ncc": "^0.36.1",
