@@ -6,7 +6,6 @@ repos:
       - spinnsyn-arkivering
       - spinnsyn-backend
       - spinnsyn-brukernotifikasjon
-      - flex-intern-gateway
       - flex-inntektsmelding-status
       - flex-syketilfelle
       - flex-fss-proxy
