@@ -2,6 +2,7 @@ owner: navikt
 antallFlexMembers: 6
 repos:
   - reponame:
+      - flexjar-backend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering
       - spinnsyn-backend
