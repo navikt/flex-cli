@@ -3,6 +3,7 @@ antallFlexMembers: 6
 repos:
   - reponame:
       - flexjar-backend
+      - flexjar-frontend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering
       - spinnsyn-backend
