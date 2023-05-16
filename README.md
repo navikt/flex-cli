@@ -3,9 +3,22 @@ Forsøk på å automatisere verfikasjon av repo innstillinger og til å approve 
 
 
 # Komme i gang
-Legg et personal accesttoken i en .env fil. Accestokenet legges bak `GITHUB_PAT=` . Fila er gitignored 
+Legg et personal accesttoken i en .env fil. Accestokenet legges bak `GITHUB_PAT=`. Fila er gitignored
+```
+GITHUB_PAT=ghp_123abc....
+``` 
 Kjør `npm install` og deretter `npm run dev` for utvikling
 
+### Secrets
+For å opprette ny eller oppdatere ekisterende secrets i github så må hemmligheten legges til i .env fila
+```
+GITHUB_PAT=ghp_123abc....
+TEST_SECRET=hemmelig
+```
+Dersom det er en ny secret må den også inn på choices i secrets.ts
+Kjør `npm run secret`
+
+### 
 Koden kan også kompilers med `npm run build` og startes med `npm start`
 Flere repoer legges til i config.yml
 

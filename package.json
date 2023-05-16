@@ -1,7 +1,7 @@
 {
     "name": "flex-github-tools",
     "version": "1.0.0",
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
         "build": "ncc build src/main.ts -o build",
         "start": "node build/index.js",
@@ -14,6 +14,7 @@
         "verifiser": "ncc run src/verifiser.ts",
         "patch": "ncc run src/patch-alle.ts",
         "klon": "ncc run src/klon-alle.ts",
+        "secret": "ncc run src/secrets.ts",
         "lint": "eslint --ext=ts src",
         "lint:fix": "eslint --ext=ts src --fix",
         "prettier:write": "prettier --write .",
@@ -23,10 +24,12 @@
     "dependencies": {
         "@octokit/rest": "^19.0.7",
         "dotenv": "^16.0.3",
+        "libsodium-wrappers": "^0.7.11",
         "prompts": "^2.4.2",
         "yaml": "^2.2.2"
     },
     "devDependencies": {
+        "@types/libsodium-wrappers": "^0.7.10",
         "@types/prompts": "^2.4.4",
         "@typescript-eslint/eslint-plugin": "^5.49.0",
         "@typescript-eslint/parser": "^5.49.0",
