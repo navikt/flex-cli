@@ -21,12 +21,7 @@ Kjør `npm run secret`
 
 ### Nytt repo
 For å opprette et nytt repo så må det legges til i config.yml. Kjør deretter `npm run patch` som vil opprette repoet. Hvis secrets også trengs bør man kjøre `npm run secret` som beskrevet over.
-```
-GITHUB_PAT=ghp_123abc....
-TEST_SECRET=hemmelig
-```
-Dersom det er en ny secret må den også inn på choices i secrets.ts
-Kjør `npm run secret`
+
 
 ### 
 Koden kan også kompilers med `npm run build` og startes med `npm start`
