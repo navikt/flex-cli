@@ -2,6 +2,7 @@ owner: navikt
 antallFlexMembers: 6
 repos:
   - reponame:
+      - flex-andre-inntektskilder-metrikker
       - flexjar-backend
       - flexjar-frontend
       - ditt-sykefravaer-backend
