@@ -125,6 +125,10 @@ async function verifiserDefaultBranchProtection(
             )
             ok = false
         }
+        if (protection.data.enforce_admins?.enabled != true) {
+            console.log(`${repo.name} har enforce admins ikke true`)
+            ok = false
+        }
         if (!protection.data.required_status_checks?.contexts) {
             console.log(
                 `${repo.name} har ikke strict status check (branch up to date)`
@@ -195,7 +199,7 @@ async function verifiserDefaultBranchProtection(
                         strict: false,
                         contexts: repo.checks || [],
                     },
-                    enforce_admins: false,
+                    enforce_admins: true,
                     required_pull_request_reviews: {
                         dismiss_stale_reviews: false,
                         require_code_owner_reviews: false,
