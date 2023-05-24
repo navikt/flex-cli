@@ -2,11 +2,52 @@ import { octokit } from './octokit'
 import { config } from './config'
 import { RepoConfig } from './types'
 
-export async function verifiserRepo(r: RepoConfig, antallOrgAdmins: number) {
-    const repo = await octokit.request('GET /repos/{owner}/{repo}', {
-        owner: config.owner,
-        repo: r.name,
-    })
+async function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+async function hentEllerLagRepo(r: RepoConfig) {
+    try {
+        const repo = await octokit.request('GET /repos/{owner}/{repo}', {
+            owner: config.owner,
+            repo: r.name,
+        })
+
+        return repo
+    } catch (e: any) {
+        if (e.status === 404) {
+            await octokit.request('POST /orgs/{org}/repos', {
+                org: config.owner,
+                name: r.name,
+                private: false,
+                auto_init: true,
+                default_branch: 'master',
+                visibility: 'public',
+            })
+            await sleep(2000)
+            await octokit.request(
+                'POST /repos/{owner}/{repo}/branches/{branch}/rename',
+                {
+                    owner: config.owner,
+                    repo: r.name,
+                    branch: 'main',
+                    new_name: 'master',
+                }
+            )
+            await sleep(2000)
+            const repo = await octokit.request('GET /repos/{owner}/{repo}', {
+                owner: config.owner,
+                repo: r.name,
+            })
+            return repo
+        } else {
+            throw e
+        }
+    }
+}
+
+export async function verifiserRepo(r: RepoConfig) {
+    const repo = await hentEllerLagRepo(r)
 
     let ok = true
 
@@ -63,9 +104,8 @@ export async function verifiserRepo(r: RepoConfig, antallOrgAdmins: number) {
         r,
         repo.data.default_branch
     )
-    await verifiserCollaborators(r.name, 'admin', antallOrgAdmins)
-    await verifiserCollaborators(r.name, 'maintain', antallOrgAdmins)
-    await verifiserCollaborators(r.name, 'push', antallOrgAdmins)
+
+    await verifiserAdminTeams(r.name)
 
     if (!ok) {
         return false
@@ -76,25 +116,44 @@ export async function verifiserRepo(r: RepoConfig, antallOrgAdmins: number) {
     return true
 }
 
-async function verifiserCollaborators(
-    repo: string,
-    permission: string,
-    antallOrgAdmins: number
-) {
-    const collab = await octokit.request(
-        'GET /repos/{owner}/{repo}/collaborators{?permission}',
-        {
-            owner: config.owner,
-            repo: repo,
-            permission: permission,
+async function verifiserAdminTeams(repo: string) {
+    const repoTeams = await octokit.request('GET /repos/{owner}/{repo}/teams', {
+        owner: config.owner,
+        repo: repo,
+    })
+
+    const adminTeams = repoTeams.data
+        .filter((team) => team.permission === 'admin')
+        .map((team) => team.name)
+
+    const aksepterteTeams = ['flex']
+    for (const team of adminTeams) {
+        if (!aksepterteTeams.includes(team)) {
+            console.error(`Team ${team} har admin tilgang til ${repo}`)
+            process.exit(1)
         }
-    )
-    if (collab.data.length != antallOrgAdmins + config.antallFlexMembers) {
-        console.error(
-            `Repo ${repo} har feil antall ${permission} collaborators. Forventet ${
-                antallOrgAdmins + config.antallFlexMembers
-            }. Fant ${collab.data.length}`
-        )
+    }
+
+    for (const team of aksepterteTeams) {
+        if (!adminTeams.includes(team)) {
+            console.log(
+                'Gir admin tilgang til team: ' +
+                    team +
+                    ' for repo: ' +
+                    repo +
+                    ''
+            )
+            await octokit.request(
+                'PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}',
+                {
+                    org: config.owner,
+                    team_slug: team,
+                    owner: config.owner,
+                    repo: repo,
+                    permission: 'admin',
+                }
+            )
+        }
     }
 }
 
