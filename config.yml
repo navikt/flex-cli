@@ -23,6 +23,7 @@ repos:
       - sykepengesoknad-korrigering-metrikk
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
+      - flex-datastream-alert
     checks:
       - felles-workflow / Bygg, test og publiser docker image
 
