@@ -243,6 +243,17 @@ async function verifiserDefaultBranchProtection(
             color: 'f29513',
         })
     }
+    if (!labels.data.map((l) => l.name).includes('designsystemet')) {
+        console.log(`Lager designsystemet label i repoet ${repo.name}`)
+
+        await octokit.request('POST /repos/{owner}/{repo}/labels', {
+            owner: config.owner,
+            repo: repo.name,
+            name: 'designsystemet',
+            description: 'Oppgradering av designsystemet',
+            color: 'f29513',
+        })
+    }
     if (!ok) {
         if (repo.patch) {
             console.log(
