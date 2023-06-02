@@ -4,7 +4,6 @@ repos:
   - reponame:
       - flex-andre-inntektskilder-metrikker
       - flexjar-backend
-      - flexjar-frontend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering
       - spinnsyn-backend
@@ -47,6 +46,7 @@ repos:
 
   - reponame:
       - flex-juridisk-vurdering-test-frontend
+      - flexjar-frontend
     checks:
       - Bygg, test og push Docker image
 
