@@ -67,6 +67,6 @@ repos:
       - flex-cloud-sql-tools
 
   - reponame:
-      - flex-github-tools
+      - flex-cli
     checks:
       - Bygg og lint

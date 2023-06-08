@@ -1,4 +1,4 @@
-# flex-github-tools
+# flex-cli
 Forsøk på å automatisere verfikasjon av repo innstillinger og til å approve og merge dependabot pullrequests.
 
 

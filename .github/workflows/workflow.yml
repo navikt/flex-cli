@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
 env:
-  APP: flex-github-tools
+  APP: flex-cli
 jobs:
   build-and-lint:
     name: Bygg og lint
