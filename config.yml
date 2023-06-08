@@ -47,6 +47,7 @@ repos:
   - reponame:
       - flex-juridisk-vurdering-test-frontend
       - flexjar-frontend
+      - flex-internal-frontend
     checks:
       - Bygg, test og push Docker image
 
