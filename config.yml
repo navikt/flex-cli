@@ -3,6 +3,7 @@ antallFlexMembers: 6
 repos:
   - reponame:
       - flex-andre-inntektskilder-metrikker
+      - flex-modia-kontakt-metrikk
       - flexjar-backend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering
