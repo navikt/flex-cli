@@ -37,6 +37,8 @@ repos:
       - felles-workflow / cypress (1)
       - felles-workflow / cypress (2)
       - felles-workflow / cypress (3)
+      - felles-workflow / lint
+      - felles-workflow / unit-test
 
   - reponame:
       - flex-sykepengesoknad-pdfgen
