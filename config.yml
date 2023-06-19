@@ -68,6 +68,7 @@ repos:
       - sykepengesoknad-kafka
       - flex-alerts
       - flex-cloud-sql-tools
+      - flex-distroless-bump
 
   - reponame:
       - flex-cli
