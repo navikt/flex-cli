@@ -22,6 +22,13 @@ Kjør `npm run secret`
 ### Nytt repo
 For å opprette et nytt repo så må det legges til i config.yml. Kjør deretter `npm run patch` som vil opprette repoet. Hvis secrets også trengs bør man kjøre `npm run secret` som beskrevet over.
 
+For å få meldinger om commit til master i #flex-github-feed må disse kommandoene kjøres i slack kanalen:
+
+```
+/github subscribe navikt/repo commits
+/github unsubscribe navikt/repo issues pulls releases deployments
+```
+
 ### Aksel bump
 
 Dette Node.js-scriptet er laget for å oppgradere "aksel"-avhengighetene i git-repoene 'sykepengesoknad-frontend', 'ditt-sykefravaer' og 'spinnsyn-frontend'. Her er hva det gjør i 6 steg:
