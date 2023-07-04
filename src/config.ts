@@ -10,7 +10,7 @@ function multirepoTilConfig(baseConfig: BaseConfig): Config {
 
     baseConfig.repos.forEach((a) => {
         a.reponame.forEach((n) => {
-            repos.push({ name: n, checks: a.checks, patch: true })
+            repos.push({ name: n, checks: a.checks, skip: a.skip, patch: true })
         })
     })
     return {
@@ -29,4 +29,5 @@ interface BaseConfig {
 interface MultiRepoConfig {
     reponame: string[]
     checks: string[]
+    skip: string[]
 }

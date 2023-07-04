@@ -8,6 +8,7 @@ export interface ApprovedPr {
 export interface RepoConfig {
     name: string
     checks?: string[]
+    skip?: string[]
     patch: boolean
 }
 

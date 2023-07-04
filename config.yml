@@ -64,7 +64,6 @@ repos:
       - flex-github-actions-workflows
       - flex-wcag-rapporter
       - flex-hotjar-parsing
-      - flex-bigquery-terraform
       - sykepengesoknad-kafka
       - flex-alerts
       - flex-cloud-sql-tools
@@ -74,3 +73,8 @@ repos:
       - flex-cli
     checks:
       - Bygg og lint
+
+  - reponame:
+      - flex-bigquery-terraform
+    skip:
+      - enforce_admins
