@@ -8,12 +8,10 @@ async function sleep(ms: number) {
 
 async function hentEllerLagRepo(r: RepoConfig) {
     try {
-        const repo = await octokit.request('GET /repos/{owner}/{repo}', {
+        return await octokit.request('GET /repos/{owner}/{repo}', {
             owner: config.owner,
             repo: r.name,
         })
-
-        return repo
     } catch (e: any) {
         if (e.status === 404) {
             await octokit.request('POST /orgs/{org}/repos', {
@@ -44,6 +42,10 @@ async function hentEllerLagRepo(r: RepoConfig) {
             throw e
         }
     }
+}
+
+function skip(repo: RepoConfig, skip: string) {
+    return repo.skip && repo.skip.includes(skip)
 }
 
 export async function verifiserRepo(r: RepoConfig) {
@@ -184,10 +186,15 @@ async function verifiserDefaultBranchProtection(
             )
             ok = false
         }
-        if (protection.data.enforce_admins?.enabled != true) {
+
+        if (
+            !skip(repo, 'enforce_admins') &&
+            protection.data.enforce_admins?.enabled != true
+        ) {
             console.log(`${repo.name} har enforce admins ikke true`)
             ok = false
         }
+
         if (!protection.data.required_status_checks?.contexts) {
             console.log(
                 `${repo.name} har ikke strict status check (branch up to date)`
