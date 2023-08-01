@@ -10,7 +10,10 @@ const response = await prompts([
         type: 'select',
         name: 'git',
         message: 'Bruker du git eller Github CLI (gh)',
-        choices: [{ title: 'git', value: 'git' }, { title: 'Github CLI', value: 'gh' }],
+        choices: [
+            { title: 'git', value: 'git' },
+            { title: 'Github CLI', value: 'gh' },
+        ],
     },
 ])
 
