@@ -10,7 +10,6 @@ repos:
       - spinnsyn-brukernotifikasjon
       - flex-inntektsmelding-status
       - flex-syketilfelle
-      - flex-fss-proxy
       - flex-hotjar-emotions
       - flex-frontend-feilmeldinger
       - sykepengesoknad-altinn
