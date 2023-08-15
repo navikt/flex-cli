@@ -1,0 +1,20 @@
+name: Push
+on:
+  workflow_dispatch:
+  push:
+jobs:
+  build-and-lint:
+    name: Bygg og lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.READER_TOKEN }}
+          script: |
+            const today = new Date();
+            const pulls = await github.request('GET /repos/{owner}/{repo}/pulls', {
+                owner: 'navikt',
+                repo: 'sykepengesoknad-frontend',
+            })
+            pulls.data
+                .forEach((it) => console.log(it.title))
