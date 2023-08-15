@@ -1,39 +1,12 @@
-name: Push
+name: Stale PR
 on:
   workflow_dispatch:
   push:
 jobs:
   stale-pr:
-    name: Bygg og lint
+    name: Stale PR
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.READER_TOKEN }}
-          script: |
-            const perPage = 100; // Antall repoer per side (maksimalt tillatt av GitHub)
-            let page = 1; 
-            let repos = [];
-            let endLoop = false;
-
-            // Hent alle repos fra organisasjonen "navikt" til vi har hentet alle sider
-            while (!endLoop) {
-              const currentRepos = await github.request('GET /orgs/{org}/repos', {
-                  org: 'navikt',
-                  per_page: perPage,
-                  page: page
-              });
-            
-              if (currentRepos.data.length === 0) {
-                endLoop = true;
-              } else {
-                repos = repos.concat(currentRepos.data);
-                page++;
-              }
-            }
-            
-            // Filtrer repos som har emnet "team-flex"
-            const flexRepos = repos.filter(repo => repo.topics && repo.topics.includes('team-flex'));
-            
-            // For demonstrasjonsformål, la oss logge navnene på de filtrerte reposene
-            flexRepos.forEach((repo) => console.log(repo.name));
+      - run: gh search repos archived:false --topic=team-flex --owner=navikt --limit=200 --json "name" --jq ".[] | .name"
+        env:
+          GITHUB_TOKEN: ${{ secrets.READER_TOKEN }}
