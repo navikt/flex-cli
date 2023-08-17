@@ -11,7 +11,6 @@ repos:
       - flex-inntektsmelding-status
       - flex-syketilfelle
       - flex-hotjar-emotions
-      - flex-frontend-feilmeldinger
       - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
       - sykepengesoknad-backend
@@ -76,3 +75,6 @@ repos:
       - flex-bigquery-terraform
     skip:
       - enforce_admins
+      -
+  - reponame:
+      - flex-slack-reminders
