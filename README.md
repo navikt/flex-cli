@@ -29,19 +29,6 @@ For å få meldinger om commit til master i #flex-github-feed må disse kommando
 /github unsubscribe navikt/repo issues pulls releases deployments
 ```
 
-### Aksel bump
-
-Dette Node.js-scriptet er laget for å oppgradere "aksel"-avhengighetene i git-repoene 'sykepengesoknad-frontend', 'ditt-sykefravaer' og 'spinnsyn-frontend'. Her er hva det gjør i 6 steg:
-
-1. For hvert repo, sjekker det ut 'master'-branchen og henter siste endringer.
-2. Den oppgraderer alle 'aksel' og 'ds' avhengighetene ved å bruke 'npm-check-updates'.
-3. Etter at oppgraderingene er installert, sammenligner den endringene med 'master'-branchen.
-4. Hvis det er noen forskjeller (nye oppgraderinger), opprettes en ny branch med et unikt navn som inkluderer dato og versjonen av '@navikt/ds-react'.
-5. Scriptet committer og pusher endringene til den nye branchen.
-6. Til slutt, oppretter den en pull request med en spesifikk tittel, beskrivelse og merkelapper, og foreslår å slå sammen endringene til 'master'-branchen.
-
-Kjør dette scriptet ved å bruke npm run aksel-bump i terminalen.
-
 ### 
 Koden kan også kompilers med `npm run build` og startes med `npm start`
 Flere repoer legges til i config.yml
