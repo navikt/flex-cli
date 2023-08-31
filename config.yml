@@ -73,8 +73,9 @@ repos:
 
   - reponame:
       - flex-bigquery-terraform
+      - flex-bigquery-soda
     skip:
       - enforce_admins
-      -
+
   - reponame:
       - flex-slack-reminders
