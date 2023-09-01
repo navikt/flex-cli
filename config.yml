@@ -69,8 +69,6 @@ repos:
       - flex-cli
     checks:
       - Bygg og lint
-    skip:
-      - enforce_admins
 
   - reponame:
       - flex-bigquery-terraform
