@@ -14,7 +14,6 @@ const response = await prompts([
 if (!response.ok) {
     process.exit(1)
 }
-console.log(response.ok)
 
 for (const r of config.repos) {
     if (r.name == 'flex-cli') {
