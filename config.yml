@@ -40,7 +40,6 @@ repos:
   - reponame:
       - flex-sykepengesoknad-pdfgen
       - flex-joark-mottak
-      - flex-docs
     checks:
       - Bygg, test og publiser docker image
 
@@ -70,12 +69,13 @@ repos:
       - flex-cli
     checks:
       - Bygg og lint
-
-  - reponame:
-      - flex-bigquery-terraform
-      - flex-bigquery-soda
     skip:
       - enforce_admins
 
   - reponame:
+      - flex-bigquery-terraform
       - flex-slack-reminders
+      - flex-trello-docs
+      - flex-bigquery-soda
+    skip:
+      - enforce_admins
