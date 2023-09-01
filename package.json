@@ -12,6 +12,7 @@
         "klon": "ncc run src/klon-alle.ts",
         "secret": "ncc run src/secrets.ts",
         "reset-master": "ncc run src/reset-alt-til-master.ts",
+        "branch-commit-push": "ncc run src/branch-commit-push.ts",
         "lint": "eslint --ext=ts src",
         "lint:fix": "eslint --ext=ts src --fix",
         "prettier:write": "prettier --write .",
