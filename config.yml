@@ -59,7 +59,6 @@ repos:
   - reponame:
       - flex-github-actions-workflows
       - flex-wcag-rapporter
-      - flex-hotjar-parsing
       - sykepengesoknad-kafka
       - flex-alerts
       - flex-cloud-sql-tools
