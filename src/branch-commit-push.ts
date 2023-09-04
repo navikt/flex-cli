@@ -78,11 +78,28 @@ if (!lagPr.ok) {
     process.exit(1)
 }
 
+async function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+async function lagPR(repo: string) {
+    try {
+        console.log('Lager PR for ' + repo)
+        execSync(
+            `gh pr create --title "${commit.melding}" --body "Fra flex-cli"`,
+            {
+                cwd: `../${repo}`,
+            }
+        )
+    } catch (e: any) {
+        console.log('retry om 10 sekunder')
+        await sleep(10000)
+        await lagPR(repo)
+    }
+}
+
 for (const r of repoerMedEndringer) {
-    console.log('Lager PR for ' + r)
-    execSync(`gh pr create --title "${commit.melding}" --body "Fra flex-cli"`, {
-        cwd: `../${r}`,
-    })
+    await lagPR(r)
 }
 
 const automerge = await prompts([
@@ -99,9 +116,19 @@ if (!automerge.ok) {
     process.exit(1)
 }
 
+async function automergePr(r: string) {
+    try {
+        console.log('Automerger PR for ' + r)
+        execSync('gh pr merge --auto -s', {
+            cwd: `../${r}`,
+        })
+    } catch (e: any) {
+        console.log('retry om 10 sekunder')
+        await sleep(10000)
+        await automergePr(r)
+    }
+}
+
 for (const r of repoerMedEndringer) {
-    console.log('Automerger PR for ' + r)
-    execSync('gh pr merge --auto -s', {
-        cwd: `../${r}`,
-    })
+    await automergePr(r)
 }
