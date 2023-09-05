@@ -27,7 +27,7 @@
         "yaml": "^2.3.2"
     },
     "devDependencies": {
-        "@types/libsodium-wrappers": "^0.7.10",
+        "@types/libsodium-wrappers": "^0.7.11",
         "@types/prompts": "^2.4.4",
         "@typescript-eslint/eslint-plugin": "^5.49.0",
         "@typescript-eslint/parser": "^5.62.0",
