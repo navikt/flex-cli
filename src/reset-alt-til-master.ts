@@ -1,4 +1,5 @@
 import { config } from './config'
+import * as fs from 'fs'
 import { execSync } from 'node:child_process'
 import * as prompts from 'prompts'
 
@@ -15,25 +16,32 @@ if (!response.ok) {
     process.exit(1)
 }
 
-for (const r of config.repos) {
-    if (r.name == 'flex-cli') {
-        // skipper dette repoet
-    } else {
-        console.log(`Resetter ${r.name} til master`)
+for (const repo of config.repos) {
+    const path = `../${repo.name}`
+
+    try {
+        await fs.promises.access(path)
+    } catch (error) {
+        console.log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon'`)
+        continue
+    }
+
+    if (repo.name != 'flex-cli') {
+        console.log(`Resetter ${repo.name} til master`)
         execSync('git clean -f', {
-            cwd: `../${r.name}`,
+            cwd: path,
         })
         execSync(' git reset .', {
-            cwd: `../${r.name}`,
+            cwd: path,
         })
         execSync('git restore .', {
-            cwd: `../${r.name}`,
+            cwd: path,
         })
         execSync('git checkout master', {
-            cwd: `../${r.name}`,
+            cwd: path,
         })
         execSync('git pull', {
-            cwd: `../${r.name}`,
+            cwd: path,
         })
     }
 }
