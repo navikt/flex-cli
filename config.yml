@@ -21,6 +21,8 @@ repos:
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
       - flex-datastream-alert
+      - flexjar-frontend
+      - flex-internal-frontend
     checks:
       - felles-workflow / Bygg, test og publiser docker image
 
@@ -45,8 +47,6 @@ repos:
 
   - reponame:
       - flex-juridisk-vurdering-test-frontend
-      - flexjar-frontend
-      - flex-internal-frontend
     checks:
       - Bygg, test og push Docker image
 
