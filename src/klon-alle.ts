@@ -1,6 +1,6 @@
 import { config } from './config'
 import { execSync } from 'node:child_process'
-import * as prompts from 'prompts'
+import prompts from 'prompts'
 
 export async function klonAlle() {
     console.log('\n\nKloner flex repoer til parent mappen ')
