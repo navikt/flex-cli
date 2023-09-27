@@ -6,15 +6,12 @@ export async function startDependabotMerge() {
 
     for (const r of config.repos) {
         try {
-            await octokit.request(
-                'POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches',
-                {
-                    owner: config.owner,
-                    repo: r.name,
-                    workflow_id: 'merge-dependabot-pr.yml',
-                    ref: 'master',
-                }
-            )
+            await octokit.request('POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches', {
+                owner: config.owner,
+                repo: r.name,
+                workflow_id: 'merge-dependabot-pr.yml',
+                ref: 'master',
+            })
             console.log(`Startet workflow i ${r.name}`)
         } catch (e: any) {
             if (!(e.status == 404 || e.status == 422)) {

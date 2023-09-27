@@ -1,5 +1,7 @@
 import * as fs from 'fs'
+
 import * as YAML from 'yaml'
+
 import { Config, RepoConfig } from './types'
 
 const file = fs.readFileSync('./config.yml', 'utf8')

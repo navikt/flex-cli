@@ -1,6 +1,7 @@
+import * as Process from 'process'
+
 import { verifiserRepo } from './verifiserRepo'
 import { config } from './config'
-import * as Process from 'process'
 
 export async function verifiserRepoer() {
     console.log('\n\nVerifiserer alle repoer ')

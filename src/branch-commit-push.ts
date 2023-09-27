@@ -1,6 +1,8 @@
-import { config } from './config'
 import { execSync } from 'node:child_process'
+
 import * as prompts from 'prompts'
+
+import { config } from './config'
 
 const commit = await prompts([
     {
@@ -68,9 +70,7 @@ const lagPr = await prompts([
     {
         type: 'confirm',
         name: 'ok',
-        message: `Vil du lage PR for endringene i ${repoerMedEndringer.join(
-            ', '
-        )}?`,
+        message: `Vil du lage PR for endringene i ${repoerMedEndringer.join(', ')}?`,
     },
 ])
 
@@ -85,12 +85,9 @@ async function sleep(ms: number) {
 async function lagPR(repo: string) {
     try {
         console.log('Lager PR for ' + repo)
-        execSync(
-            `gh pr create --title "${commit.melding}" --body "Fra flex-cli"`,
-            {
-                cwd: `../${repo}`,
-            }
-        )
+        execSync(`gh pr create --title "${commit.melding}" --body "Fra flex-cli"`, {
+            cwd: `../${repo}`,
+        })
     } catch (e: any) {
         console.log('retry om 10 sekunder')
         await sleep(10000)
@@ -107,7 +104,7 @@ const automerge = await prompts([
         type: 'confirm',
         name: 'ok',
         message: `Vil du automerge endringene i ${repoerMedEndringer.join(
-            ', '
+            ', ',
         )} til master slik at det går i produksjon?`,
     },
 ])

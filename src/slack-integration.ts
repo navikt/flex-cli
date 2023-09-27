@@ -8,9 +8,7 @@ config.repos.forEach((repo) => {
 console.log('')
 
 config.repos.forEach((repo) => {
-    console.log(
-        `/github unsubscribe ${config.owner}/${repo.name} issues pulls releases deployments`
-    )
+    console.log(`/github unsubscribe ${config.owner}/${repo.name} issues pulls releases deployments`)
 })
 console.log('')
 console.log('')
