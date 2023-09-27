@@ -7,7 +7,16 @@ Legg et personal accesttoken i en .env fil. Accestokenet legges bak `GITHUB_PAT=
 ```
 GITHUB_PAT=ghp_123abc....
 ``` 
-Kjør `npm install` og deretter `npm run dev` for utvikling
+
+### Oppsett
+
+-   Du må ha [Node.js](https://nodejs.org/en/) installert.
+-   Du må ha [bun.sh](https://bun.sh) installert, dette kan installeres med curl (`curl -fsSL https://bun.sh/install | bash`)
+### Hvordan kjøre flex cli
+
+Kjør `bun install` for å installere avhengigheter
+Kjør `npm start` for å kjøre flex cli. 
+
 
 ### Secrets
 For å opprette ny eller oppdatere ekisterende secrets i github så må hemmligheten legges til i .env fila
