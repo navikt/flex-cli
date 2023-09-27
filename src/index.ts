@@ -1,10 +1,15 @@
-import prompts from 'prompts'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
+import { klonAlle } from './klon-alle.ts'
 
-await prompts([
-    {
-        type: 'confirm',
-        name: 'svar',
-        message: 'Vil du også se pullrequests som ikke er bygd grønt ✅?',
-    },
-])
-console.log('heiff')
+await yargs(hideBin(process.argv))
+    .scriptName('npm start')
+    .command(
+        'klon-alle',
+        'Kloner alle repos i teamet',
+
+        async () => await klonAlle()
+    )
+    .demandCommand()
+    .strict()
+    .parse()
