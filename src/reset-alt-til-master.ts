@@ -1,14 +1,15 @@
-import { config } from './config'
 import * as fs from 'fs'
 import { execSync } from 'node:child_process'
+
 import * as prompts from 'prompts'
+
+import { config } from './config'
 
 const response = await prompts([
     {
         type: 'confirm',
         name: 'ok',
-        message:
-            'Denne kommandoen fjerner alle lokale endringer i flex repoer og resetter til master. Er du sikker?',
+        message: 'Denne kommandoen fjerner alle lokale endringer i flex repoer og resetter til master. Er du sikker?',
     },
 ])
 

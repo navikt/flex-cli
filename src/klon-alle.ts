@@ -1,6 +1,8 @@
-import { config } from './config'
 import { execSync } from 'node:child_process'
+
 import prompts from 'prompts'
+
+import { config } from './config'
 
 export async function klonAlle() {
     console.log('\n\nKloner flex repoer til parent mappen ')
@@ -24,12 +26,9 @@ export async function klonAlle() {
             continue
         }
         if (response.git === 'git') {
-            const res = execSync(
-                `git clone git@github.com:navikt/${r.name}.git`,
-                {
-                    cwd: '..',
-                }
-            )
+            const res = execSync(`git clone git@github.com:navikt/${r.name}.git`, {
+                cwd: '..',
+            })
             console.log(res.toString())
         }
         if (response.git === 'gh') {

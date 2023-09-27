@@ -1,17 +1,15 @@
-import { octokit } from './octokit'
 import * as sodium from 'libsodium-wrappers'
-import { config } from './config'
-import { RepoConfig } from './types'
 import * as prompts from 'prompts'
 
-const choices = [
-    'FLEX_GITHUB_FEED_WEBHOOK',
-    'LABS_DEPLOY_WEBHOOK',
-    'SPOKELSER_WEBHOOK',
-    'NAIS_DEPLOY_APIKEY',
-].map((choice) => {
-    return { title: choice, value: choice }
-})
+import { octokit } from './octokit'
+import { config } from './config'
+import { RepoConfig } from './types'
+
+const choices = ['FLEX_GITHUB_FEED_WEBHOOK', 'LABS_DEPLOY_WEBHOOK', 'SPOKELSER_WEBHOOK', 'NAIS_DEPLOY_APIKEY'].map(
+    (choice) => {
+        return { title: choice, value: choice }
+    },
+)
 
 const response = await prompts([
     {
@@ -41,20 +39,13 @@ for (const repo of config.repos) {
 }
 
 async function hentPublicKey(repo: RepoConfig) {
-    return octokit.request(
-        'GET /repos/{owner}/{repo}/actions/secrets/public-key',
-        {
-            owner: config.owner,
-            repo: repo.name,
-        }
-    )
+    return octokit.request('GET /repos/{owner}/{repo}/actions/secrets/public-key', {
+        owner: config.owner,
+        repo: repo.name,
+    })
 }
 
-async function updateSecret(
-    repo: RepoConfig,
-    secretName: string,
-    plainTextSecret: string
-) {
+async function updateSecret(repo: RepoConfig, secretName: string, plainTextSecret: string) {
     const secret = plainTextSecret // secret you want to encrypt
     const publicKeyResponse = await hentPublicKey(repo) // base64-encoded-public-key
     const keyId = publicKeyResponse.data.key_id
@@ -64,10 +55,7 @@ async function updateSecret(
     await sodium.ready
         .then(() => {
             // Convert Secret & Base64 key to Uint8Array.
-            const binkey = sodium.from_base64(
-                key,
-                sodium.base64_variants.ORIGINAL
-            )
+            const binkey = sodium.from_base64(key, sodium.base64_variants.ORIGINAL)
             const binsec = sodium.from_string(secret)
 
             //Encrypt the secret using LibSodium
@@ -77,35 +65,25 @@ async function updateSecret(
             return sodium.to_base64(encBytes, sodium.base64_variants.ORIGINAL)
         })
         .then((encryptedSecret: any) => {
-            return octokit.request(
-                'PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}',
-                {
-                    owner: config.owner,
-                    repo: repo.name,
-                    secret_name: secretName,
-                    encrypted_value: encryptedSecret,
-                    key_id: keyId,
-                }
-            )
+            return octokit.request('PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}', {
+                owner: config.owner,
+                repo: repo.name,
+                secret_name: secretName,
+                encrypted_value: encryptedSecret,
+                key_id: keyId,
+            })
         })
         .then((res: any) => {
             if (res.status === 201) {
-                console.log(
-                    `✅ Opprettet ny secret ${secretName} i repo ${repo.name}`
-                )
+                console.log(`✅ Opprettet ny secret ${secretName} i repo ${repo.name}`)
             } else if (res.status === 204) {
-                console.log(
-                    `🔄 Oppdaterte secret ${secretName} i repo ${repo.name}`
-                )
+                console.log(`🔄 Oppdaterte secret ${secretName} i repo ${repo.name}`)
             } else {
                 console.log('Uventet response fra github', res)
             }
         })
         .catch((e: any) => {
-            console.log(
-                `Klarte ikke oppdatere secret ${secretName} i repo ${repo.name}`,
-                e
-            )
+            console.log(`Klarte ikke oppdatere secret ${secretName} i repo ${repo.name}`, e)
         })
 }
 

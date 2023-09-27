@@ -4,6 +4,7 @@ on:
   push:
 env:
   APP: flex-cli
+  NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 jobs:
   build-and-lint:
     name: Bygg og lint

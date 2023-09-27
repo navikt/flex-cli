@@ -1,34 +1,39 @@
 # flex-cli
+
 Forsøk på å automatisere verfikasjon av repo innstillinger og til å approve og merge dependabot pullrequests.
 
-
 # Komme i gang
+
 Legg et personal accesttoken i en .env fil. Accestokenet legges bak `GITHUB_PAT=`. Fila er gitignored
+
 ```
 GITHUB_PAT=ghp_123abc....
-``` 
+```
 
 ### Oppsett
 
 -   Du må ha [Node.js](https://nodejs.org/en/) installert.
 -   Du må ha [bun.sh](https://bun.sh) installert, dette kan installeres med curl (`curl -fsSL https://bun.sh/install | bash`)
+
 ### Hvordan kjøre flex cli
 
 Kjør `bun install` for å installere avhengigheter
-Kjør `npm start` for å kjøre flex cli. 
-
+Kjør `npm start` for å kjøre flex cli.
 
 ### Secrets
+
 For å opprette ny eller oppdatere ekisterende secrets i github så må hemmligheten legges til i .env fila
+
 ```
 GITHUB_PAT=ghp_123abc....
 TEST_SECRET=hemmelig
 ```
+
 Dersom det er en ny secret må den også inn på choices i secrets.ts
 Kjør `npm run secret`
 
-
 ### Nytt repo
+
 For å opprette et nytt repo så må det legges til i config.yml. Kjør deretter `npm run patch` som vil opprette repoet. Hvis secrets også trengs bør man kjøre `npm run secret` som beskrevet over.
 
 For å få meldinger om commit til master i #flex-github-feed må disse kommandoene kjøres i slack kanalen:
@@ -38,7 +43,8 @@ For å få meldinger om commit til master i #flex-github-feed må disse kommando
 /github unsubscribe navikt/repo issues pulls releases deployments
 ```
 
-### 
+###
+
 Koden kan også kompilers med `npm run build` og startes med `npm start`
 Flere repoer legges til i config.yml
 
