@@ -1,4 +1,4 @@
-import * as prompts from 'prompts'
+import prompts from 'prompts'
 
 import { labelPrForAutoMerge } from './labelPrForAutoMerge'
 import { hentPullrequests } from './hentPullrequests'
