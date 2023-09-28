@@ -84,7 +84,7 @@ export async function distrolessbump() {
 
             await branchCommitPushAuto(
                 `dev-${r.image}-${latestSha.replace('sha256:', '').substring(0, 8)}-${Math.floor(Math.random() * 100)}`,
-                `Oppgraderer Distroless til ${r.image}@${latestSha?.substring(0, 8)}`,
+                `Oppgraderer Distroless til ${r.image}@${latestSha?.substring(0, 15)}`,
                 r.appname,
             )
         }

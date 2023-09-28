@@ -1,5 +1,5 @@
 distroless:
-  - image: nodejs18-debian11
+  - image: nodejs18-debian12
     appname:
       - flexjar-frontend
       - flex-internal-frontend
