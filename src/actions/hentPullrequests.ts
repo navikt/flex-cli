@@ -1,4 +1,5 @@
-import { config } from './config'
+import { config } from '../config/config'
+
 import { verifiserRepo } from './verifiserRepo'
 import { octokit } from './octokit'
 import { ApprovedPr } from './types'

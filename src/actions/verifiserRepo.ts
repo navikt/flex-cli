@@ -1,6 +1,7 @@
+import { config } from '../config/config'
+import { RepoConfig } from '../config/types'
+
 import { octokit } from './octokit'
-import { config } from './config'
-import { RepoConfig } from './types'
 
 async function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms))

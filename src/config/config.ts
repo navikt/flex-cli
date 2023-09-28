@@ -17,14 +17,12 @@ function multirepoTilConfig(baseConfig: BaseConfig): Config {
     })
     return {
         owner: baseConfig.owner,
-        antallFlexMembers: baseConfig.antallFlexMembers,
         repos,
     }
 }
 
 interface BaseConfig {
     owner: string
-    antallFlexMembers: number
     repos: MultiRepoConfig[]
 }
 

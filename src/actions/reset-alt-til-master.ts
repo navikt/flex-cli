@@ -3,7 +3,7 @@ import { execSync } from 'node:child_process'
 
 import * as prompts from 'prompts'
 
-import { config } from './config'
+import { config } from '../config/config'
 
 const response = await prompts([
     {

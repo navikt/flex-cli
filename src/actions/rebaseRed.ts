@@ -1,6 +1,7 @@
+import { config } from '../config/config'
+
 import { hentPullrequests } from './hentPullrequests'
 import { octokit } from './octokit'
-import { config } from './config'
 
 const red = (await hentPullrequests()).filter((c) => !c.value.checksOk)
 

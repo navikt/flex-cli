@@ -1,9 +1,10 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
-import { klonAlle } from './klon-alle.ts'
-import { startDependabotMerge } from './start-dependabot-merge.ts'
-import { verifiserRepoer } from './verifiser.ts'
+import { klonAlle } from './actions/klon-alle.ts'
+import { startDependabotMerge } from './actions/start-dependabot-merge.ts'
+import { verifiserRepoer } from './actions/verifiser.ts'
+import { patchAlle } from './actions/patch-alle.ts'
 
 await yargs(hideBin(process.argv))
     .scriptName('npm start')
@@ -18,6 +19,7 @@ await yargs(hideBin(process.argv))
         'Starter dependabot automerging i alle repoer',
         async () => await startDependabotMerge(),
     )
+    .command('patch-repoer', 'Verifiserer og patcher oppsettet i alle repoer', async () => await patchAlle())
     .command('verifiser-repoer', 'Verifiserer oppsettet i alle repoer', async () => await verifiserRepoer())
     .demandCommand()
     .strict()

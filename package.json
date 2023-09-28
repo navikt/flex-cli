@@ -26,6 +26,7 @@
         "@types/libsodium-wrappers": "^0.7.11",
         "@types/prompts": "^2.4.4",
         "@types/yargs": "^17.0.24",
+        "bun-types": "latest",
         "prettier": "^3.0.3"
     },
     "eslintConfig": {

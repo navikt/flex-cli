@@ -1,9 +1,10 @@
 import * as sodium from 'libsodium-wrappers'
 import * as prompts from 'prompts'
 
+import { config } from '../config/config'
+import { RepoConfig } from '../config/types'
+
 import { octokit } from './octokit'
-import { config } from './config'
-import { RepoConfig } from './types'
 
 const choices = ['FLEX_GITHUB_FEED_WEBHOOK', 'LABS_DEPLOY_WEBHOOK', 'SPOKELSER_WEBHOOK', 'NAIS_DEPLOY_APIKEY'].map(
     (choice) => {

@@ -2,7 +2,7 @@ import { execSync } from 'node:child_process'
 
 import prompts from 'prompts'
 
-import { config } from './config'
+import { config } from '../config/config'
 
 export async function klonAlle() {
     console.log('\n\nKloner flex repoer til parent mappen ')

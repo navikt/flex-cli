@@ -1,4 +1,5 @@
-import { config } from './config'
+import { config } from '../config/config'
+
 import { octokit } from './octokit'
 
 export async function startDependabotMerge() {

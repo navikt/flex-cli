@@ -1,5 +1,6 @@
+import { config } from '../config/config'
+
 import { octokit } from './octokit'
-import { config } from './config'
 
 interface Opts {
     pull_number: number

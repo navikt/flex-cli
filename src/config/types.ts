@@ -14,7 +14,5 @@ export interface RepoConfig {
 
 export interface Config {
     owner: string
-    antallFlexMembers: number
-
     repos: RepoConfig[]
 }
