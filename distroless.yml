@@ -1,0 +1,44 @@
+distroless:
+  - image: nodejs18-debian11
+    appname:
+      - flexjar-frontend
+      - flex-internal-frontend
+ignore:
+  - flex-bigquery-terraform
+  - flex-slack-reminders
+  - flex-trello-docs
+  - flex-bigquery-soda
+  - flex-cli
+  - flex-github-actions-workflows
+  - flex-wcag-rapporter
+  - sykepengesoknad-kafka
+  - flex-alerts
+  - flex-cloud-sql-tools
+  - flex-distroless-bump
+  - flex-juridisk-vurdering-test-backend
+  - flex-testdata-generator
+  - flex-juridisk-vurdering-test-frontend
+  - flex-modia-kontakt-metrikk
+  - flexjar-backend
+  - ditt-sykefravaer-backend
+  - spinnsyn-arkivering
+  - spinnsyn-backend
+  - spinnsyn-brukernotifikasjon
+  - flex-inntektsmelding-status
+  - flex-syketilfelle
+  - flex-hotjar-emotions
+  - sykepengesoknad-altinn
+  - sykepengesoknad-arkivering-oppgave
+  - sykepengesoknad-backend
+  - sykepengesoknad-kvitteringer
+  - sykepengesoknad-sak-status-metrikk
+  - sykepengesoknad-ikke-sendt-altinnvarsel
+  - sykepengesoknad-korrigering-metrikk
+  - sykepengesoknad-narmesteleder-varsler
+  - syfosoknadbrukernotifikasjon
+  - flex-datastream-alert
+  - flex-sykepengesoknad-pdfgen
+  - flex-joark-mottak
+  - ditt-sykefravaer
+  - sykepengesoknad-frontend
+  - spinnsyn-frontend
