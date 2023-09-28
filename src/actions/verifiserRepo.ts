@@ -124,6 +124,7 @@ async function verifiserAdminTeams(repo: string) {
     const aksepterteTeams = ['flex']
     for (const team of adminTeams) {
         if (!aksepterteTeams.includes(team)) {
+            // eslint-disable-next-line no-console
             console.error(`Team ${team} har admin tilgang til ${repo}`)
             process.exit(1)
         }

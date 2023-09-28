@@ -5,6 +5,7 @@ import { klonAlle } from './actions/klon-alle.ts'
 import { startDependabotMerge } from './actions/start-dependabot-merge.ts'
 import { verifiserRepoer } from './actions/verifiser.ts'
 import { patchAlle } from './actions/patch-alle.ts'
+import { resetAltTilMaster } from './actions/reset-alt-til-master.ts'
 
 await yargs(hideBin(process.argv))
     .scriptName('npm start')
@@ -21,6 +22,7 @@ await yargs(hideBin(process.argv))
     )
     .command('patch-repoer', 'Verifiserer og patcher oppsettet i alle repoer', async () => await patchAlle())
     .command('verifiser-repoer', 'Verifiserer oppsettet i alle repoer', async () => await verifiserRepoer())
+    .command('reset-master', 'Resetter alle repoer til master', async () => await resetAltTilMaster())
     .demandCommand()
     .strict()
     .parse()
