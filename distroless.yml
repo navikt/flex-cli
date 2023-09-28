@@ -3,10 +3,12 @@ distroless:
     appname:
       - flexjar-frontend
       - flex-internal-frontend
+      - flex-trello-docs
+      - flex-juridisk-vurdering-test-frontend
+      - flex-testdata-generator
 ignore:
   - flex-bigquery-terraform
   - flex-slack-reminders
-  - flex-trello-docs
   - flex-bigquery-soda
   - flex-cli
   - flex-github-actions-workflows
@@ -16,8 +18,6 @@ ignore:
   - flex-cloud-sql-tools
   - flex-distroless-bump
   - flex-juridisk-vurdering-test-backend
-  - flex-testdata-generator
-  - flex-juridisk-vurdering-test-frontend
   - flex-modia-kontakt-metrikk
   - flexjar-backend
   - ditt-sykefravaer-backend

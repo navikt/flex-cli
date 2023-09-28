@@ -65,21 +65,27 @@ export async function distrolessbump() {
                 process.exit(1)
             }
             const image = `gcr.io/distroless/${r.image}@${latestSha}`
-            log(image)
+            log('nytt image: ' + image)
 
             for (const app of r.appname) {
-                log(`Redigerer Dockerfile i ${app}`)
+                let oppdaterer = false
                 const dockerfilePath = `../${app}/Dockerfile`
                 const dockerfile = (await Bun.file(dockerfilePath).text())
                     .split('\n')
                     .map((it) => {
                         if (it.startsWith('FROM')) {
-                            return `FROM ${image}`
+                            if (it !== `FROM ${image}`) {
+                                oppdaterer = true
+                                return `FROM ${image}`
+                            }
                         }
                         return it
                     })
                     .join('\n')
-                await Bun.write(dockerfilePath, dockerfile)
+                if (oppdaterer) {
+                    log(`Oppdaterer Dockerfile i ${app}`)
+                    await Bun.write(dockerfilePath, dockerfile)
+                }
             }
 
             await branchCommitPushAuto(
