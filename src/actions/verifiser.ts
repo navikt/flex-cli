@@ -5,13 +5,13 @@ import { log } from '../common/log.ts'
 
 import { verifiserRepo } from './verifiserRepo'
 
-export async function verifiserRepoer() {
+export async function verifiserRepoer(patch: boolean) {
     log('\n\nVerifiserer alle repoer ')
 
     let ok = true
 
     for (const r of config.repos) {
-        r.patch = false
+        r.patch = patch
         const res = await verifiserRepo(r)
         log(`${r.name} er ${res ? 'ok' : 'ikke ok'}`)
         if (!res) {
