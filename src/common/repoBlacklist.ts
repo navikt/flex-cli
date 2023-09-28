@@ -5,6 +5,7 @@ const blacklist: string[] = [
     'next-api-proxy',
     'next-auth-wonderwall',
     'aad-iac',
+    'omrade-helse-etterlevelse-topic',
 ]
 
 export function blacklisted<Repo extends { name: string }>(repo: Repo): boolean {
