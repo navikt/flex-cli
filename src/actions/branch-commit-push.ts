@@ -28,37 +28,44 @@ export async function branchCommitPush() {
     if (!branchNavn.branch) {
         process.exit(1)
     }
+    await branchCommitPushAuto(
+        branchNavn.branch,
+        commit.melding,
+        config.repos.map((it) => it.name),
+    )
+}
 
+export async function branchCommitPushAuto(branchNavn: string, commitmelding: string, repoer: string[]) {
     const repoerMedEndringer: string[] = []
-    for (const r of config.repos) {
-        if (r.name == 'flex-cli') {
+    for (const r of repoer) {
+        if (r == 'flex-cli') {
             // skipper dette repoet
         } else {
             let endringer = false
             try {
                 execSync('git diff-index --quiet HEAD', {
-                    cwd: `../${r.name}`,
+                    cwd: `../${r}`,
                 })
             } catch (e: any) {
                 endringer = true
             }
             if (endringer) {
-                log('Fant endringer i ' + r.name)
-                execSync(`git checkout -b ${branchNavn.branch}`, {
-                    cwd: `../${r.name}`,
+                log('Fant endringer i ' + r)
+                execSync(`git checkout -b ${branchNavn}`, {
+                    cwd: `../${r}`,
                 })
                 execSync('git add .', {
-                    cwd: `../${r.name}`,
+                    cwd: `../${r}`,
                 })
-                execSync(`git commit -m "${commit.melding}"`, {
-                    cwd: `../${r.name}`,
+                execSync(`git commit -m "${commitmelding}"`, {
+                    cwd: `../${r}`,
                 })
                 execSync('git push', {
-                    cwd: `../${r.name}`,
+                    cwd: `../${r}`,
                 })
-                repoerMedEndringer.push(r.name)
+                repoerMedEndringer.push(r)
             } else {
-                log('Fant ingen endringer i ' + r.name)
+                log('Fant ingen endringer i ' + r)
             }
         }
     }
@@ -87,7 +94,7 @@ export async function branchCommitPush() {
     async function lagPR(repo: string) {
         try {
             log('Lager PR for ' + repo)
-            execSync(`gh pr create --title "${commit.melding}" --body "Fra flex-cli"`, {
+            execSync(`gh pr create --title "${commitmelding}" --body "Fra flex-cli"`, {
                 cwd: `../${repo}`,
             })
         } catch (e: any) {

@@ -4,6 +4,8 @@ import prompts from 'prompts'
 import { log } from '../common/log.ts'
 import { getAllRepos } from '../common/get-all-repos.ts'
 
+import { branchCommitPushAuto } from './branch-commit-push.ts'
+
 export async function distrolessbump() {
     log('Distroless bumping')
     const distrolessConfigFil = await Bun.file('./distroless.yml').text()
@@ -79,6 +81,12 @@ export async function distrolessbump() {
                     .join('\n')
                 await Bun.write(dockerfilePath, dockerfile)
             }
+
+            await branchCommitPushAuto(
+                `dev-${r.image}-${latestSha.replace('sha256:', '').substring(0, 8)}-${Math.floor(Math.random() * 100)}`,
+                `Oppgraderer Distroless til ${r.image}@${latestSha?.substring(0, 8)}`,
+                r.appname,
+            )
         }
     }
 
