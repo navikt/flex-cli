@@ -1,15 +1,16 @@
 import { config } from '../config/config'
+import { log } from '../common/log.ts'
+import { ApprovedPr } from '../config/types.ts'
 
 import { verifiserRepo } from './verifiserRepo'
 import { octokit } from './octokit'
-import { ApprovedPr } from './types'
 import { getCombinedSuccess } from './combinedStatus'
 
 export async function hentPullrequests() {
-    console.log('\n\nVerifiserer repo status')
+    log('\n\nVerifiserer repo status')
 
     await Promise.all(config.repos.map((r) => verifiserRepo(r)))
-    console.log('\n\nHenter alle dependabot PRs')
+    log('\n\nHenter alle dependabot PRs')
 
     const pulls = await Promise.all(
         config.repos.map((r) =>
@@ -24,13 +25,13 @@ export async function hentPullrequests() {
 
     const filtrert = allePrs
         .filter(() => {
-            //console.log(it)
+            //log(it)
             return true
         })
         .filter((it) => it.state == 'open')
         .filter((it) => it.user?.login == 'dependabot[bot]')
 
-    console.log(`Henter pullrequest status for ${filtrert.length} pull requests`)
+    log(`Henter pullrequest status for ${filtrert.length} pull requests`)
 
     return await Promise.all(
         filtrert.map((f) => {

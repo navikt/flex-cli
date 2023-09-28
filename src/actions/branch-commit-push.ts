@@ -3,6 +3,7 @@ import { execSync } from 'node:child_process'
 import * as prompts from 'prompts'
 
 import { config } from '../config/config'
+import { log } from '../common/log.ts'
 
 const commit = await prompts([
     {
@@ -41,7 +42,7 @@ for (const r of config.repos) {
             endringer = true
         }
         if (endringer) {
-            console.log('Fant endringer i ' + r.name)
+            log('Fant endringer i ' + r.name)
             execSync(`git checkout -b ${branchNavn.branch}`, {
                 cwd: `../${r.name}`,
             })
@@ -56,13 +57,13 @@ for (const r of config.repos) {
             })
             repoerMedEndringer.push(r.name)
         } else {
-            console.log('Fant ingen endringer i ' + r.name)
+            log('Fant ingen endringer i ' + r.name)
         }
     }
 }
 
 if (repoerMedEndringer.length == 0) {
-    console.log('Ingen endringer å lage PR for')
+    log('Ingen endringer å lage PR for')
     process.exit(1)
 }
 
@@ -84,12 +85,12 @@ async function sleep(ms: number) {
 
 async function lagPR(repo: string) {
     try {
-        console.log('Lager PR for ' + repo)
+        log('Lager PR for ' + repo)
         execSync(`gh pr create --title "${commit.melding}" --body "Fra flex-cli"`, {
             cwd: `../${repo}`,
         })
     } catch (e: any) {
-        console.log('retry om 10 sekunder')
+        log('retry om 10 sekunder')
         await sleep(10000)
         await lagPR(repo)
     }
@@ -115,12 +116,12 @@ if (!automerge.ok) {
 
 async function automergePr(r: string) {
     try {
-        console.log('Automerger PR for ' + r)
+        log('Automerger PR for ' + r)
         execSync('gh pr merge --auto -s', {
             cwd: `../${r}`,
         })
     } catch (e: any) {
-        console.log('retry om 10 sekunder')
+        log('retry om 10 sekunder')
         await sleep(10000)
         await automergePr(r)
     }

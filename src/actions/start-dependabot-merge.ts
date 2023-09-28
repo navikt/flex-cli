@@ -1,9 +1,10 @@
 import { config } from '../config/config'
+import { log } from '../common/log.ts'
 
 import { octokit } from './octokit'
 
 export async function startDependabotMerge() {
-    console.log('\n\nStarter dependabot i alle repoer ')
+    log('\n\nStarter dependabot i alle repoer ')
 
     for (const r of config.repos) {
         try {
@@ -13,15 +14,15 @@ export async function startDependabotMerge() {
                 workflow_id: 'merge-dependabot-pr.yml',
                 ref: 'master',
             })
-            console.log(`Startet workflow i ${r.name}`)
+            log(`Startet workflow i ${r.name}`)
         } catch (e: any) {
             if (!(e.status == 404 || e.status == 422)) {
-                console.log('Kunne ikke starte workflow i ' + r.name, e)
+                log('Kunne ikke starte workflow i ' + r.name, e)
             } else {
-                console.log(`Startet ikke workflow i ${r.name}`)
+                log(`Startet ikke workflow i ${r.name}`)
             }
         }
     }
 
-    console.log('\n\nAlt startet')
+    log('\n\nAlt startet')
 }

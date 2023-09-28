@@ -26,6 +26,7 @@ export async function getCombinedSuccess(owner: string, repo: string, pull_numbe
         const [{ commit: lastCommit }] = result.repository.pullRequest.commits.nodes
         return lastCommit.statusCheckRollup?.state === 'SUCCESS'
     } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(`Fikk ikke henta status for ${repo} ${pull_number}`, e)
         return false
     }

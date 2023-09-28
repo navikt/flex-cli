@@ -4,6 +4,7 @@ import { execSync } from 'node:child_process'
 import * as prompts from 'prompts'
 
 import { config } from '../config/config'
+import { log } from '../common/log.ts'
 
 const response = await prompts([
     {
@@ -23,12 +24,12 @@ for (const repo of config.repos) {
     try {
         await fs.promises.access(path)
     } catch (error) {
-        console.log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon'`)
+        log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon'`)
         continue
     }
 
     if (repo.name != 'flex-cli') {
-        console.log(`Resetter ${repo.name} til master`)
+        log(`Resetter ${repo.name} til master`)
         execSync('git clean -f', {
             cwd: path,
         })
@@ -47,4 +48,4 @@ for (const repo of config.repos) {
     }
 }
 
-console.log('\n\nAlt resatt til master')
+log('\n\nAlt resatt til master')

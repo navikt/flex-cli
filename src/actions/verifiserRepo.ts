@@ -1,5 +1,6 @@
 import { config } from '../config/config'
 import { RepoConfig } from '../config/types'
+import { log } from '../common/log.ts'
 
 import { octokit } from './octokit'
 
@@ -54,7 +55,7 @@ export async function verifiserRepo(r: RepoConfig) {
     function verifiser(key: string, forventet: any) {
         if ((repo.data as any)[key] !== forventet) {
             ok = false
-            console.log(`${repo.data.full_name} ${key} != ${forventet}`)
+            log(`${repo.data.full_name} ${key} != ${forventet}`)
         }
     }
 
@@ -70,7 +71,7 @@ export async function verifiserRepo(r: RepoConfig) {
     verifiser('has_wiki', false)
 
     if (!(repo.data.topics as string[]).includes('team-flex')) {
-        console.log(`${repo.data.full_name} mangler team-flex topic i ${repo.data.topics}`)
+        log(`${repo.data.full_name} mangler team-flex topic i ${repo.data.topics}`)
         await octokit.request('PUT /repos/{owner}/{repo}/topics', {
             owner: config.owner,
             repo: r.name,
@@ -79,7 +80,7 @@ export async function verifiserRepo(r: RepoConfig) {
     }
     if (!ok) {
         if (r.patch) {
-            console.log(`Oppdaterer repo innstillinger for ${r.name}`)
+            log(`Oppdaterer repo innstillinger for ${r.name}`)
 
             await octokit.request('PATCH /repos/{owner}/{repo}', {
                 owner: config.owner,
@@ -95,6 +96,7 @@ export async function verifiserRepo(r: RepoConfig) {
                 has_wiki: false,
             })
         } else {
+            // eslint-disable-next-line no-console
             console.error(`Repo ${r.name} har feil oppsett`)
         }
     }
@@ -129,7 +131,7 @@ async function verifiserAdminTeams(repo: string) {
 
     for (const team of aksepterteTeams) {
         if (!adminTeams.includes(team)) {
-            console.log('Gir admin tilgang til team: ' + team + ' for repo: ' + repo + '')
+            log('Gir admin tilgang til team: ' + team + ' for repo: ' + repo + '')
             await octokit.request('PUT /orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}', {
                 org: config.owner,
                 team_slug: team,
@@ -153,21 +155,21 @@ async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string
 
         if (!protection.data.required_status_checks) {
             ok = false
-            console.log(`${repo.name} mangler required status checks`)
+            log(`${repo.name} mangler required status checks`)
         }
 
         if (protection.data.required_status_checks?.strict != false) {
-            console.log(`${repo.name} har strict status check (branch up to date)`)
+            log(`${repo.name} har strict status check (branch up to date)`)
             ok = false
         }
 
         if (!skip(repo, 'enforce_admins') && protection.data.enforce_admins?.enabled != true) {
-            console.log(`${repo.name} har enforce admins ikke true`)
+            log(`${repo.name} har enforce admins ikke true`)
             ok = false
         }
 
         if (!protection.data.required_status_checks?.contexts) {
-            console.log(`${repo.name} har ikke strict status check (branch up to date)`)
+            log(`${repo.name} har ikke strict status check (branch up to date)`)
             ok = false
         }
 
@@ -175,25 +177,26 @@ async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string
         if (repo.checks) {
             for (const check of repo.checks) {
                 if (!context || !context.includes(check)) {
-                    console.log(`${repo.name} har ikke ${check} påkrevd`)
+                    log(`${repo.name} har ikke ${check} påkrevd`)
                     ok = false
                 }
             }
         }
 
         if (!protection.data.required_pull_request_reviews) {
-            console.log(`${repo.name} har ikke required_pull_request_reviews`)
+            log(`${repo.name} har ikke required_pull_request_reviews`)
             ok = false
         }
         if (protection.data.required_pull_request_reviews?.required_approving_review_count != 0) {
-            console.log(`${repo.name} har required_approving_review_count != 0`)
+            log(`${repo.name} har required_approving_review_count != 0`)
             ok = false
         }
         if (protection.data.required_pull_request_reviews?.require_code_owner_reviews != false) {
-            console.log(`${repo.name} har require_code_owner_reviews != false`)
+            log(`${repo.name} har require_code_owner_reviews != false`)
             ok = false
         }
     } catch (e) {
+        // eslint-disable-next-line no-console
         console.error('Feil med branch protection', e)
         ok = false
     }
@@ -203,7 +206,7 @@ async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string
         repo: repo.name,
     })
     if (!labels.data.map((l) => l.name).includes('automerge')) {
-        console.log(`Lager automerge label i repoet ${repo.name}`)
+        log(`Lager automerge label i repoet ${repo.name}`)
 
         await octokit.request('POST /repos/{owner}/{repo}/labels', {
             owner: config.owner,
@@ -214,7 +217,7 @@ async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string
         })
     }
     if (!labels.data.map((l) => l.name).includes('designsystemet')) {
-        console.log(`Lager designsystemet label i repoet ${repo.name}`)
+        log(`Lager designsystemet label i repoet ${repo.name}`)
 
         await octokit.request('POST /repos/{owner}/{repo}/labels', {
             owner: config.owner,
@@ -226,7 +229,7 @@ async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string
     }
     if (!ok) {
         if (repo.patch) {
-            console.log(`Oppdaterer branch protection innstillinger for ${repo.name}`)
+            log(`Oppdaterer branch protection innstillinger for ${repo.name}`)
             await octokit.request('PUT /repos/{owner}/{repo}/branches/{branch}/protection', {
                 owner: config.owner,
                 repo: repo.name,
@@ -248,6 +251,7 @@ async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string
                 required_conversation_resolution: true,
             })
         } else {
+            // eslint-disable-next-line no-console
             console.error(`Repo ${repo.name} har feil branch protection oppsett`)
         }
     }

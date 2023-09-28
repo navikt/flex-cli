@@ -1,15 +1,16 @@
 import { config } from '../config/config'
+import { log } from '../common/log.ts'
 
 import { verifiserRepo } from './verifiserRepo'
 
 export async function patchAlle() {
-    console.log('\n\nPatcher alle repoer ')
+    log('\n\nPatcher alle repoer ')
 
     for (const r of config.repos) {
         r.patch = true
         await verifiserRepo(r)
-        console.log(`${r.name} er patchet`)
+        log(`${r.name} er patchet`)
     }
 
-    console.log('\n\nAlt patchet')
+    log('\n\nAlt patchet')
 }

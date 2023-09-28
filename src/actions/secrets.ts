@@ -3,6 +3,7 @@ import * as prompts from 'prompts'
 
 import { config } from '../config/config'
 import { RepoConfig } from '../config/types'
+import { log } from '../common/log.ts'
 
 import { octokit } from './octokit'
 
@@ -22,7 +23,7 @@ const response = await prompts([
 ])
 
 if (!response.secrets || response.secrets.length == 0) {
-    console.log('Ingen secrets valgt')
+    log('Ingen secrets valgt')
     process.exit()
 }
 
@@ -31,7 +32,7 @@ for (const repo of config.repos) {
         const plainTextSecret = process.env[secretName]
 
         if (plainTextSecret === undefined) {
-            console.log(`Finner ikke secret ${secretName} i .env fila`)
+            log(`Finner ikke secret ${secretName} i .env fila`)
             process.exit()
         }
 
@@ -76,15 +77,15 @@ async function updateSecret(repo: RepoConfig, secretName: string, plainTextSecre
         })
         .then((res: any) => {
             if (res.status === 201) {
-                console.log(`✅ Opprettet ny secret ${secretName} i repo ${repo.name}`)
+                log(`✅ Opprettet ny secret ${secretName} i repo ${repo.name}`)
             } else if (res.status === 204) {
-                console.log(`🔄 Oppdaterte secret ${secretName} i repo ${repo.name}`)
+                log(`🔄 Oppdaterte secret ${secretName} i repo ${repo.name}`)
             } else {
-                console.log('Uventet response fra github', res)
+                log('Uventet response fra github', res)
             }
         })
         .catch((e: any) => {
-            console.log(`Klarte ikke oppdatere secret ${secretName} i repo ${repo.name}`, e)
+            log(`Klarte ikke oppdatere secret ${secretName} i repo ${repo.name}`, e)
         })
 }
 
@@ -98,7 +99,7 @@ async function harSecret(repo: RepoConfig, secretName: string) {
         })
         return res.status === 200
     } catch (e) {
-        console.log(`Secret ${secretName} mangler i repo ${repo}`)
+        log(`Secret ${secretName} mangler i repo ${repo}`)
         return false
     }
 }

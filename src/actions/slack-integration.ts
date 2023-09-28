@@ -1,14 +1,15 @@
 import { config } from '../config/config'
+import { log } from '../common/log.ts'
 
-console.log('')
-
-config.repos.forEach((repo) => {
-    console.log(`/github subscribe ${config.owner}/${repo.name}`)
-})
-console.log('')
+log('')
 
 config.repos.forEach((repo) => {
-    console.log(`/github unsubscribe ${config.owner}/${repo.name} issues pulls releases deployments`)
+    log(`/github subscribe ${config.owner}/${repo.name}`)
 })
-console.log('')
-console.log('')
+log('')
+
+config.repos.forEach((repo) => {
+    log(`/github unsubscribe ${config.owner}/${repo.name} issues pulls releases deployments`)
+})
+log('')
+log('')

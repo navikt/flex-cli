@@ -1,5 +1,7 @@
 import prompts from 'prompts'
 
+import { log } from '../common/log.ts'
+
 import { labelPrForAutoMerge } from './labelPrForAutoMerge'
 import { hentPullrequests } from './hentPullrequests'
 
@@ -21,7 +23,7 @@ const choices = (await hentPullrequests()).filter((c) => {
 })
 
 if (choices.length == 0) {
-    console.log('Ingen PR å behandle')
+    log('Ingen PR å behandle')
     process.exit()
 }
 
@@ -35,13 +37,13 @@ const response = await prompts([
 ])
 
 if (!response.approve || response.approve.length == 0) {
-    console.log('Ingen PR valgt')
+    log('Ingen PR valgt')
     process.exit()
 }
 
 async function behandlePr(pr: any) {
     await labelPrForAutoMerge(pr)
-    console.log(`${pr.repo} ${pr.title} lablet med automerge`)
+    log(`${pr.repo} ${pr.title} lablet med automerge`)
 }
 
 for (const pr of response.approve) {
