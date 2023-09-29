@@ -14,6 +14,12 @@ distroless:
     appname:
       - sykepengesoknad-korrigering-metrikk
 
+  - image: java17-debian11
+    appname:
+      - flex-modia-kontakt-metrikk
+      - flex-juridisk-vurdering-test-backend
+      - sykepengesoknad-sak-status-metrikk
+
 ignore:
   - flex-bigquery-terraform
   - flex-slack-reminders
@@ -23,8 +29,6 @@ ignore:
   - sykepengesoknad-kafka
   - flex-alerts
   - flex-cloud-sql-tools
-  - flex-juridisk-vurdering-test-backend
-  - flex-modia-kontakt-metrikk
   - flexjar-backend
   - ditt-sykefravaer-backend
   - spinnsyn-arkivering
@@ -37,7 +41,6 @@ ignore:
   - sykepengesoknad-arkivering-oppgave
   - sykepengesoknad-backend
   - sykepengesoknad-kvitteringer
-  - sykepengesoknad-sak-status-metrikk
   - sykepengesoknad-ikke-sendt-altinnvarsel
   - sykepengesoknad-narmesteleder-varsler
   - syfosoknadbrukernotifikasjon
