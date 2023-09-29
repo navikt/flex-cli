@@ -9,6 +9,11 @@ distroless:
       - spinnsyn-frontend
       - sykepengesoknad-frontend
       - ditt-sykefravaer
+
+  - image: java17-debian12
+    appname:
+      - sykepengesoknad-korrigering-metrikk
+
 ignore:
   - flex-bigquery-terraform
   - flex-slack-reminders
@@ -34,7 +39,6 @@ ignore:
   - sykepengesoknad-kvitteringer
   - sykepengesoknad-sak-status-metrikk
   - sykepengesoknad-ikke-sendt-altinnvarsel
-  - sykepengesoknad-korrigering-metrikk
   - sykepengesoknad-narmesteleder-varsler
   - syfosoknadbrukernotifikasjon
   - flex-datastream-alert
