@@ -6,6 +6,9 @@ distroless:
       - flex-trello-docs
       - flex-juridisk-vurdering-test-frontend
       - flex-testdata-generator
+      - spinnsyn-frontend
+      - sykepengesoknad-frontend
+      - ditt-sykefravaer
 ignore:
   - flex-bigquery-terraform
   - flex-slack-reminders
@@ -37,6 +40,3 @@ ignore:
   - flex-datastream-alert
   - flex-sykepengesoknad-pdfgen
   - flex-joark-mottak
-  - ditt-sykefravaer
-  - sykepengesoknad-frontend
-  - spinnsyn-frontend
