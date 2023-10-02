@@ -19,7 +19,22 @@ distroless:
       - flex-modia-kontakt-metrikk
       - flex-juridisk-vurdering-test-backend
       - sykepengesoknad-sak-status-metrikk
-
+      - flexjar-backend
+      - ditt-sykefravaer-backend
+      - spinnsyn-arkivering
+      - spinnsyn-backend
+      - spinnsyn-brukernotifikasjon
+      - flex-inntektsmelding-status
+      - flex-syketilfelle
+      - flex-hotjar-emotions
+      - sykepengesoknad-altinn
+      - sykepengesoknad-arkivering-oppgave
+      - sykepengesoknad-backend
+      - sykepengesoknad-kvitteringer
+      - sykepengesoknad-ikke-sendt-altinnvarsel
+      - sykepengesoknad-narmesteleder-varsler
+      - syfosoknadbrukernotifikasjon
+      - flex-joark-mottak
 ignore:
   - flex-bigquery-terraform
   - flex-slack-reminders
@@ -29,21 +44,6 @@ ignore:
   - sykepengesoknad-kafka
   - flex-alerts
   - flex-cloud-sql-tools
-  - flexjar-backend
-  - ditt-sykefravaer-backend
-  - spinnsyn-arkivering
-  - spinnsyn-backend
-  - spinnsyn-brukernotifikasjon
-  - flex-inntektsmelding-status
-  - flex-syketilfelle
-  - flex-hotjar-emotions
-  - sykepengesoknad-altinn
-  - sykepengesoknad-arkivering-oppgave
-  - sykepengesoknad-backend
-  - sykepengesoknad-kvitteringer
-  - sykepengesoknad-ikke-sendt-altinnvarsel
-  - sykepengesoknad-narmesteleder-varsler
-  - syfosoknadbrukernotifikasjon
   - flex-datastream-alert
   - flex-sykepengesoknad-pdfgen
-  - flex-joark-mottak
+
