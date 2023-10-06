@@ -1,10 +1,16 @@
 # flex-cli
 
-Forsøk på å automatisere verfikasjon av repo innstillinger og til å approve og merge dependabot pullrequests.
+Flex cli har en rekke kommandoer som kan kjøres for å opprette nye repoer, secrets og andre ting som er nyttig for å komme i gang som utvikler i team flex.
+
+For å se alle kommandoer og en beskrivelse av hva de gjør, kjør kommandoen `npm start`.
+Fila config.yml inneholder en liste over alle repoer som kan er konfigurert med flex cli. Ved oppdatering av denne fila må man kjøre `npm start patch-alle` for å gjøre oppdateringene i github. Dette skriptet kjøres ikke i GHA, så endringer må pushes opp fra din maskin.
+Her konfigurerers hvilke checks som må gå grønt i GitHub actions før en pullrequest kan merges. Ved endringer i navn og antall sjekker så kan man måtte lage i repoet man endrer på for å få kjørt Github Actions med den riktige konfigurasjonen,
+
+Fila distroless.yml inneholder konfigurasjon for hvilke apper som bruker ulike distroless images. Dette brukes til kommandoen `npm start distroless-bump` som oppdaterer apper med nyeste distroless.
 
 # Komme i gang
 
-Legg et personal accesttoken i en .env fil. Accestokenet legges bak `GITHUB_PAT=`. Fila er gitignored
+Legg et personal GITHUB accesttoken i en .env fil. Accestokenet legges bak `GITHUB_PAT=`. Fila er gitignored
 
 ```
 GITHUB_PAT=ghp_123abc....
@@ -30,11 +36,11 @@ TEST_SECRET=hemmelig
 ```
 
 Dersom det er en ny secret må den også inn på choices i secrets.ts
-Kjør `npm run secret`
+Kjør `npm start secret` TODO denne er ikke ferdig i bun versjonen.
 
 ### Nytt repo
 
-For å opprette et nytt repo så må det legges til i config.yml. Kjør deretter `npm run patch` som vil opprette repoet. Hvis secrets også trengs bør man kjøre `npm run secret` som beskrevet over.
+For å opprette et nytt repo så må det legges til i config.yml. Kjør deretter `npm start patch-repoer` som vil opprette repoet. Hvis secrets også trengs bør man kjøre `npm run secret` som beskrevet over.
 
 For å få meldinger om commit til master i #flex-github-feed må disse kommandoene kjøres i slack kanalen:
 
@@ -42,11 +48,6 @@ For å få meldinger om commit til master i #flex-github-feed må disse kommando
 /github subscribe navikt/repo commits
 /github unsubscribe navikt/repo issues pulls releases deployments
 ```
-
-###
-
-Koden kan også kompilers med `npm run build` og startes med `npm start`
-Flere repoer legges til i config.yml
 
 # Henvendelser
 

@@ -13,20 +13,32 @@ await yargs(hideBin(process.argv))
     .scriptName('npm start')
     .command(
         'klon-alle',
-        'Kloner alle repos i teamet',
+        'Kloner alle repos til disk. Hvis repoet allerede finnes, klones det ikke på nytt.',
 
         async () => await klonAlle(),
     )
     .command(
         'start-auto-merge',
-        'Starter dependabot automerging i alle repoer',
+        'Starter dependabot automerging workflowen i alle repoer',
         async () => await startDependabotMerge(),
     )
-    .command('bcp', 'Brancher, committer, pusher og lager pullrequest for', async () => await branchCommitPush())
-    .command('distrolessbump', 'Bumper distroless images', async () => await distrolessbump())
-    .command('patch-repoer', 'Verifiserer og patcher oppsettet i alle repoer', async () => await verifiserRepoer(true))
-    .command('verifiser-repoer', 'Verifiserer oppsettet i alle repoer', async () => await verifiserRepoer(false))
-    .command('reset-master', 'Resetter alle repoer til master', async () => await resetAltTilMaster())
+    .command(
+        'bcp',
+        'Brancher, committer, pusher og lager pullrequest for lokale endringer i alle repoene som er på disk',
+        async () => await branchCommitPush(),
+    )
+    .command('distrolessbump', 'Bumper distroless images til nyeste latest version', async () => await distrolessbump())
+    .command(
+        'patch-repoer',
+        'Verifiserer og patcher github oppsettet i alle repoer',
+        async () => await verifiserRepoer(true),
+    )
+    .command('verifiser-repoer', 'Verifiserer github oppsettet i alle repoer', async () => await verifiserRepoer(false))
+    .command(
+        'reset-master',
+        'Resetter alle repoer til master og fjerner lokale endringer',
+        async () => await resetAltTilMaster(),
+    )
     .command(
         'commits',
         'get the last commits for every repo in the team',
