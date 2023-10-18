@@ -8,6 +8,7 @@ import { resetAltTilMaster } from './actions/reset-alt-til-master.ts'
 import { branchCommitPush } from './actions/branch-commit-push.ts'
 import { lastCommits } from './actions/last-commits.ts'
 import { distrolessbump } from './actions/distrolessbump.ts'
+import { secrets } from './actions/secrets.ts'
 
 await yargs(hideBin(process.argv))
     .scriptName('npm start')
@@ -22,6 +23,7 @@ await yargs(hideBin(process.argv))
         'Starter dependabot automerging workflowen i alle repoer',
         async () => await startDependabotMerge(),
     )
+    .command('secrets', 'Oppdaterer secrets i alle repoer', async () => await secrets())
     .command(
         'bcp',
         'Brancher, committer, pusher og lager pullrequest for lokale endringer i alle repoene som er på disk',

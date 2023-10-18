@@ -36,7 +36,7 @@ TEST_SECRET=hemmelig
 ```
 
 Dersom det er en ny secret må den også inn på choices i secrets.ts
-Kjør `npm start secret` TODO denne er ikke ferdig i bun versjonen.
+Kjør `npm start secrets`
 
 ### Nytt repo
 
