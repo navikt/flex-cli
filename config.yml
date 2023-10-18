@@ -46,6 +46,7 @@ repos:
 
   - reponame:
       - flex-juridisk-vurdering-test-frontend
+      - flex-openapi-docs-ui
     checks:
       - Bygg, test og push Docker image
 
