@@ -23,7 +23,9 @@ repos:
       - flexjar-frontend
       - flex-internal-frontend
     checks:
-      - felles-workflow / Bygg, test og publiser docker image
+      - felles-workflow / Bygg og publiser
+      - felles-workflow / Lint
+      - felles-workflow / Test
 
   - reponame:
       - ditt-sykefravaer
