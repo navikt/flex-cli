@@ -19,13 +19,17 @@ repos:
       - sykepengesoknad-korrigering-metrikk
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
-      - flex-datastream-alert
-      - flexjar-frontend
-      - flex-internal-frontend
     checks:
       - felles-workflow / Bygg og publiser
       - felles-workflow / Lint
       - felles-workflow / Test
+
+  - reponame:
+      - flex-datastream-alert
+      - flexjar-frontend
+      - flex-internal-frontend
+    checks:
+      - felles-workflow / Bygg, test og publiser docker image
 
   - reponame:
       - ditt-sykefravaer
