@@ -28,6 +28,7 @@ repos:
       - flex-datastream-alert
       - flexjar-frontend
       - flex-internal-frontend
+      - flex-juridisk-vurdering-test-frontend
     checks:
       - felles-workflow / Bygg, test og publiser docker image
 
@@ -51,7 +52,6 @@ repos:
       - Bygg, test og publiser docker image
 
   - reponame:
-      - flex-juridisk-vurdering-test-frontend
       - flex-openapi-docs-ui
     checks:
       - Bygg, test og push Docker image
