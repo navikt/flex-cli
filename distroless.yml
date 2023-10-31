@@ -9,6 +9,7 @@ distroless:
       - spinnsyn-frontend
       - sykepengesoknad-frontend
       - ditt-sykefravaer
+      - flex-openapi-docs-ui
 
   - image: java17-debian12
     appname:
@@ -26,7 +27,6 @@ distroless:
       - spinnsyn-brukernotifikasjon
       - flex-inntektsmelding-status
       - flex-syketilfelle
-      - flex-hotjar-emotions
       - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
       - sykepengesoknad-backend

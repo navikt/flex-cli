@@ -9,7 +9,6 @@ repos:
       - spinnsyn-brukernotifikasjon
       - flex-inntektsmelding-status
       - flex-syketilfelle
-      - flex-hotjar-emotions
       - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
       - sykepengesoknad-backend
