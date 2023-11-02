@@ -43,10 +43,6 @@ async function hentEllerLagRepo(r: RepoConfig) {
     }
 }
 
-function skip(repo: RepoConfig, skip: string) {
-    return repo.skip && repo.skip.includes(skip)
-}
-
 export async function verifiserRepo(r: RepoConfig) {
     const repo = await hentEllerLagRepo(r)
 
@@ -100,17 +96,9 @@ export async function verifiserRepo(r: RepoConfig) {
             console.error(`Repo ${r.name} har feil oppsett`)
         }
     }
-    const defaultSjekkOk = await verifiserDefaultBranchProtection(r, repo.data.default_branch)
+    await verifiserDefaultBranchProtection(r, repo.data.default_branch)
 
     await verifiserAdminTeams(r.name)
-
-    if (!ok) {
-        return false
-    }
-    if (!defaultSjekkOk) {
-        return false
-    }
-    return true
 }
 
 async function verifiserAdminTeams(repo: string) {
@@ -144,64 +132,32 @@ async function verifiserAdminTeams(repo: string) {
     }
 }
 
-async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string): Promise<boolean> {
-    let ok = true
-
+async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string): Promise<void> {
     try {
-        const protection = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}/protection', {
+        await octokit.request('PUT /repos/{owner}/{repo}/branches/{branch}/protection', {
             owner: config.owner,
             repo: repo.name,
             branch,
+            required_status_checks: {
+                strict: false,
+                contexts: repo.checks || [],
+            },
+            enforce_admins: true,
+            required_pull_request_reviews: {
+                dismiss_stale_reviews: false,
+                require_code_owner_reviews: false,
+                required_approving_review_count: 0,
+            },
+            restrictions: null,
+            required_linear_history: true,
+            allow_force_pushes: false,
+            allow_deletions: false,
+            required_conversation_resolution: true,
         })
-
-        if (!protection.data.required_status_checks) {
-            ok = false
-            log(`${repo.name} mangler required status checks`)
-        }
-
-        if (protection.data.required_status_checks?.strict != false) {
-            log(`${repo.name} har strict status check (branch up to date)`)
-            ok = false
-        }
-
-        if (!skip(repo, 'enforce_admins') && protection.data.enforce_admins?.enabled != true) {
-            log(`${repo.name} har enforce admins ikke true`)
-            ok = false
-        }
-
-        if (!protection.data.required_status_checks?.contexts) {
-            log(`${repo.name} har ikke strict status check (branch up to date)`)
-            ok = false
-        }
-
-        const context = protection.data.required_status_checks?.contexts
-        if (repo.checks) {
-            for (const check of repo.checks) {
-                if (!context || !context.includes(check)) {
-                    log(`${repo.name} har ikke ${check} påkrevd`)
-                    ok = false
-                }
-            }
-        }
-
-        if (!protection.data.required_pull_request_reviews) {
-            log(`${repo.name} har ikke required_pull_request_reviews`)
-            ok = false
-        }
-        if (protection.data.required_pull_request_reviews?.required_approving_review_count != 0) {
-            log(`${repo.name} har required_approving_review_count != 0`)
-            ok = false
-        }
-        if (protection.data.required_pull_request_reviews?.require_code_owner_reviews != false) {
-            log(`${repo.name} har require_code_owner_reviews != false`)
-            ok = false
-        }
     } catch (e) {
         // eslint-disable-next-line no-console
-        console.error('Feil med branch protection', e)
-        ok = false
+        console.error('Feil med oppdatering av branch protection', e)
     }
-
     const labels = await octokit.request('GET /repos/{owner}/{repo}/labels', {
         owner: config.owner,
         repo: repo.name,
@@ -228,33 +184,4 @@ async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string
             color: 'f29513',
         })
     }
-    if (!ok) {
-        if (repo.patch) {
-            log(`Oppdaterer branch protection innstillinger for ${repo.name}`)
-            await octokit.request('PUT /repos/{owner}/{repo}/branches/{branch}/protection', {
-                owner: config.owner,
-                repo: repo.name,
-                branch,
-                required_status_checks: {
-                    strict: false,
-                    contexts: repo.checks || [],
-                },
-                enforce_admins: true,
-                required_pull_request_reviews: {
-                    dismiss_stale_reviews: false,
-                    require_code_owner_reviews: false,
-                    required_approving_review_count: 0,
-                },
-                restrictions: null,
-                required_linear_history: true,
-                allow_force_pushes: false,
-                allow_deletions: false,
-                required_conversation_resolution: true,
-            })
-        } else {
-            // eslint-disable-next-line no-console
-            console.error(`Repo ${repo.name} har feil branch protection oppsett`)
-        }
-    }
-    return ok
 }

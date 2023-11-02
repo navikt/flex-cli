@@ -30,12 +30,7 @@ await yargs(hideBin(process.argv))
         async () => await branchCommitPush(),
     )
     .command('distrolessbump', 'Bumper distroless images til nyeste latest version', async () => await distrolessbump())
-    .command(
-        'patch-repoer',
-        'Verifiserer og patcher github oppsettet i alle repoer',
-        async () => await verifiserRepoer(true),
-    )
-    .command('verifiser-repoer', 'Verifiserer github oppsettet i alle repoer', async () => await verifiserRepoer(false))
+    .command('patch-repoer', 'Patcher github oppsettet i alle repoer', async () => await verifiserRepoer())
     .command(
         'reset-master',
         'Resetter alle repoer til master og fjerner lokale endringer',

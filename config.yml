@@ -2,6 +2,7 @@ owner: navikt
 repos:
   - reponame:
       - flex-modia-kontakt-metrikk
+      - flex-innsending-vedlegg
       - flexjar-backend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering

@@ -8,4 +8,7 @@ if (!process.env.GITHUB_PAT) {
 
 export const octokit = new Octokit({
     auth: process.env.GITHUB_PAT,
+    request: {
+        timeout: 10000, // Timeout i millisekunder
+    },
 })
