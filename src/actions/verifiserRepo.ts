@@ -1,4 +1,4 @@
-import { config } from '../config/config'
+import { config, skipEnforceAdmin } from '../config/config'
 import { RepoConfig } from '../config/types'
 import { log } from '../common/log.ts'
 
@@ -142,7 +142,7 @@ async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string
                 strict: false,
                 contexts: repo.checks || [],
             },
-            enforce_admins: true,
+            enforce_admins: !skipEnforceAdmin.includes(repo.name),
             required_pull_request_reviews: {
                 dismiss_stale_reviews: false,
                 require_code_owner_reviews: false,

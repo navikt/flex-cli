@@ -12,7 +12,7 @@ function multirepoTilConfig(baseConfig: BaseConfig): Config {
 
     baseConfig.repos.forEach((a) => {
         a.reponame.forEach((n) => {
-            repos.push({ name: n, checks: a.checks, skip: a.skip, patch: true })
+            repos.push({ name: n, checks: a.checks, patch: true })
         })
     })
     return {
@@ -29,5 +29,10 @@ interface BaseConfig {
 interface MultiRepoConfig {
     reponame: string[]
     checks: string[]
-    skip: string[]
 }
+
+export const skipEnforceAdmin = (
+    YAML.parse(fs.readFileSync('./skip-enforce-admins.yml', 'utf8')) as {
+        repo: string[]
+    }
+).repo
