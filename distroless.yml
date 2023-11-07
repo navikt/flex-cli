@@ -35,6 +35,7 @@ distroless:
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
       - flex-joark-mottak
+      - flex-innsending-vedlegg
 ignore:
   - flex-bigquery-terraform
   - flex-slack-reminders
