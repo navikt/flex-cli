@@ -26,7 +26,7 @@ export async function resetAltTilMaster() {
         try {
             await fs.promises.access(path)
         } catch (error) {
-            log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon'`)
+            log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon-alle'`)
             continue
         }
 
