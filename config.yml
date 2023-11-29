@@ -10,6 +10,7 @@ repos:
       - spinnsyn-brukernotifikasjon
       - flex-inntektsmelding-status
       - flex-syketilfelle
+      - flex-joark-mottak
       - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
       - sykepengesoknad-backend
@@ -47,7 +48,6 @@ repos:
 
   - reponame:
       - flex-sykepengesoknad-pdfgen
-      - flex-joark-mottak
     checks:
       - Bygg, test og publiser docker image
 
