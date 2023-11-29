@@ -60,7 +60,7 @@ export async function branchCommitPushAuto(branchNavn: string, commitmelding: st
                 execSync(`git commit -m "${commitmelding}"`, {
                     cwd: `../${r}`,
                 })
-                execSync('git push', {
+                execSync(`git push --set-upstream origin ${branchNavn}`, {
                     cwd: `../${r}`,
                 })
                 repoerMedEndringer.push(r)
