@@ -29,7 +29,11 @@ await yargs(hideBin(process.argv))
         'Brancher, committer, pusher og lager pullrequest for lokale endringer i alle repoene som er på disk',
         async () => await branchCommitPush(),
     )
-    .command('distrolessbump', 'Bumper distroless images til nyeste latest version', async () => await distrolessbump())
+    .command(
+        'distroless-bump',
+        'Bumper distroless images til nyeste latest version',
+        async () => await distrolessbump(),
+    )
     .command('patch-repoer', 'Patcher github oppsettet i alle repoer', async () => await verifiserRepoer())
     .command(
         'reset-master',
