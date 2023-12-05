@@ -30,6 +30,7 @@ repos:
       - flexjar-frontend
       - flex-internal-frontend
       - flex-juridisk-vurdering-test-frontend
+      - flex-testdata-generator
     checks:
       - felles-workflow / Bygg, test og publiser docker image
 
@@ -58,7 +59,7 @@ repos:
 
   - reponame:
       - flex-juridisk-vurdering-test-backend
-      - flex-testdata-generator
+
     checks:
       - Bygg, test og push Docker image
 
