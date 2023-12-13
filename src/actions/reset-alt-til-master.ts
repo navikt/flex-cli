@@ -12,7 +12,7 @@ export async function resetAltTilMaster() {
             type: 'confirm',
             name: 'ok',
             message:
-                'Denne kommandoen fjerner alle lokale endringer i flex repoer og resetter til master. Er du sikker?',
+                "Denne kommandoen lager backup commits av alle lokale endringer i flex repoer og resetter deretter til master. Om du har comittet endringer i master lokalt må du håndtere dette manuelt. Er du sikker på at du vil kjøre kommandoen?',\n",
         },
     ])
 
@@ -23,6 +23,11 @@ export async function resetAltTilMaster() {
     for (const repo of config.repos) {
         const path = `../${repo.name}`
 
+        if (repo.name === 'flex-cli') {
+            log(`Repo ${repo.name} er flex-cli. Ignorerer`)
+            continue
+        }
+
         try {
             await fs.promises.access(path)
         } catch (error) {
@@ -30,24 +35,31 @@ export async function resetAltTilMaster() {
             continue
         }
 
-        if (repo.name != 'flex-cli') {
-            log(`Resetter ${repo.name} til master`)
-            execSync('git clean -f', {
-                cwd: path,
-            })
-            execSync(' git reset .', {
-                cwd: path,
-            })
-            execSync('git restore .', {
-                cwd: path,
-            })
-            execSync('git checkout master', {
-                cwd: path,
-            })
-            execSync('git pull', {
-                cwd: path,
-            })
+        const status = execSync('git status --porcelain', { cwd: path }).toString()
+        if (status) {
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+            const backupBranch = `backup-${timestamp}`
+            execSync(`git checkout -b ${backupBranch}`, { cwd: path })
+            execSync('git add -A', { cwd: path })
+            execSync(`git commit -m "Backup commit on ${backupBranch}"`, { cwd: path })
         }
+
+        log(`Resetter ${repo.name} til master`)
+        execSync('git clean -f', {
+            cwd: path,
+        })
+        execSync(' git reset .', {
+            cwd: path,
+        })
+        execSync('git restore .', {
+            cwd: path,
+        })
+        execSync('git checkout master', {
+            cwd: path,
+        })
+        execSync('git config pull.ff only', {
+            cwd: path,
+        })
     }
 
     log('\n\nAlt resatt til master')
