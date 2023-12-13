@@ -9,7 +9,7 @@ distroless:
       - ditt-sykefravaer
       - flex-openapi-docs-ui
    
-   - image: nodejs20-debian12
+  - image: nodejs20-debian12
     appname:
       - flexjar-frontend
       - spinnsyn-frontend
