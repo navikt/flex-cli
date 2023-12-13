@@ -39,7 +39,7 @@ export async function resetAltTilMaster() {
             execSync(`git commit -m "Backup commit on ${backupBranch}"`, { cwd: path });
         }
 
-        if (repo.name != 'flex-cli') {
+        if (!repo.name.includes('flex-cli')) {
             log(`Resetter ${repo.name} til master`)
             execSync('git clean -f', {
                 cwd: path,
