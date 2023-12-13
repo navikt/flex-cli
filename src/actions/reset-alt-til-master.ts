@@ -30,6 +30,16 @@ export async function resetAltTilMaster() {
             continue
         }
 
+        const status = execSync('git status --porcelain', { cwd: path }).toString();
+        if (status) {
+            // Create a backup branch
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            const backupBranch = `backup-${timestamp}`;
+            execSync(`git checkout -b ${backupBranch}`, { cwd: path });
+            execSync('git add -A', { cwd: path });
+            execSync(`git commit -m "Backup commit on ${backupBranch}"`, { cwd: path });
+        }
+
         if (repo.name != 'flex-cli') {
             log(`Resetter ${repo.name} til master`)
             execSync('git clean -f', {
@@ -44,7 +54,7 @@ export async function resetAltTilMaster() {
             execSync('git checkout master', {
                 cwd: path,
             })
-            execSync('git pull', {
+            execSync('git config pull.ff only', {
                 cwd: path,
             })
         }
