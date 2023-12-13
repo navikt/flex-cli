@@ -12,7 +12,7 @@ export async function resetAltTilMaster() {
             type: 'confirm',
             name: 'ok',
             message:
-                'Denne kommandoen fjerner alle lokale endringer i flex repoer og resetter til master. Er du sikker?',
+                'Denne kommandoen lager backup commits av alle lokale endringer i flex repoer og resetter deretter til master. Om du har comittet endringer i master lokalt må du håndtere dette manuelt. Er du sikker på at du vil kjøre kommandoen?\',\n',
         },
     ])
 
@@ -32,7 +32,6 @@ export async function resetAltTilMaster() {
 
         const status = execSync('git status --porcelain', { cwd: path }).toString();
         if (status) {
-            // Create a backup branch
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
             const backupBranch = `backup-${timestamp}`;
             execSync(`git checkout -b ${backupBranch}`, { cwd: path });
