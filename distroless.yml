@@ -8,7 +8,7 @@ distroless:
       - sykepengesoknad-frontend
       - ditt-sykefravaer
       - flex-openapi-docs-ui
-   
+
   - image: nodejs20-debian12
     appname:
       - flexjar-frontend
