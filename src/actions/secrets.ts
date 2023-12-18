@@ -8,11 +8,9 @@ import { log } from '../common/log.ts'
 import { octokit } from './octokit'
 
 export async function secrets() {
-    const choices = ['FLEX_GITHUB_FEED_WEBHOOK', 'LABS_DEPLOY_WEBHOOK', 'SPOKELSER_WEBHOOK', 'NAIS_DEPLOY_APIKEY'].map(
-        (choice) => {
-            return { title: choice, value: choice }
-        },
-    )
+    const choices = ['FLEX_GITHUB_FEED_WEBHOOK', 'LABS_DEPLOY_WEBHOOK', 'SPOKELSER_WEBHOOK'].map((choice) => {
+        return { title: choice, value: choice }
+    })
 
     const response = await prompts([
         {
