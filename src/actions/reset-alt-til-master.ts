@@ -57,7 +57,7 @@ export async function resetAltTilMaster() {
         execSync('git checkout master', {
             cwd: path,
         })
-        execSync('git config pull.ff only', {
+        execSync('git pull --ff-only', {
             cwd: path,
         })
     }
