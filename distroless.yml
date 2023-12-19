@@ -1,6 +1,9 @@
 distroless:
-  - image: nodejs18-debian12
+
+  - image: nodejs20-debian12
     appname:
+      - flexjar-frontend
+      - spinnsyn-frontend
       - flex-internal-frontend
       - flex-trello-docs
       - flex-juridisk-vurdering-test-frontend
@@ -8,11 +11,6 @@ distroless:
       - sykepengesoknad-frontend
       - ditt-sykefravaer
       - flex-openapi-docs-ui
-
-  - image: nodejs20-debian12
-    appname:
-      - flexjar-frontend
-      - spinnsyn-frontend
 
   - image: java17-debian12
     appname:
