@@ -74,3 +74,4 @@ repos:
       - flex-slack-reminders
       - flex-trello-docs
       - flex-bigquery-soda
+      - omrade-helse-etterlevelse-topic

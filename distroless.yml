@@ -47,3 +47,4 @@ ignore:
   - flex-cloud-sql-tools
   - flex-datastream-alert
   - flex-sykepengesoknad-pdfgen
+  - omrade-helse-etterlevelse-topic

@@ -5,7 +5,6 @@ const blacklist: string[] = [
     'next-api-proxy',
     'next-auth-wonderwall',
     'aad-iac',
-    'omrade-helse-etterlevelse-topic',
     'helse-docs',
 ]
 
