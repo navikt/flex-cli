@@ -1,5 +1,4 @@
 distroless:
-
   - image: nodejs20-debian12
     appname:
       - flexjar-frontend
