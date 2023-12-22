@@ -2,14 +2,10 @@ import { config } from '../config/config'
 import { log } from '../common/log.ts'
 import { ApprovedPr } from '../config/types.ts'
 
-import { verifiserRepo } from './verifiserRepo'
 import { octokit } from './octokit'
 import { getCombinedSuccess } from './combinedStatus'
 
 export async function hentPullrequests() {
-    log('\n\nVerifiserer repo status')
-
-    await Promise.all(config.repos.map((r) => verifiserRepo(r)))
     log('\n\nHenter alle dependabot PRs')
 
     const pulls = await Promise.all(

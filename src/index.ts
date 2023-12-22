@@ -9,6 +9,7 @@ import { branchCommitPush } from './actions/branch-commit-push.ts'
 import { lastCommits } from './actions/last-commits.ts'
 import { distrolessbump } from './actions/distrolessbump.ts'
 import { secrets } from './actions/secrets.ts'
+import { approvePr } from './actions/approvePr.ts'
 
 await yargs(hideBin(process.argv))
     .scriptName('npm start')
@@ -17,6 +18,12 @@ await yargs(hideBin(process.argv))
         'Kloner alle repos til disk. Hvis repoet allerede finnes, klones det ikke på nytt.',
 
         async () => await klonAlle(),
+    )
+    .command(
+        'approve-pr',
+        'Approver pr er og labeler de med automerge',
+
+        async () => await approvePr(),
     )
     .command(
         'start-auto-merge',
