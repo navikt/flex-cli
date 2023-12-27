@@ -54,6 +54,9 @@ export async function resetAltTilMain() {
         execSync('git restore .', {
             cwd: path,
         })
+        execSync('git fetch', {
+            cwd: path,
+        })
         execSync('git checkout main', {
             cwd: path,
         })
