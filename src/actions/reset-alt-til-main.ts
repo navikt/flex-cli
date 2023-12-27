@@ -6,13 +6,13 @@ import prompts from 'prompts'
 import { config } from '../config/config'
 import { log } from '../common/log.ts'
 
-export async function resetAltTilMaster() {
+export async function resetAltTilMain() {
     const response = await prompts([
         {
             type: 'confirm',
             name: 'ok',
             message:
-                "Denne kommandoen lager backup commits av alle lokale endringer i flex repoer og resetter deretter til master. Om du har comittet endringer i master lokalt må du håndtere dette manuelt. Er du sikker på at du vil kjøre kommandoen?',\n",
+                "Denne kommandoen lager backup commits av alle lokale endringer i flex repoer og resetter deretter til main. Om du har comittet endringer i main lokalt må du håndtere dette manuelt. Er du sikker på at du vil kjøre kommandoen?',\n",
         },
     ])
 
@@ -44,7 +44,7 @@ export async function resetAltTilMaster() {
             execSync(`git commit -m "Backup commit on ${backupBranch}"`, { cwd: path })
         }
 
-        log(`Resetter ${repo.name} til master`)
+        log(`Resetter ${repo.name} til main`)
         execSync('git clean -f', {
             cwd: path,
         })
@@ -54,7 +54,7 @@ export async function resetAltTilMaster() {
         execSync('git restore .', {
             cwd: path,
         })
-        execSync('git checkout master', {
+        execSync('git checkout main', {
             cwd: path,
         })
         execSync('git pull --ff-only', {
@@ -62,5 +62,5 @@ export async function resetAltTilMaster() {
         })
     }
 
-    log('\n\nAlt resatt til master')
+    log('\n\nAlt resatt til main')
 }

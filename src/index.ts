@@ -4,7 +4,7 @@ import { hideBin } from 'yargs/helpers'
 import { klonAlle } from './actions/klon-alle.ts'
 import { startDependabotMerge } from './actions/start-dependabot-merge.ts'
 import { verifiserRepoer } from './actions/verifiser.ts'
-import { resetAltTilMaster } from './actions/reset-alt-til-master.ts'
+import { resetAltTilMain } from './actions/reset-alt-til-main.ts'
 import { branchCommitPush } from './actions/branch-commit-push.ts'
 import { lastCommits } from './actions/last-commits.ts'
 import { distrolessbump } from './actions/distrolessbump.ts'
@@ -43,9 +43,9 @@ await yargs(hideBin(process.argv))
     )
     .command('patch-repoer', 'Patcher github oppsettet i alle repoer', async () => await verifiserRepoer())
     .command(
-        'reset-master',
-        'Resetter alle repoer til master og fjerner lokale endringer',
-        async () => await resetAltTilMaster(),
+        'reset-main',
+        'Resetter alle repoer til main og fjerner lokale endringer',
+        async () => await resetAltTilMain(),
     )
     .command(
         'commits',
