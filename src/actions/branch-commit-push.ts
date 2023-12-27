@@ -38,35 +38,31 @@ export async function branchCommitPush() {
 export async function branchCommitPushAuto(branchNavn: string, commitmelding: string, repoer: string[]) {
     const repoerMedEndringer: string[] = []
     for (const r of repoer) {
-        if (r == 'flex-cli') {
-            // skipper dette repoet
+        let endringer = false
+        try {
+            execSync('git diff-index --quiet HEAD', {
+                cwd: `../${r}`,
+            })
+        } catch (e: any) {
+            endringer = true
+        }
+        if (endringer) {
+            log('Fant endringer i ' + r)
+            execSync(`git checkout -b ${branchNavn}`, {
+                cwd: `../${r}`,
+            })
+            execSync('git add .', {
+                cwd: `../${r}`,
+            })
+            execSync(`git commit -m "${commitmelding}"`, {
+                cwd: `../${r}`,
+            })
+            execSync(`git push --set-upstream origin ${branchNavn}`, {
+                cwd: `../${r}`,
+            })
+            repoerMedEndringer.push(r)
         } else {
-            let endringer = false
-            try {
-                execSync('git diff-index --quiet HEAD', {
-                    cwd: `../${r}`,
-                })
-            } catch (e: any) {
-                endringer = true
-            }
-            if (endringer) {
-                log('Fant endringer i ' + r)
-                execSync(`git checkout -b ${branchNavn}`, {
-                    cwd: `../${r}`,
-                })
-                execSync('git add .', {
-                    cwd: `../${r}`,
-                })
-                execSync(`git commit -m "${commitmelding}"`, {
-                    cwd: `../${r}`,
-                })
-                execSync(`git push --set-upstream origin ${branchNavn}`, {
-                    cwd: `../${r}`,
-                })
-                repoerMedEndringer.push(r)
-            } else {
-                log('Fant ingen endringer i ' + r)
-            }
+            log('Fant ingen endringer i ' + r)
         }
     }
 
