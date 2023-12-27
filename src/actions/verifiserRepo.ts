@@ -21,17 +21,10 @@ async function hentEllerLagRepo(r: RepoConfig) {
                 name: r.name,
                 private: false,
                 auto_init: true,
-                default_branch: 'master',
+                default_branch: 'main',
                 visibility: 'public',
             })
-            await sleep(2000)
-            await octokit.request('POST /repos/{owner}/{repo}/branches/{branch}/rename', {
-                owner: config.owner,
-                repo: r.name,
-                branch: 'main',
-                new_name: 'master',
-            })
-            await sleep(2000)
+            await sleep(4000)
             const repo = await octokit.request('GET /repos/{owner}/{repo}', {
                 owner: config.owner,
                 repo: r.name,
@@ -55,7 +48,7 @@ export async function verifiserRepo(r: RepoConfig) {
         }
     }
 
-    verifiser('default_branch', 'master')
+    verifiser('default_branch', 'main')
     verifiser('allow_auto_merge', true)
     verifiser('delete_branch_on_merge', true)
     verifiser('allow_rebase_merge', false)
@@ -82,7 +75,7 @@ export async function verifiserRepo(r: RepoConfig) {
                 owner: config.owner,
                 repo: r.name,
                 allow_auto_merge: true,
-                default_branch: 'master',
+                default_branch: 'main',
                 delete_branch_on_merge: true,
                 allow_rebase_merge: false,
                 allow_merge_commit: false,
