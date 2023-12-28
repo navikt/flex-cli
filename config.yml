@@ -1,6 +1,21 @@
 owner: navikt
 repos:
   - reponame:
+      - flex-datastream-alert
+      - flex-internal-frontend
+      - flex-juridisk-vurdering-test-frontend
+      - flex-testdata-generator
+      - flex-openapi-docs-ui
+    checks:
+      - felles-workflow / Bygg, test og publiser docker image
+
+  - reponame:
+      - flexjar-frontend
+    checks:
+      - felles-workflow / Bygg, test og publiser docker image
+      - playwright
+
+  - reponame:
       - flex-modia-kontakt-metrikk
       - flexjar-backend
       - ditt-sykefravaer-backend
@@ -23,16 +38,6 @@ repos:
       - felles-workflow / Bygg og publiser
       - felles-workflow / Lint
       - felles-workflow / Test
-
-  - reponame:
-      - flex-datastream-alert
-      - flexjar-frontend
-      - flex-internal-frontend
-      - flex-juridisk-vurdering-test-frontend
-      - flex-testdata-generator
-      - flex-openapi-docs-ui
-    checks:
-      - felles-workflow / Bygg, test og publiser docker image
 
   - reponame:
       - ditt-sykefravaer
