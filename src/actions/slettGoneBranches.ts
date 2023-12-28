@@ -1,10 +1,23 @@
 import { execSync } from 'node:child_process'
 
+import prompts from 'prompts'
+
 import { log } from '../common/log.ts'
 import { config } from '../config/config.ts'
 
 export async function slettGone() {
-    // eksisterende kode ...
+    const response = await prompts([
+        {
+            type: 'confirm',
+            name: 'ok',
+            message:
+                "⚠️ Denne sletter alle lokale branches som ikke lengre eksisterer på remote. Er du sikker på at du vil kjøre kommandoen?',\n",
+        },
+    ])
+
+    if (!response.ok) {
+        process.exit(1)
+    }
 
     for (const repo of config.repos) {
         const path = `../${repo.name}`
