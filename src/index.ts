@@ -10,6 +10,7 @@ import { lastCommits } from './actions/last-commits.ts'
 import { distrolessbump } from './actions/distrolessbump.ts'
 import { secrets } from './actions/secrets.ts'
 import { approvePr } from './actions/approvePr.ts'
+import { slettGone } from './actions/slettGoneBranches.ts'
 
 await yargs(hideBin(process.argv))
     .scriptName('npm start')
@@ -31,6 +32,11 @@ await yargs(hideBin(process.argv))
         async () => await startDependabotMerge(),
     )
     .command('secrets', 'Oppdaterer secrets i alle repoer', async () => await secrets())
+    .command(
+        'slett-gone',
+        'sletter lokale branches som ikke lengre eksisterer på remote',
+        async () => await slettGone(),
+    )
     .command(
         'bcp',
         'Brancher, committer, pusher og lager pullrequest for lokale endringer i alle repoene som er på disk',
