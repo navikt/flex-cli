@@ -13,13 +13,12 @@ distroless:
 
   - image: java17-debian12
     appname:
-      - sykepengesoknad-korrigering-metrikk
+      - sykepengesoknad-sak-status-metrikk
 
   - image: java17-debian11
     appname:
       - flex-modia-kontakt-metrikk
       - flex-juridisk-vurdering-test-backend
-      - sykepengesoknad-sak-status-metrikk
       - flexjar-backend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering
