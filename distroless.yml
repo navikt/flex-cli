@@ -46,3 +46,4 @@ ignore:
   - flex-datastream-alert
   - flex-sykepengesoknad-pdfgen
   - omrade-helse-etterlevelse-topic
+  - flex-arkitektur
