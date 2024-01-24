@@ -35,7 +35,12 @@ export async function branchCommitPush() {
     )
 }
 
-export async function branchCommitPushAuto(branchNavn: string, commitmelding: string, repoer: string[]) {
+export async function branchCommitPushAuto(
+    branchNavn: string,
+    commitmelding: string,
+    repoer: string[],
+    automerge = false,
+) {
     const repoerMedEndringer: string[] = []
     for (const r of repoer) {
         let endringer = false
@@ -70,17 +75,18 @@ export async function branchCommitPushAuto(branchNavn: string, commitmelding: st
         log('Ingen endringer å lage PR for')
         process.exit(1)
     }
+    if (!automerge) {
+        const lagPr = await prompts([
+            {
+                type: 'confirm',
+                name: 'ok',
+                message: `Vil du lage PR for endringene i ${repoerMedEndringer.join(', ')}?`,
+            },
+        ])
 
-    const lagPr = await prompts([
-        {
-            type: 'confirm',
-            name: 'ok',
-            message: `Vil du lage PR for endringene i ${repoerMedEndringer.join(', ')}?`,
-        },
-    ])
-
-    if (!lagPr.ok) {
-        process.exit(1)
+        if (!lagPr.ok) {
+            process.exit(1)
+        }
     }
 
     async function sleep(ms: number) {
@@ -104,18 +110,20 @@ export async function branchCommitPushAuto(branchNavn: string, commitmelding: st
         await lagPR(r)
     }
 
-    const automerge = await prompts([
-        {
-            type: 'confirm',
-            name: 'ok',
-            message: `Vil du automerge endringene i ${repoerMedEndringer.join(
-                ', ',
-            )} til master slik at det går i produksjon?`,
-        },
-    ])
+    if (!automerge) {
+        const automergeConfirm = await prompts([
+            {
+                type: 'confirm',
+                name: 'ok',
+                message: `Vil du automerge endringene i ${repoerMedEndringer.join(
+                    ', ',
+                )} til master slik at det går i produksjon?`,
+            },
+        ])
 
-    if (!automerge.ok) {
-        process.exit(1)
+        if (!automergeConfirm.ok) {
+            process.exit(1)
+        }
     }
 
     async function automergePr(r: string) {

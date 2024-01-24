@@ -41,5 +41,6 @@ export async function gradleBump() {
         `gradlebump-${Math.floor(Math.random() * 100)}`,
         `Oppgraderer gradle`,
         repoerMedEndringer,
+        true,
     )
 }
