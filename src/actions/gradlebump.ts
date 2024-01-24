@@ -6,9 +6,10 @@ import { log } from '../common/log.ts'
 import { getAllRepos } from '../common/get-all-repos.ts'
 
 import { resetAltTilMain } from './reset-alt-til-main.ts'
+import { branchCommitPushAuto } from './branch-commit-push.ts'
 
 export async function gradleBump() {
-    log('Bumper gradle bumping')
+    log('Bumper gradle i alle repoer')
 
     const githubrepos = (await getAllRepos()).map((it) => it.name)
 
@@ -29,17 +30,16 @@ export async function gradleBump() {
 
         if (harGradle) {
             log(`Oppdaterer gradle i ${r}`)
-            execSync(`./gradlew wrapper --gradle-version 8.4`, {
+            execSync(`./gradlew wrapper --gradle-version latest`, {
                 cwd: `../${r}`,
             })
             repoerMedEndringer.push(r)
         }
     }
-    /*
-        await branchCommitPushAuto(
-            `gradlebump-${Math.floor(Math.random() * 100)}`,
-            `Oppgraderer gradle`,
-            repoerMedEndringer,
-        )
-        */
+
+    await branchCommitPushAuto(
+        `gradlebump-${Math.floor(Math.random() * 100)}`,
+        `Oppgraderer gradle`,
+        repoerMedEndringer,
+    )
 }
