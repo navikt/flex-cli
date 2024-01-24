@@ -51,7 +51,7 @@ export async function distrolessbump() {
         ])
         if (oppgradere.ok) {
             const response = await fetch(`https://gcr.io/v2/distroless/${r.image}/tags/list`)
-            const res = await response.json<DistrolessTags>() // HTML string
+            const res = (await response.json()) as DistrolessTags // HTML string
             let latestSha: string | null = null
 
             for (const sha in res.manifest) {
