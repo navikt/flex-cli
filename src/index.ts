@@ -11,6 +11,7 @@ import { distrolessbump } from './actions/distrolessbump.ts'
 import { secrets } from './actions/secrets.ts'
 import { approvePr } from './actions/approvePr.ts'
 import { slettGone } from './actions/slettGoneBranches.ts'
+import { gradleBump } from './actions/gradlebump.ts'
 
 await yargs(hideBin(process.argv))
     .scriptName('npm start')
@@ -53,6 +54,7 @@ await yargs(hideBin(process.argv))
         'Resetter alle repoer til main og fjerner lokale endringer',
         async () => await resetAltTilMain(),
     )
+    .command('gradle-bump', 'Bumper gradle i alle repoer', async () => await gradleBump())
     .command(
         'commits',
         'get the last commits for every repo in the team',
