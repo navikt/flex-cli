@@ -22,9 +22,6 @@ distroless:
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering
       - spinnsyn-backend
-
-  - image: java17-debian11
-    appname:
       - spinnsyn-brukernotifikasjon
       - flex-syketilfelle
       - sykepengesoknad-altinn
