@@ -11,24 +11,24 @@ distroless:
       - ditt-sykefravaer
       - flex-openapi-docs-ui
 
-  - image: java17-debian12
+  - image: java21-debian12
     appname:
+      - sykepengesoknad-backend
+      - flex-inntektsmelding-status
       - sykepengesoknad-sak-status-metrikk
-
-  - image: java17-debian11
-    appname:
       - flex-modia-kontakt-metrikk
       - flex-juridisk-vurdering-test-backend
       - flexjar-backend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering
       - spinnsyn-backend
+
+  - image: java17-debian11
+    appname:
       - spinnsyn-brukernotifikasjon
-      - flex-inntektsmelding-status
       - flex-syketilfelle
       - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
-      - sykepengesoknad-backend
       - sykepengesoknad-kvitteringer
       - sykepengesoknad-ikke-sendt-altinnvarsel
       - sykepengesoknad-narmesteleder-varsler
