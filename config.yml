@@ -55,7 +55,7 @@ repos:
       - flex-sykepengesoknad-pdfgen
     checks:
       - Bygg, test og publiser docker image
-      -
+
   - reponame:
       - flex-juridisk-vurdering-test-backend
     checks:
