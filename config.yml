@@ -79,3 +79,4 @@ repos:
       - flex-bigquery-soda
       - omrade-helse-etterlevelse-topic
       - flex-arkitektur
+      - flex-quarto-template
