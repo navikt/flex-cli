@@ -44,3 +44,4 @@ ignore:
   - flex-sykepengesoknad-pdfgen
   - omrade-helse-etterlevelse-topic
   - flex-arkitektur
+  - flex-quarto-template
