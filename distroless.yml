@@ -45,3 +45,4 @@ ignore:
   - omrade-helse-etterlevelse-topic
   - flex-arkitektur
   - flex-quarto-template
+  - flex-datafortelling
