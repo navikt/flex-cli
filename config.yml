@@ -80,3 +80,4 @@ repos:
       - omrade-helse-etterlevelse-topic
       - flex-arkitektur
       - flex-quarto-template
+      - flex-datafortelling
