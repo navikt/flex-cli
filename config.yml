@@ -65,7 +65,6 @@ repos:
       - flex-github-actions-workflows
       - sykepengesoknad-kafka
       - flex-alerts
-      - flex-cloud-sql-tools
 
   - reponame:
       - flex-cli

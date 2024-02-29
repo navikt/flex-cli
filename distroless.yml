@@ -39,7 +39,6 @@ ignore:
   - flex-github-actions-workflows
   - sykepengesoknad-kafka
   - flex-alerts
-  - flex-cloud-sql-tools
   - flex-datastream-alert
   - flex-sykepengesoknad-pdfgen
   - omrade-helse-etterlevelse-topic
