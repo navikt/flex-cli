@@ -20,8 +20,8 @@ if the current branch is main But you are ahead of remote main, it's a bit diffe
 
  */
 
-import * as NodeGit from 'nodegit'
-// import { exit } from 'yargs'
+// import * as NodeGit from 'nodegit'
+// import { exit } from 'yargs'p
 // import nodegit types from @types/nodegit
 
 // async function canFastForward(repo: NodeGit.Repository, branch: string, targetBranch: string): Promise<boolean> {
@@ -61,80 +61,82 @@ async function mainHasDiverged(): Promise<boolean> {
     }
 }
 
-async function createBackupCommit(repo: NodeGit.Repository) {
-
-    const currentBranch = await repo.getCurrentBranch()
-    const currentBranchName = currentBranch.shorthand()
-
-    if (currentBranchName === 'main') {
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
-        const backupBranchName = `backup-${timestamp}`
-        await repo.createBranch(backupBranchName, currentBranchName, false) // Force creation if needed
-        await repo.checkoutBranch(backupBranchName)
+async function getCurrentBranchName(path : string): Promise<string> {
+    /* if it is nothing, you are probably at main */
+    try {
+        return execSync('git branch --show-current', { cwd: path }).toString().trim()
+    } catch (error) {
+        console.error('Error getting current branch:', error)
+        return ''
     }
-
-    const index = await repo.refreshIndex()
-    await index.addAll()
-    await index.write()
-
-    const defaultSignature = repo.defaultSignature()
-
-    // 2. Extract author and committer details
-    const author = defaultSignature
-    const committer = defaultSignature
-
-    const oid = await index.writeTree()
-
-
-    await repo.createCommit('HEAD', author, committer, 'Backup Commit', oid, [])
 }
 
-async function repoHasChanges(repo: NodeGit.Repository): Promise<boolean> {
-    const status = await repo.getStatus()
-    return status.length > 0
+async function createBackupCommit(path : string) {
+    execSync('git add -A', { cwd: path })
+    execSync(`git commit -m "Backup commit on ${getCurrentBranchName(path)}"`, { cwd: path })
 }
+
+async function createBackupBranch(path : string, branchName : string) {
+     const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+        const backupBranchName = `backup-${timestamp}-${branchName}`
+                execSync(`git checkout -b ${backupBranchName}`, { cwd: path })
+
+
+
+}
+
+async function repoHasChanges(path : string): Promise<boolean> {
+    return execSync('git status --porcelain', { cwd: path }).toString() !== ''
+
+}
+
+async function resetToMain(path : string) {
+    execSync('git reset --hard', {
+        cwd: path,
+    })
+}
+
+
 export async function resetAltTilMain() {
-    const repo = await NodeGit.Repository.open('/Users/kuls/code/flex-cloud-sql-tools') // Replace '.' with your repo path
+    const path = '/Users/kuls/code/flex-cloud-sql-tools' // Replace '.' with your repo path
+    execSync('git fetch origin', { cwd: path })
 
     // 2. Branch handling
-    const currentBranch = await repo.getCurrentBranch()
-    const currentBranchName = currentBranch.shorthand()
+    const currentBranchName = await getCurrentBranchName(path)
+    const canFF = await canFastForward()
+    const hasDiverged = await mainHasDiverged()
 
-    const hasChanges = await repoHasChanges(repo)
-    // deal with not main branch first
-    if (currentBranchName !== 'main') {
-        if (hasChanges) {
-            await createBackupCommit(repo)
-        }
+    const hasChanges = await repoHasChanges(path)
 
-        // checkout main, try catch around this, should always be able to checkout main
-        // try {
-        await repo.checkoutBranch('main')
-        // } catch (error) {
-        //   console.error('Error checking out main:', error);
-        //   exit(1);
-        // }
-
-        if (currentBranchName === 'main') {
-            // await handleMainBranch(repo);
-            // can I fast forward? Am I just behind main?
-
-            const canFF = await canFastForward()
-            const hasDiverged = await mainHasDiverged()
-
-            if (canFF) {
-                console.log('Local main branch can fast-forward to origin/main')
-            }
-
-            if (hasDiverged) {
-                console.log('Local main branch has diverged from origin/main')
-            }
-        }
-        // ... rest of your logic
+    if (currentBranchName === 'main' && canFF) {
+        execSync('git pull', { cwd: path })
+        return
     }
-}
 
-resetAltTilMain()
+
+    if (currentBranchName === 'main' && hasDiverged) {
+        await createBackupBranch(path, currentBranchName)
+        await createBackupCommit(path)
+        await resetToMain(path)
+    }
+
+    if (currentBranchName !== 'main' && hasChanges) {
+
+
+    }
+
+
+
+    if (currentBranchName !== 'main') {
+        // do nothing
+    }
+
+    if (currentBranchName !== 'main' && hasChanges) {
+        await createBackupBranch(path, currentBranchName)
+        await createBackupCommit(path)
+    }
+
+}
 //
 // async function handleMainBranch(repo: NodeGit.Repository) {
 //   const remoteMain = await NodeGit.Reference.nameToId(repo, 'refs/remotes/origin/main');
