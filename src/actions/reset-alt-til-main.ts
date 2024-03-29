@@ -37,10 +37,10 @@ if the current branch is main But you are ahead of remote main, it's a bit diffe
 //
 //
 
-async function canFastForward(): Promise<boolean> {
+async function canFastForward(path : string): Promise<boolean> {
     try {
-        const gitStatusOutput = execSync('git status').toString()
-
+        const gitStatusOutput = execSync('git status' , { cwd: path }).toString()
+        // console.log(gitStatusOutput)
         // Check if the output contains the phrase indicating fast-forward is possible
         return gitStatusOutput.includes('Your branch is behind') && gitStatusOutput.includes('can be fast-forwarded')
     } catch (error) {
@@ -49,15 +49,39 @@ async function canFastForward(): Promise<boolean> {
     }
 }
 
-async function mainHasDiverged(): Promise<boolean> {
+async function mainHasDiverged(path : string): Promise<boolean> {
     try {
-        const gitStatusOutput = execSync('git status').toString()
-
+        const gitStatusOutput = execSync('git status', { cwd: path }).toString()
+        // console.log(gitStatusOutput)
         // Check for the phrase indicating divergence
         return gitStatusOutput.includes('have diverged') && gitStatusOutput.includes('different commits each')
     } catch (error) {
         console.error('Error checking divergence status:', error)
         return false
+    }
+}
+
+async function mainIsAhead(path : string): Promise<boolean> {
+    try {
+        const gitStatusOutput = execSync('git status', { cwd: path }).toString()
+        // console.log(gitStatusOutput)
+        // Check for the phrase indicating divergence
+        return gitStatusOutput.includes('Your branch is ahead of \'origin/main\'')
+    } catch (error) {
+        console.error('Error checking ahead status:', error)
+        return false
+    }
+}
+
+async function mainUpToDate(path : string): Promise<boolean> {
+try {
+        const gitStatusOutput = execSync('git status', { cwd: path }).toString()
+        console.log(gitStatusOutput)
+        // Check for the phrase indicating divergence
+        return gitStatusOutput.includes('Your branch is up to date with \'origin/main\'.')
+    } catch (error) {
+    console.error('Error checking up to date status:', error)
+    return false
     }
 }
 
@@ -73,15 +97,13 @@ async function getCurrentBranchName(path : string): Promise<string> {
 
 async function createBackupCommit(path : string) {
     execSync('git add -A', { cwd: path })
-    execSync(`git commit -m "Backup commit on ${getCurrentBranchName(path)}"`, { cwd: path })
+    execSync(`git commit -m "Backup commit"`, { cwd: path })
 }
 
 async function createBackupBranch(path : string, branchName : string) {
      const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
         const backupBranchName = `backup-${timestamp}-${branchName}`
                 execSync(`git checkout -b ${backupBranchName}`, { cwd: path })
-
-
 
 }
 
@@ -97,44 +119,69 @@ async function resetToMain(path : string) {
 }
 
 
+async function checkoutBranchByName(path :string, branchName: string) {
+    execSync(`git checkout ${branchName}`, {
+        cwd: path,
+    })
+}
+
 export async function resetAltTilMain() {
     const path = '/Users/kuls/code/flex-cloud-sql-tools' // Replace '.' with your repo path
     execSync('git fetch origin', { cwd: path })
 
+    console.log("checking out" + path)
+
     // 2. Branch handling
     const currentBranchName = await getCurrentBranchName(path)
-    const canFF = await canFastForward()
-    const hasDiverged = await mainHasDiverged()
-
     const hasChanges = await repoHasChanges(path)
+    // const canFF = await canFastForward(path)
+    // const hasDiverged = await mainHasDiverged(path)
+    // const isAhead = await mainIsAhead(path)
+    // const isHEAD = currentBranchName === ''
+        console.log([currentBranchName, hasChanges])
 
+
+
+
+    // first deal with changes in a non main branch
+
+    // then deal with a potential diverged or fast forwardable main branch again
+
+    // this should also deal with detached head
+    if (currentBranchName !== 'main' && hasChanges) {
+        await createBackupBranch(path, currentBranchName) // empty string if detached head but that should be fine
+        await createBackupCommit(path)
+    }
+
+    // if there are no changes, change to main is fine
+    checkoutBranchByName(path, 'main')
+
+
+    const canFF = await canFastForward(path)
+    const hasDiverged = await mainHasDiverged(path)
+    const isAhead = await mainIsAhead(path)
+    const isUpToDate = await mainUpToDate(path)
+
+
+    console.log([currentBranchName, canFF, hasDiverged, hasChanges])
+
+    if (currentBranchName === 'main' && isUpToDate) {
+        return
+    }
+
+    // when you are on main is in some ways an easier case, if we are not on main we might discover that there are also a diverged main in the repo
     if (currentBranchName === 'main' && canFF) {
         execSync('git pull', { cwd: path })
         return
     }
 
-
-    if (currentBranchName === 'main' && hasDiverged) {
+    if (currentBranchName === 'main' && (hasDiverged || isAhead)) {
         await createBackupBranch(path, currentBranchName)
         await createBackupCommit(path)
         await resetToMain(path)
+        return
     }
 
-    if (currentBranchName !== 'main' && hasChanges) {
-
-
-    }
-
-
-
-    if (currentBranchName !== 'main') {
-        // do nothing
-    }
-
-    if (currentBranchName !== 'main' && hasChanges) {
-        await createBackupBranch(path, currentBranchName)
-        await createBackupCommit(path)
-    }
 
 }
 //
