@@ -6,7 +6,7 @@ import prompts from 'prompts'
 import { config } from '../config/config'
 import { log } from '../common/log.ts'
 
-export async function resetAltTilMain() {
+export async function resetAltTilMain3() {
     const response = await prompts([
         {
             type: 'confirm',
