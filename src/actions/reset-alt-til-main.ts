@@ -36,6 +36,9 @@ if the current branch is main But you are ahead of remote main, it's a bit diffe
 // }
 //
 //
+async function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function canFastForward(path : string): Promise<boolean> {
     try {
@@ -78,7 +81,9 @@ try {
         const gitStatusOutput = execSync('git status', { cwd: path }).toString()
         console.log(gitStatusOutput)
         // Check for the phrase indicating divergence
-        return gitStatusOutput.includes('Your branch is up to date with \'origin/main\'.')
+        const upToDateStatus = gitStatusOutput.includes("Your branch is up to date with 'origin/main'")
+        console.log(upToDateStatus)
+        return upToDateStatus
     } catch (error) {
     console.error('Error checking up to date status:', error)
     return false
@@ -100,6 +105,20 @@ async function createBackupCommit(path : string) {
     execSync(`git commit -m "Backup commit"`, { cwd: path })
 }
 
+async function backupBranchRequired(path : string): Promise<boolean> {
+    /*
+       returns output like this, if there is more than one branch at a commit reset of the current branch cannot cause data loss
+       $ git branch --contains
+        jdflsj
+       * main
+
+     */
+    const commandOutput = execSync('git branch --contains', { cwd: path }).toString().trim()
+    const nrOfLines = commandOutput.split('\n').length
+    console.log(nrOfLines)
+    console.log(commandOutput)
+    return 1 >= nrOfLines // if there is only one branch at the commit, we need to create a backup branch before resetting main
+}
 async function createBackupBranch(path : string, branchName : string) {
      const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
         const backupBranchName = `backup-${timestamp}-${branchName}`
@@ -113,7 +132,7 @@ async function repoHasChanges(path : string): Promise<boolean> {
 }
 
 async function resetToMain(path : string) {
-    execSync('git reset --hard', {
+    execSync('git reset --hard origin/main', {
         cwd: path,
     })
 }
@@ -154,7 +173,7 @@ export async function resetAltTilMain() {
     }
 
     // if there are no changes, change to main is fine
-    checkoutBranchByName(path, 'main')
+    await checkoutBranchByName(path, 'main')
 
 
     const canFF = await canFastForward(path)
@@ -171,16 +190,34 @@ export async function resetAltTilMain() {
 
     // when you are on main is in some ways an easier case, if we are not on main we might discover that there are also a diverged main in the repo
     if (currentBranchName === 'main' && canFF) {
-        execSync('git pull', { cwd: path })
+        await execSync('git pull', { cwd: path })
         return
     }
 
-    if (currentBranchName === 'main' && (hasDiverged || isAhead)) {
-        await createBackupBranch(path, currentBranchName)
-        await createBackupCommit(path)
+     if (currentBranchName === 'main' && (await mainHasDiverged(path) || await mainIsAhead(path))) {
+
+         if (await backupBranchRequired(path)) {
+             await createBackupBranch(path, currentBranchName)
+         }
+
+        if (await repoHasChanges(path)) {
+            await createBackupCommit(path)
+        }
+        checkoutBranchByName(path, 'main') // checking out main again before reset
+        // wait for 2 seconds
+         await delay(2000);
         await resetToMain(path)
-        return
+
     }
+
+
+    console.log('got here')
+
+    // if (currentBranchName === 'main' && await mainUpToDate(path)) {
+    //     console.log('correct branch analysis')
+    //
+    //     return
+    // }
 
 
 }
