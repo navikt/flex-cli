@@ -1,7 +1,6 @@
 owner: navikt
 repos:
   - reponame:
-      - flex-datastream-alert
       - flex-internal-frontend
       - flex-juridisk-vurdering-test-frontend
       - flex-testdata-generator

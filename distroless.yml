@@ -40,7 +40,6 @@ ignore:
   - flex-github-actions-workflows
   - sykepengesoknad-kafka
   - flex-alerts
-  - flex-datastream-alert
   - flex-sykepengesoknad-pdfgen
   - omrade-helse-etterlevelse-topic
   - flex-quarto-template
