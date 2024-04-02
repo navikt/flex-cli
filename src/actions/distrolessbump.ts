@@ -23,12 +23,7 @@ export async function distrolessbump() {
             process.exit(1)
         }
     }
-    for (const r of alleRepos) {
-        if (!githubrepos.includes(r)) {
-            log(`Repo ${r} finnes ikke på github`)
-            process.exit(1)
-        }
-    }
+
     const pullok = await prompts([
         {
             type: 'confirm',
