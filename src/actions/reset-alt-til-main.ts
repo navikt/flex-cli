@@ -1,9 +1,12 @@
 // import * as fs from 'fs'
 import { execSync } from 'node:child_process'
+import fs from 'fs'
+import path  from 'node:path'
+
+import prompts from 'prompts'
+
 import { config } from '../config/config.ts'
 import { log } from '../common/log.ts'
-import fs from 'fs'
-import prompts from 'prompts'
 
 // import prompts from 'prompts'
 
@@ -23,14 +26,13 @@ if the current branch is main But you are ahead of remote main, it's a bit diffe
 
  */
 
-
 // async function delay(ms : number) {
 //   return new Promise(resolve => setTimeout(resolve, ms));
 // }
 
-async function canFastForward(path : string): Promise<boolean> {
+async function canFastForward(path: string): Promise<boolean> {
     try {
-        const gitStatusOutput = execSync('git status' , { cwd: path }).toString()
+        const gitStatusOutput = execSync('git status', { cwd: path }).toString()
         // console.log(gitStatusOutput)
         // Check if the output contains the phrase indicating fast-forward is possible
         return gitStatusOutput.includes('Your branch is behind') && gitStatusOutput.includes('can be fast-forwarded')
@@ -40,7 +42,7 @@ async function canFastForward(path : string): Promise<boolean> {
     }
 }
 
-async function mainHasDiverged(path : string): Promise<boolean> {
+async function mainHasDiverged(path: string): Promise<boolean> {
     try {
         const gitStatusOutput = execSync('git status', { cwd: path }).toString()
         // console.log(gitStatusOutput)
@@ -52,20 +54,20 @@ async function mainHasDiverged(path : string): Promise<boolean> {
     }
 }
 
-async function mainIsAhead(path : string): Promise<boolean> {
+async function mainIsAhead(path: string): Promise<boolean> {
     try {
         const gitStatusOutput = execSync('git status', { cwd: path }).toString()
         // console.log(gitStatusOutput)
         // Check for the phrase indicating divergence
-        return gitStatusOutput.includes('Your branch is ahead of \'origin/main\'')
+        return gitStatusOutput.includes("Your branch is ahead of 'origin/main'")
     } catch (error) {
         console.error('Error checking ahead status:', error)
         return false
     }
 }
 
-async function mainUpToDate(path : string): Promise<boolean> {
-try {
+async function mainUpToDate(path: string): Promise<boolean> {
+    try {
         const gitStatusOutput = execSync('git status', { cwd: path }).toString()
         console.log(gitStatusOutput)
         // Check for the phrase indicating divergence
@@ -73,12 +75,12 @@ try {
         console.log(upToDateStatus)
         return upToDateStatus
     } catch (error) {
-    console.error('Error checking up to date status:', error)
-    return false
+        console.error('Error checking up to date status:', error)
+        return false
     }
 }
 
-async function getCurrentBranchName(path : string): Promise<string> {
+async function getCurrentBranchName(path: string): Promise<string> {
     /* if it is nothing, you are probably at main */
     try {
         return execSync('git branch --show-current', { cwd: path }).toString().trim()
@@ -88,12 +90,12 @@ async function getCurrentBranchName(path : string): Promise<string> {
     }
 }
 
-async function createBackupCommit(path : string) {
+async function createBackupCommit(path: string) {
     execSync('git add -A', { cwd: path })
     execSync(`git commit -m "Backup commit"`, { cwd: path })
 }
 
-async function backupBranchRequired(path : string): Promise<boolean> {
+async function backupBranchRequired(path: string): Promise<boolean> {
     /*
        returns output like this, if there is more than one branch at a commit reset of the current branch cannot cause data loss
        $ git branch --contains
@@ -107,116 +109,100 @@ async function backupBranchRequired(path : string): Promise<boolean> {
     console.log(commandOutput)
     return 1 >= nrOfLines // if there is only one branch at the commit, we need to create a backup branch before resetting main
 }
-async function createBackupBranch(path : string, branchName : string) {
-     const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
-        const backupBranchName = `backup-${timestamp}-${branchName}`
-                execSync(`git checkout -b ${backupBranchName}`, { cwd: path })
-
+async function createBackupBranch(path: string, branchName: string) {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+    const backupBranchName = `backup-${timestamp}-${branchName}`
+    execSync(`git checkout -b ${backupBranchName}`, { cwd: path })
 }
-async function repoHasUncommitedChanges(path : string): Promise<boolean> {
+async function repoHasUncommitedChanges(path: string): Promise<boolean> {
     return execSync('git status --porcelain', { cwd: path }).toString() !== ''
 }
 
-async function resetToMain(path : string) {
+async function resetToMain(path: string) {
     execSync('git reset --hard origin/main', {
         cwd: path,
     })
 }
 
-async function checkoutBranchByName(path :string, branchName: string) {
+async function checkoutBranchByName(path: string, branchName: string) {
     execSync(`git checkout ${branchName}`, {
         cwd: path,
     })
 }
 
-export async function resetRepoToMain(path: string) {
-    execSync('git fetch origin', { cwd: path })
+export async function resetRepoToMain(repoPath: string) {
+    console.log(`Resetting ${repoPath} to main`)
+    execSync('git fetch', { cwd: repoPath })
 
-    console.log("checking out" + path)
-
-    // 2. Branch handling
-    const currentBranchName = await getCurrentBranchName(path)
-    const hasChanges = await repoHasUncommitedChanges(path)
-
-        console.log([currentBranchName, hasChanges])
-
-    // first deal with changes in a non main branch
-    // then deal with a potential diverged or fast forwardable main branch again
-    // this should also deal with detached head
-    if (currentBranchName !== 'main' && hasChanges) {
-        await createBackupBranch(path, currentBranchName) // empty string if detached head but that should be fine
-        await createBackupCommit(path)
+    if (await repoHasUncommitedChanges(repoPath)) {
+        await createBackupBranch(repoPath, await getCurrentBranchName(repoPath)) // empty string if detached head but that should be fine
+        await createBackupCommit(repoPath)
     }
 
-    // if there are no changes, change to main is fine
-    await checkoutBranchByName(path, 'main')
+    // if there are no unsaved changes, change to main is fine
+    await checkoutBranchByName(repoPath, 'main')
 
-
-    // const canFF = await canFastForward(path)
-    // const hasDiverged = await mainHasDiverged(path)
-    // const isAhead = await mainIsAhead(path)
-    // const isUpToDate = await mainUpToDate(path)
-
-
-    //    console.log([currentBranchName, canFF, hasDiverged, hasChanges])
-
-    if (currentBranchName === 'main' && await mainUpToDate(path)) {
+    // main is up to date with remote, no need to do anything
+    if ((await getCurrentBranchName(repoPath)) === 'main' && (await mainUpToDate(repoPath))) {
         return
     }
 
-    // when you are on main is in some ways an easier case, if we are not on main we might discover that there are also a diverged main in the repo
-    if (currentBranchName === 'main' && await canFastForward(path)) {
-        await execSync('git pull', { cwd: path })
+    // main is behind remote, fast forward
+    if ((await getCurrentBranchName(repoPath)) === 'main' && (await canFastForward(repoPath))) {
+        await execSync('git pull --ff-only', { cwd: repoPath })
         return
     }
 
-     if (currentBranchName === 'main' && (await mainHasDiverged(path) || await mainIsAhead(path))) {
-
-         if (await backupBranchRequired(path)) {
-             await createBackupBranch(path, currentBranchName)
-         }
-
-        if (await repoHasUncommitedChanges(path)) {
-            await createBackupCommit(path)
+    // main has diverged or is ahead of remote
+    if ((await getCurrentBranchName(repoPath)) === 'main' && ((await mainHasDiverged(repoPath)) || (await mainIsAhead(repoPath)))) {
+        if (await backupBranchRequired(repoPath)) {
+            await createBackupBranch(repoPath, await getCurrentBranchName(repoPath))
         }
-        checkoutBranchByName(path, 'main') // checking out main again before reset, after backup
-        // wait for 2 seconds
-         // await delay(2000);
-        await resetToMain(path)
-}
 
+        if (await repoHasUncommitedChanges(repoPath)) {
+            await createBackupCommit(repoPath)
+        }
+        checkoutBranchByName(repoPath, 'main') // checking out main again before reset, after backup
+        await resetToMain(repoPath)
+    }
+}
 
 export async function resetAltTilMain() {
+    console.log('Resetter alt til main')
+    // const response = await prompts([
+    //     {
+    //         type: 'confirm',
+    //         name: 'ok',
+    //         message:
+    //             "Denne kommandoen lager backup commits av alle lokale endringer i flex repoer og resetter deretter til main. Om du har comittet endringer i main lokalt må du håndtere dette manuelt. Er du sikker på at du vil kjøre kommandoen?',\n",
+    //     },
+    // ])
+    //
+    // if (!response.ok) {
+    //     process.exit(1)
+    // }
 
-             const response = await prompts([
-        {
-            type: 'confirm',
-            name: 'ok',
-            message:
-                "Denne kommandoen lager backup commits av alle lokale endringer i flex repoer og resetter deretter til main. Om du har comittet endringer i main lokalt må du håndtere dette manuelt. Er du sikker på at du vil kjøre kommandoen?',\n",
-        },
-    ])
+    const listOfRepos = ['flex-bigquery-terraform'].map((x) => ({ name: x }))
 
-    if (!response.ok) {
-        process.exit(1)
+    for (const repo of config.repos) {
+    // for (const repo of listOfRepos) {
+        const relativePath = `../${repo.name}`
+        const repoPath = path.resolve(relativePath)
+        console.log(`Checking ${repoPath}`)
+        if (repo.name === 'flex-cli') {
+            log(`Repo ${repo.name} er flex-cli. Ignorerer`)
+            continue
+        }
+
+        try {
+            await fs.promises.access(repoPath)
+        } catch (error) {
+            log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon-alle'`)
+            continue
+        }
+
+
+        console.log('ready to reset')
+        resetRepoToMain(repoPath)
     }
-
-}
-
-         for (const repo of config.repos) {
-             const path = `../${repo.name}`
-
-             if (repo.name === 'flex-cli') {
-                 log(`Repo ${repo.name} er flex-cli. Ignorerer`)
-                 continue
-             }
-
-             try {
-                 await fs.promises.access(path)
-             } catch (error) {
-                 log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon-alle'`)
-                 continue
-             }
-
-         }
 }
