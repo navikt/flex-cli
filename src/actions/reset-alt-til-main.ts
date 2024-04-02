@@ -130,6 +130,11 @@ async function checkoutBranchByName(path: string, branchName: string) {
     })
 }
 
+
+async function repoFinishedAsExpected(repoPath: string): Promise<boolean> {
+    return (await getCurrentBranchName(repoPath) === 'main') && (await mainUpToDate(repoPath))
+}
+
 export async function resetRepoToMain(repoPath: string) {
     console.log(`Resetting ${repoPath} to main`)
     execSync('git fetch', { cwd: repoPath })
@@ -150,7 +155,12 @@ export async function resetRepoToMain(repoPath: string) {
     // main is behind remote, fast forward
     if ((await getCurrentBranchName(repoPath)) === 'main' && (await canFastForward(repoPath))) {
         await execSync('git pull --ff-only', { cwd: repoPath })
-        return
+        if (await repoFinishedAsExpected(repoPath)) {
+            return
+        } else {
+            new Error('Error: Repo did not finish as expected')
+        }
+
     }
 
     // main has diverged or is ahead of remote
@@ -164,8 +174,15 @@ export async function resetRepoToMain(repoPath: string) {
         }
         checkoutBranchByName(repoPath, 'main') // checking out main again before reset, after backup
         await resetToMain(repoPath)
+        if (await repoFinishedAsExpected(repoPath)) {
+            return
+        } else {
+            new Error('Error: Repo did not finish as expected')
+        }
     }
+    new Error('Error: Did not expect to get here, a case was not covered')
 }
+
 
 export async function resetAltTilMain() {
     console.log('Resetter alt til main')
@@ -182,7 +199,7 @@ export async function resetAltTilMain() {
     //     process.exit(1)
     // }
 
-    const listOfRepos = ['flex-bigquery-terraform'].map((x) => ({ name: x }))
+    // const listOfRepos = ['flex-bigquery-terraform'].map((x) => ({ name: x }))
 
     for (const repo of config.repos) {
     // for (const repo of listOfRepos) {
@@ -203,6 +220,6 @@ export async function resetAltTilMain() {
 
 
         console.log('ready to reset')
-        resetRepoToMain(repoPath)
+        await resetRepoToMain(repoPath)
     }
 }
