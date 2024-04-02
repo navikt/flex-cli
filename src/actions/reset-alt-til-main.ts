@@ -1,5 +1,9 @@
 // import * as fs from 'fs'
 import { execSync } from 'node:child_process'
+import { config } from '../config/config.ts'
+import { log } from '../common/log.ts'
+import fs from 'fs'
+import prompts from 'prompts'
 
 // import prompts from 'prompts'
 
@@ -125,12 +129,7 @@ async function checkoutBranchByName(path :string, branchName: string) {
     })
 }
 
-
-
-
-export async function resetAltTilMain() {
-
-    const path = '/Users/kuls/code/flex-cloud-sql-tools' // Replace '.' with your repo path
+export async function resetRepoToMain(path: string) {
     execSync('git fetch origin', { cwd: path })
 
     console.log("checking out" + path)
@@ -184,17 +183,40 @@ export async function resetAltTilMain() {
         // wait for 2 seconds
          // await delay(2000);
         await resetToMain(path)
+}
 
+
+export async function resetAltTilMain() {
+
+             const response = await prompts([
+        {
+            type: 'confirm',
+            name: 'ok',
+            message:
+                "Denne kommandoen lager backup commits av alle lokale endringer i flex repoer og resetter deretter til main. Om du har comittet endringer i main lokalt må du håndtere dette manuelt. Er du sikker på at du vil kjøre kommandoen?',\n",
+        },
+    ])
+
+    if (!response.ok) {
+        process.exit(1)
     }
 
+}
 
-    console.log('got here')
+         for (const repo of config.repos) {
+             const path = `../${repo.name}`
 
-    // if (currentBranchName === 'main' && await mainUpToDate(path)) {
-    //     console.log('correct branch analysis')
-    //
-    //     return
-    // }
+             if (repo.name === 'flex-cli') {
+                 log(`Repo ${repo.name} er flex-cli. Ignorerer`)
+                 continue
+             }
 
+             try {
+                 await fs.promises.access(path)
+             } catch (error) {
+                 log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon-alle'`)
+                 continue
+             }
 
+         }
 }
