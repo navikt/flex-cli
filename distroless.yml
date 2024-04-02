@@ -10,6 +10,7 @@ distroless:
       - sykepengesoknad-frontend
       - ditt-sykefravaer
       - flex-openapi-docs-ui
+      - flex-arkitektur
 
   - image: java21-debian12
     appname:
@@ -42,6 +43,5 @@ ignore:
   - flex-datastream-alert
   - flex-sykepengesoknad-pdfgen
   - omrade-helse-etterlevelse-topic
-  - flex-arkitektur
   - flex-quarto-template
   - flex-datafortelling
