@@ -17,28 +17,12 @@ If there are committed changes to a branch which is not the main branch, there i
 If the current branch is the main branch, it's a bit more complicated, if you can fast forward and the current main is behind the remote main, you can just fast forward
 if the current branch is main But you are ahead of remote main, it's a bit different than you need to create back up commit and reset main to remote
 
-
  */
 
-// import * as NodeGit from 'nodegit'
-// import { exit } from 'yargs'p
-// import nodegit types from @types/nodegit
 
-// async function canFastForward(repo: NodeGit.Repository, branch: string, targetBranch: string): Promise<boolean> {
-//   // Find the merge base
-//   const mergeBase = await repo.mergeBase(branch, targetBranch);
-//
-//   // Get the Oid of the specified branch's HEAD
-//   const headCommit = await repo.getReferenceCommit(branch);
-//   const headOid = headCommit.id();
-//
-//   return mergeBase.isEqual(headOid);
+// async function delay(ms : number) {
+//   return new Promise(resolve => setTimeout(resolve, ms));
 // }
-//
-//
-async function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 async function canFastForward(path : string): Promise<boolean> {
     try {
@@ -125,10 +109,8 @@ async function createBackupBranch(path : string, branchName : string) {
                 execSync(`git checkout -b ${backupBranchName}`, { cwd: path })
 
 }
-
-async function repoHasChanges(path : string): Promise<boolean> {
+async function repoHasUncommitedChanges(path : string): Promise<boolean> {
     return execSync('git status --porcelain', { cwd: path }).toString() !== ''
-
 }
 
 async function resetToMain(path : string) {
@@ -137,14 +119,17 @@ async function resetToMain(path : string) {
     })
 }
 
-
 async function checkoutBranchByName(path :string, branchName: string) {
     execSync(`git checkout ${branchName}`, {
         cwd: path,
     })
 }
 
+
+
+
 export async function resetAltTilMain() {
+
     const path = '/Users/kuls/code/flex-cloud-sql-tools' // Replace '.' with your repo path
     execSync('git fetch origin', { cwd: path })
 
@@ -152,20 +137,12 @@ export async function resetAltTilMain() {
 
     // 2. Branch handling
     const currentBranchName = await getCurrentBranchName(path)
-    const hasChanges = await repoHasChanges(path)
-    // const canFF = await canFastForward(path)
-    // const hasDiverged = await mainHasDiverged(path)
-    // const isAhead = await mainIsAhead(path)
-    // const isHEAD = currentBranchName === ''
+    const hasChanges = await repoHasUncommitedChanges(path)
+
         console.log([currentBranchName, hasChanges])
 
-
-
-
     // first deal with changes in a non main branch
-
     // then deal with a potential diverged or fast forwardable main branch again
-
     // this should also deal with detached head
     if (currentBranchName !== 'main' && hasChanges) {
         await createBackupBranch(path, currentBranchName) // empty string if detached head but that should be fine
@@ -176,20 +153,20 @@ export async function resetAltTilMain() {
     await checkoutBranchByName(path, 'main')
 
 
-    const canFF = await canFastForward(path)
-    const hasDiverged = await mainHasDiverged(path)
-    const isAhead = await mainIsAhead(path)
-    const isUpToDate = await mainUpToDate(path)
+    // const canFF = await canFastForward(path)
+    // const hasDiverged = await mainHasDiverged(path)
+    // const isAhead = await mainIsAhead(path)
+    // const isUpToDate = await mainUpToDate(path)
 
 
-    console.log([currentBranchName, canFF, hasDiverged, hasChanges])
+    //    console.log([currentBranchName, canFF, hasDiverged, hasChanges])
 
-    if (currentBranchName === 'main' && isUpToDate) {
+    if (currentBranchName === 'main' && await mainUpToDate(path)) {
         return
     }
 
     // when you are on main is in some ways an easier case, if we are not on main we might discover that there are also a diverged main in the repo
-    if (currentBranchName === 'main' && canFF) {
+    if (currentBranchName === 'main' && await canFastForward(path)) {
         await execSync('git pull', { cwd: path })
         return
     }
@@ -200,12 +177,12 @@ export async function resetAltTilMain() {
              await createBackupBranch(path, currentBranchName)
          }
 
-        if (await repoHasChanges(path)) {
+        if (await repoHasUncommitedChanges(path)) {
             await createBackupCommit(path)
         }
-        checkoutBranchByName(path, 'main') // checking out main again before reset
+        checkoutBranchByName(path, 'main') // checking out main again before reset, after backup
         // wait for 2 seconds
-         await delay(2000);
+         // await delay(2000);
         await resetToMain(path)
 
     }
@@ -221,20 +198,3 @@ export async function resetAltTilMain() {
 
 
 }
-//
-// async function handleMainBranch(repo: NodeGit.Repository) {
-//   const remoteMain = await NodeGit.Reference.nameToId(repo, 'refs/remotes/origin/main');
-//   const currentHead = await NodeGit.Reference.nameToId(repo, 'HEAD');
-//
-//   const canFastForward = await NodeGit.Merge.fastForward(repo, currentHead, remoteMain);
-//
-//   if (canFastForward) {
-//     // ... perform fast-forward
-//   } else {
-//     await createBackupCommit(repo);
-//     await repo.setHead('refs/remotes/origin/main'); // Reset to remote
-//   }
-// }
-//
-//
-//     log('\n\nAlt resatt til main')
