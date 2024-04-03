@@ -147,7 +147,7 @@ export async function resetRepoToMain(repoPath: string) {
     // if there are no unsaved changes, change to main is fine
     await checkoutBranchByName(repoPath, 'main')
 
-    // main is up to date with remote, no need to do anything
+    // main is up to date with remote, there is no need to do anything
     if ((await getCurrentBranchName(repoPath)) === 'main' && (await mainUpToDate(repoPath))) {
         return
     }
