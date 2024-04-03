@@ -119,6 +119,9 @@ async function repoHasUncommitedChanges(path: string): Promise<boolean> {
 }
 
 async function resetToMain(path: string) {
+    if (await repoHasUncommitedChanges(path)) {
+        new Error('Did not clean up suffiently before reset to main')
+    }
     execSync('git reset --hard origin/main', {
         cwd: path,
     })
