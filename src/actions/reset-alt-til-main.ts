@@ -211,5 +211,3 @@ export async function resetAltTilMain() {
         await resetRepoToMain(repoPath)
     }
 }
-
-resetAltTilMain()
