@@ -30,55 +30,54 @@ if the current branch is main But you are ahead of remote main, it's a bit diffe
 //   return new Promise(resolve => setTimeout(resolve, ms));
 // }
 
+enum GitBranchStatus {
+    UP_TO_DATE = "Your branch is up to date with 'origin/main'",
+    BEHIND_CAN_FAST_FORWARD = "Your branch is behind 'origin/main' and can be fast-forwarded",
+    DIVERGED = "Your branch and 'origin/main' have diverged",
+    AHEAD = "Your branch is ahead of 'origin/main'",
+    BEHIND_CANNOT_FAST_FORWARD = "Your branch is behind 'origin/main'",
+}
+async function checkGitBranchStatus(path: string): Promise<GitBranchStatus> {
+        const gitStatusOutput = execSync('git status', { cwd: path }).toString();
+        console.log(gitStatusOutput)
+        if (await getCurrentBranchName(path) !== 'main') {
+            throw new Error('Error: This function should only be called on main branch')
+        }
+
+        if (gitStatusOutput.includes(GitBranchStatus.UP_TO_DATE)) {
+            return GitBranchStatus.UP_TO_DATE;
+        } else if (gitStatusOutput.includes("Your branch is behind 'origin/main'") && gitStatusOutput.includes("and can be fast-forwarded")) {
+            return GitBranchStatus.BEHIND_CAN_FAST_FORWARD;
+        } else if (gitStatusOutput.includes("Your branch is behind 'origin/main'") && !gitStatusOutput.includes("and can be fast-forwarded")) {
+            return GitBranchStatus.BEHIND_CANNOT_FAST_FORWARD;
+        } else if (gitStatusOutput.includes(GitBranchStatus.DIVERGED)) {
+            return GitBranchStatus.DIVERGED;
+        } else if (gitStatusOutput.includes(GitBranchStatus.AHEAD)) {
+            return GitBranchStatus.AHEAD;
+        } else {
+            console.log('======')
+            console.log(gitStatusOutput)
+            console.log('======')
+            throw new Error('All possible cases should be covered.')
+        }
+}
 async function canFastForward(path: string): Promise<boolean> {
-    try {
-        const gitStatusOutput = execSync('git status', { cwd: path }).toString()
-        // console.log(gitStatusOutput)
-        // Check if the output contains the phrase indicating fast-forward is possible
-        return gitStatusOutput.includes('Your branch is behind') && gitStatusOutput.includes('can be fast-forwarded')
-    } catch (error) {
-        console.error('Error checking fast-forward status:', error)
-        return false
-    }
+    return await checkGitBranchStatus(path) === GitBranchStatus.BEHIND_CAN_FAST_FORWARD
 }
-
-async function mainHasDiverged(path: string): Promise<boolean> {
-    try {
-        const gitStatusOutput = execSync('git status', { cwd: path }).toString()
-        // console.log(gitStatusOutput)
-        // Check for the phrase indicating divergence
-        return gitStatusOutput.includes('have diverged') && gitStatusOutput.includes('different commits each')
-    } catch (error) {
-        console.error('Error checking divergence status:', error)
-        return false
-    }
-}
-
 async function mainIsAhead(path: string): Promise<boolean> {
-    try {
-        const gitStatusOutput = execSync('git status', { cwd: path }).toString()
-        // console.log(gitStatusOutput)
-        // Check for the phrase indicating divergence
-        return gitStatusOutput.includes("Your branch is ahead of 'origin/main'")
-    } catch (error) {
-        console.error('Error checking ahead status:', error)
-        return false
-    }
+       return await checkGitBranchStatus(path) === GitBranchStatus.AHEAD
 }
 
 async function mainUpToDate(path: string): Promise<boolean> {
-    try {
-        const gitStatusOutput = execSync('git status', { cwd: path }).toString()
-        console.log(gitStatusOutput)
-        // Check for the phrase indicating divergence
-        const upToDateStatus = gitStatusOutput.includes("Your branch is up to date with 'origin/main'")
-        console.log(upToDateStatus)
-        return upToDateStatus
-    } catch (error) {
-        console.error('Error checking up to date status:', error)
-        return false
-    }
+   return await checkGitBranchStatus(path) === GitBranchStatus.UP_TO_DATE
 }
+
+async function mainHasDiverged(path: string): Promise<boolean> {
+   return await checkGitBranchStatus(path) === GitBranchStatus.DIVERGED
+}
+
+
+
 
 async function getCurrentBranchName(path: string): Promise<string> {
     /* if it is nothing, you are probably at main */
@@ -189,20 +188,6 @@ export async function resetRepoToMain(repoPath: string) {
 
 export async function resetAltTilMain() {
     console.log('Resetter alt til main')
-    // const response = await prompts([
-    //     {
-    //         type: 'confirm',
-    //         name: 'ok',
-    //         message:
-    //             "Denne kommandoen lager backup commits av alle lokale endringer i flex repoer og resetter deretter til main. Om du har comittet endringer i main lokalt må du håndtere dette manuelt. Er du sikker på at du vil kjøre kommandoen?',\n",
-    //     },
-    // ])
-    //
-    // if (!response.ok) {
-    //     process.exit(1)
-    // }
-
-    // const listOfRepos = ['flex-bigquery-terraform'].map((x) => ({ name: x }))
 
     for (const repo of config.repos) {
     // for (const repo of listOfRepos) {
@@ -226,3 +211,5 @@ export async function resetAltTilMain() {
         await resetRepoToMain(repoPath)
     }
 }
+
+resetAltTilMain()
