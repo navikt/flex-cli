@@ -1,35 +1,13 @@
 // import * as fs from 'fs'
 import { execSync } from 'node:child_process'
 import fs from 'fs'
-import path  from 'node:path'
+import path from 'node:path'
 
 import prompts from 'prompts'
 
 import { config } from '../config/config.ts'
 import { log } from '../common/log.ts'
-
-// import prompts from 'prompts'
-
-// import { config } from '../config/config'
-// import { log } from '../common/log.ts'
-
-/*
-todo you forgot you were on bun and npm installed
-
-What you would like to do:
-
-look at teh github repo:
-Are there untracked changes and/or staged changes, add to staged, and make a backup commit to the current branch IF the current branch is not, if it is then create a new backup branch with a timestamp
-If there are committed changes to a branch which is not the main branch, there is no problem and you can continue
-If the current branch is the main branch, it's a bit more complicated, if you can fast forward and the current main is behind the remote main, you can just fast forward
-if the current branch is main But you are ahead of remote main, it's a bit different than you need to create back up commit and reset main to remote
-
- */
-
-// async function delay(ms : number) {
-//   return new Promise(resolve => setTimeout(resolve, ms));
-// }
-
+import { simpleGit, CleanOptions } from 'simple-git';
 enum GitBranchStatus {
     UP_TO_DATE = "Your branch is up to date with 'origin/main'",
     BEHIND_CAN_FAST_FORWARD = "Your branch is behind 'origin/main' and can be fast-forwarded",
@@ -38,46 +16,49 @@ enum GitBranchStatus {
     BEHIND_CANNOT_FAST_FORWARD = "Your branch is behind 'origin/main'",
 }
 async function checkGitBranchStatus(path: string): Promise<GitBranchStatus> {
-        const gitStatusOutput = execSync('git status', { cwd: path }).toString();
-        console.log(gitStatusOutput)
-        if (await getCurrentBranchName(path) !== 'main') {
-            throw new Error('Error: This function should only be called on main branch')
-        }
+    const gitStatusOutput = execSync('git status', { cwd: path }).toString()
+    console.log(gitStatusOutput)
+    if ((await getCurrentBranchName(path)) !== 'main') {
+        throw new Error('Error: This function should only be called on main branch')
+    }
 
-        if (gitStatusOutput.includes(GitBranchStatus.UP_TO_DATE)) {
-            return GitBranchStatus.UP_TO_DATE;
-        } else if (gitStatusOutput.includes("Your branch is behind 'origin/main'") && gitStatusOutput.includes("and can be fast-forwarded")) {
-            return GitBranchStatus.BEHIND_CAN_FAST_FORWARD;
-        } else if (gitStatusOutput.includes("Your branch is behind 'origin/main'") && !gitStatusOutput.includes("and can be fast-forwarded")) {
-            return GitBranchStatus.BEHIND_CANNOT_FAST_FORWARD;
-        } else if (gitStatusOutput.includes(GitBranchStatus.DIVERGED)) {
-            return GitBranchStatus.DIVERGED;
-        } else if (gitStatusOutput.includes(GitBranchStatus.AHEAD)) {
-            return GitBranchStatus.AHEAD;
-        } else {
-            console.log('======')
-            console.log(gitStatusOutput)
-            console.log('======')
-            throw new Error('All possible cases should be covered.')
-        }
+    if (gitStatusOutput.includes(GitBranchStatus.UP_TO_DATE)) {
+        return GitBranchStatus.UP_TO_DATE
+    } else if (
+        gitStatusOutput.includes("Your branch is behind 'origin/main'") &&
+        gitStatusOutput.includes('and can be fast-forwarded')
+    ) {
+        return GitBranchStatus.BEHIND_CAN_FAST_FORWARD
+    } else if (
+        gitStatusOutput.includes("Your branch is behind 'origin/main'") &&
+        !gitStatusOutput.includes('and can be fast-forwarded')
+    ) {
+        return GitBranchStatus.BEHIND_CANNOT_FAST_FORWARD
+    } else if (gitStatusOutput.includes(GitBranchStatus.DIVERGED)) {
+        return GitBranchStatus.DIVERGED
+    } else if (gitStatusOutput.includes(GitBranchStatus.AHEAD)) {
+        return GitBranchStatus.AHEAD
+    } else {
+        console.error('======')
+        console.error(gitStatusOutput)
+        console.error('======')
+        throw new Error('All possible cases should be covered.')
+    }
 }
 async function canFastForward(path: string): Promise<boolean> {
-    return await checkGitBranchStatus(path) === GitBranchStatus.BEHIND_CAN_FAST_FORWARD
+    return (await checkGitBranchStatus(path)) === GitBranchStatus.BEHIND_CAN_FAST_FORWARD
 }
 async function mainIsAhead(path: string): Promise<boolean> {
-       return await checkGitBranchStatus(path) === GitBranchStatus.AHEAD
+    return (await checkGitBranchStatus(path)) === GitBranchStatus.AHEAD
 }
 
 async function mainUpToDate(path: string): Promise<boolean> {
-   return await checkGitBranchStatus(path) === GitBranchStatus.UP_TO_DATE
+    return (await checkGitBranchStatus(path)) === GitBranchStatus.UP_TO_DATE
 }
 
 async function mainHasDiverged(path: string): Promise<boolean> {
-   return await checkGitBranchStatus(path) === GitBranchStatus.DIVERGED
+    return (await checkGitBranchStatus(path)) === GitBranchStatus.DIVERGED
 }
-
-
-
 
 async function getCurrentBranchName(path: string): Promise<string> {
     /* if it is nothing, you are probably at main */
@@ -96,11 +77,10 @@ async function createBackupCommit(path: string) {
 
 async function backupBranchRequired(path: string): Promise<boolean> {
     /*
-       returns output like this, if there is more than one branch at a commit reset of the current branch cannot cause data loss
+      returns output like this, if there is more than one branch at a commit reset of the current branch cannot cause data loss
        $ git branch --contains
         jdflsj
        * main
-
      */
     const commandOutput = execSync('git branch --contains', { cwd: path }).toString().trim()
     const nrOfLines = commandOutput.split('\n').length
@@ -132,14 +112,14 @@ async function checkoutBranchByName(path: string, branchName: string) {
     })
 }
 
-
 async function repoFinishedAsExpected(repoPath: string): Promise<boolean> {
-    return (await getCurrentBranchName(repoPath) === 'main') && (await mainUpToDate(repoPath))
+    return (await getCurrentBranchName(repoPath)) === 'main' && (await mainUpToDate(repoPath))
 }
 
 export async function resetRepoToMain(repoPath: string) {
     console.log(`Resetting ${repoPath} to main`)
     execSync('git fetch', { cwd: repoPath })
+    const git = simpleGit(repoPath);
 
     if (await repoHasUncommitedChanges(repoPath)) {
         await createBackupBranch(repoPath, await getCurrentBranchName(repoPath)) // empty string if detached head but that should be fine
@@ -162,11 +142,13 @@ export async function resetRepoToMain(repoPath: string) {
         } else {
             new Error('Error: Repo did not finish as expected')
         }
-
     }
 
     // main has diverged or is ahead of remote
-    if ((await getCurrentBranchName(repoPath)) === 'main' && ((await mainHasDiverged(repoPath)) || (await mainIsAhead(repoPath)))) {
+    if (
+        (await getCurrentBranchName(repoPath)) === 'main' &&
+        ((await mainHasDiverged(repoPath)) || (await mainIsAhead(repoPath)))
+    ) {
         if (await backupBranchRequired(repoPath)) {
             await createBackupBranch(repoPath, await getCurrentBranchName(repoPath))
         }
@@ -179,18 +161,30 @@ export async function resetRepoToMain(repoPath: string) {
         if (await repoFinishedAsExpected(repoPath)) {
             return
         } else {
-            new Error('Error: Repo did not finish as expected')
+            new Error('Error: Repo cleanup was not finished as expected')
         }
     }
     new Error('Error: Did not expect to get here, a case was not covered')
 }
 
-
 export async function resetAltTilMain() {
+        const response = await prompts([
+        {
+            type: 'confirm',
+            name: 'ok',
+            message:
+                "Denne kommandoen lager backup commits av alle lokale endringer i flex repoer og resetter deretter til main. Om du har comittet endringer i main lokalt må du håndtere dette manuelt. Er du sikker på at du vil kjøre kommandoen?',\n",
+        },
+    ])
+
+    if (!response.ok) {
+        process.exit(1)
+    }
+
     console.log('Resetter alt til main')
 
     for (const repo of config.repos) {
-    // for (const repo of listOfRepos) {
+        // for (const repo of listOfRepos) {
         const relativePath = `../${repo.name}`
         const repoPath = path.resolve(relativePath)
         console.log(`Checking ${repoPath}`)
@@ -205,7 +199,6 @@ export async function resetAltTilMain() {
             log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon-alle'`)
             continue
         }
-
 
         console.log('ready to reset')
         await resetRepoToMain(repoPath)
