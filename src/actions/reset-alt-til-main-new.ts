@@ -27,13 +27,7 @@ async function mainHasDiverged(path: string): Promise<boolean> {
 }
 
 async function getCurrentBranchName(path: string): Promise<string> {
-    /* if it is nothing, you are probably at main */
-    try {
-        return execSync('git branch --show-current', { cwd: path }).toString().trim()
-    } catch (error) {
-        console.error('Error getting current branch:', error)
-        return ''
-    }
+    return execSync('git branch --show-current', { cwd: path }).toString().trim()
 }
 async function createBackupCommit(path: string) {
     execSync('git add -A', { cwd: path })
@@ -127,7 +121,7 @@ export async function resetRepoToMain(repoPath: string) {
 }
 
 export async function resetAltTilMainNew() {
-        const response = await prompts([
+    const response = await prompts([
         {
             type: 'confirm',
             name: 'ok',

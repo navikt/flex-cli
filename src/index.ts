@@ -82,4 +82,3 @@ await yargs(hideBin(process.argv))
     .demandCommand()
     .strict()
     .parse()
-
