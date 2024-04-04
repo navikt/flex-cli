@@ -50,7 +50,6 @@ async function createBackupBranch(path: string, branchName: string) {
 async function repoHasUncommitedChanges(path: string): Promise<boolean> {
     return execSync('git status --porcelain', { cwd: path }).toString() !== ''
 }
-
 async function resetToMain(path: string) {
     if (await repoHasUncommitedChanges(path)) {
         new Error('Did not clean up suffiently before reset to main')
@@ -59,17 +58,14 @@ async function resetToMain(path: string) {
         cwd: path,
     })
 }
-
 async function checkoutBranchByName(path: string, branchName: string) {
     execSync(`git checkout ${branchName}`, {
         cwd: path,
     })
 }
-
 async function repoFinishedAsExpected(repoPath: string): Promise<boolean> {
     return (await getCurrentBranchName(repoPath)) === 'main' && (await mainUpToDate(repoPath))
 }
-
 export async function resetRepoToMain(repoPath: string) {
     log(`Resetting ${repoPath} to main`)
     execSync('git fetch', { cwd: repoPath })
