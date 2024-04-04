@@ -5,6 +5,7 @@ import { klonAlle } from './actions/klon-alle.ts'
 import { startDependabotMerge } from './actions/start-dependabot-merge.ts'
 import { verifiserRepoer } from './actions/verifiser.ts'
 import { resetAltTilMain } from './actions/reset-alt-til-main.ts'
+import { resetAltTilMainNew } from './actions/reset-alt-til-main-new.ts'
 import { branchCommitPush } from './actions/branch-commit-push.ts'
 import { lastCommits } from './actions/last-commits.ts'
 import { distrolessbump } from './actions/distrolessbump.ts'
@@ -54,6 +55,11 @@ await yargs(hideBin(process.argv))
         'Resetter alle repoer til main og fjerner lokale endringer',
         async () => await resetAltTilMain(),
     )
+    .command(
+        'reset-main-new',
+        'Resetter alle repoer til main og fjerner lokale endringer',
+        async () => await resetAltTilMainNew(),
+    )
     .command('gradle-bump', 'Bumper gradle i alle repoer', async () => await gradleBump())
     .command(
         'commits',
@@ -76,3 +82,4 @@ await yargs(hideBin(process.argv))
     .demandCommand()
     .strict()
     .parse()
+
