@@ -7,7 +7,7 @@ import prompts from 'prompts'
 
 import { config } from '../config/config.ts'
 import { log } from '../common/log.ts'
-import { simpleGit, CleanOptions } from 'simple-git';
+// import { simpleGit } from 'simple-git';
 enum GitBranchStatus {
     UP_TO_DATE = "Your branch is up to date with 'origin/main'",
     BEHIND_CAN_FAST_FORWARD = "Your branch is behind 'origin/main' and can be fast-forwarded",
@@ -74,18 +74,13 @@ async function createBackupCommit(path: string) {
     execSync('git add -A', { cwd: path })
     execSync(`git commit -m "Backup commit"`, { cwd: path })
 }
-
 async function backupBranchRequired(path: string): Promise<boolean> {
     /*
-      returns output like this, if there is more than one branch at a commit reset of the current branch cannot cause data loss
-       $ git branch --contains
-        jdflsj
-       * main
+      The "git branch --contains" command below outputs a newline separated list of branches with an extra line at the
+      end. This means we can use the output to see how many branches exist at the current commit point.
      */
     const commandOutput = execSync('git branch --contains', { cwd: path }).toString().trim()
     const nrOfLines = commandOutput.split('\n').length
-    console.log(nrOfLines)
-    console.log(commandOutput)
     return 1 >= nrOfLines // if there is only one branch at the commit, we need to create a backup branch before resetting main
 }
 async function createBackupBranch(path: string, branchName: string) {
@@ -119,14 +114,13 @@ async function repoFinishedAsExpected(repoPath: string): Promise<boolean> {
 export async function resetRepoToMain(repoPath: string) {
     console.log(`Resetting ${repoPath} to main`)
     execSync('git fetch', { cwd: repoPath })
-    const git = simpleGit(repoPath);
 
     if (await repoHasUncommitedChanges(repoPath)) {
         await createBackupBranch(repoPath, await getCurrentBranchName(repoPath)) // empty string if detached head but that should be fine
         await createBackupCommit(repoPath)
     }
 
-    // if there are no unsaved changes, change to main is fine
+    // if there are no unsaved changes, checking out the main branch is fine
     await checkoutBranchByName(repoPath, 'main')
 
     // main is up to date with remote, there is no need to do anything
