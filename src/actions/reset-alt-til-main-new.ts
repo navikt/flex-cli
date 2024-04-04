@@ -144,7 +144,6 @@ export async function resetAltTilMainNew() {
     console.log('Resetter alt til main')
 
     for (const repo of config.repos) {
-        // for (const repo of listOfRepos) {
         const relativePath = `../${repo.name}`
         const repoPath = path.resolve(relativePath)
         console.log(`Checking ${repoPath}`)
