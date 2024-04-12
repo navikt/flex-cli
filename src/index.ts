@@ -13,6 +13,8 @@ import { secrets } from './actions/secrets.ts'
 import { approvePr } from './actions/approvePr.ts'
 import { slettGone } from './actions/slettGoneBranches.ts'
 import { gradleBump } from './actions/gradlebump.ts'
+import { finnReleases } from './actions/finn-releases.ts'
+import { slettReleases } from './actions/slett-releases.ts'
 
 await yargs(hideBin(process.argv))
     .scriptName('npm start')
@@ -50,6 +52,8 @@ await yargs(hideBin(process.argv))
         async () => await distrolessbump(),
     )
     .command('patch-repoer', 'Patcher github oppsettet i alle repoer', async () => await verifiserRepoer())
+    .command('finn-releases', 'Finner relases', async () => await finnReleases())
+    .command('slett-releases', 'Fjerner relases', async () => await slettReleases())
     .command(
         'reset-main',
         'Resetter alle repoer til main og fjerner lokale endringer',
