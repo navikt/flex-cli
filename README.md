@@ -10,7 +10,8 @@ Fila distroless.yml inneholder konfigurasjon for hvilke apper som bruker ulike d
 
 # Komme i gang
 
-Legg et personal GITHUB accesttoken i en .env fil. Accestokenet legges bak `GITHUB_PAT=`. Fila er gitignored
+Lag en token på https://github.com/settings/tokens og trykk configure SSO og gi tilgang til navikt.
+Legg til tokenet i en .env fil i prosjektet, denne filen er ignored. Alternativt legger du den til i environment på maskinen. Accestokenet legges bak `GITHUB_PAT=`.
 
 ```
 GITHUB_PAT=ghp_123abc....
