@@ -4,7 +4,6 @@ repos:
       - flex-internal-frontend
       - flex-juridisk-vurdering-test-frontend
       - flex-testdata-generator
-      - flex-openapi-docs-ui
     checks:
       - felles-workflow / Bygg, test og publiser docker image
 
