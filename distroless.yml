@@ -9,7 +9,6 @@ distroless:
       - spinnsyn-frontend
       - sykepengesoknad-frontend
       - ditt-sykefravaer
-      - flex-openapi-docs-ui
       - flex-arkitektur
 
   - image: java21-debian12
