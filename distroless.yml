@@ -31,6 +31,7 @@ distroless:
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
       - flex-joark-mottak
+      - flex-datastream-test
 ignore:
   - flex-bigquery-terraform
   - flex-slack-reminders
