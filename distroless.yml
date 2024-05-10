@@ -4,7 +4,6 @@ distroless:
       - flexjar-frontend
       - flex-internal-frontend
       - flex-trello-docs
-      - flex-juridisk-vurdering-test-frontend
       - flex-testdata-generator
       - spinnsyn-frontend
       - sykepengesoknad-frontend
@@ -16,7 +15,6 @@ distroless:
       - sykepengesoknad-backend
       - flex-inntektsmelding-status
       - flex-modia-kontakt-metrikk
-      - flex-juridisk-vurdering-test-backend
       - flexjar-backend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering

@@ -2,7 +2,6 @@ owner: navikt
 repos:
   - reponame:
       - flex-internal-frontend
-      - flex-juridisk-vurdering-test-frontend
       - flex-testdata-generator
     checks:
       - felles-workflow / Bygg, test og publiser docker image
@@ -54,11 +53,6 @@ repos:
       - flex-sykepengesoknad-pdfgen
     checks:
       - Bygg, test og publiser docker image
-
-  - reponame:
-      - flex-juridisk-vurdering-test-backend
-    checks:
-      - Bygg, test og push Docker image
 
   - reponame:
       - flex-github-actions-workflows
