@@ -29,7 +29,6 @@ repos:
       - sykepengesoknad-ikke-sendt-altinnvarsel
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
-      - flex-datastream-test
       - flex-identer-cache
     checks:
       - felles-workflow / Bygg og publiser

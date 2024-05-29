@@ -28,7 +28,6 @@ distroless:
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
       - flex-joark-mottak
-      - flex-datastream-test
       - flex-identer-cache
 ignore:
   - flex-bigquery-terraform
