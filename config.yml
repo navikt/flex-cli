@@ -67,6 +67,7 @@ repos:
       - flex-bigquery-terraform
       - flex-slack-reminders
       - flex-trello-docs
+      - flexjar-infoskjerm
       - flex-bigquery-soda
       - omrade-helse-etterlevelse-topic
       - flex-arkitektur

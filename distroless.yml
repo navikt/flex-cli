@@ -9,6 +9,7 @@ distroless:
       - sykepengesoknad-frontend
       - ditt-sykefravaer
       - flex-arkitektur
+      - flexjar-infoskjerm
 
   - image: java21-debian12
     appname:
