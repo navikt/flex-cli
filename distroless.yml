@@ -3,7 +3,6 @@ distroless:
     appname:
       - flexjar-frontend
       - flex-internal-frontend
-      - flex-trello-docs
       - flex-testdata-generator
       - spinnsyn-frontend
       - sykepengesoknad-frontend
