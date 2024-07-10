@@ -1,6 +1,17 @@
 owner: navikt
 repos:
   - reponame:
+      - flex-bigquery-terraform
+      - flex-slack-reminders
+      - flexjar-infoskjerm
+      - flex-bigquery-soda
+      - omrade-helse-etterlevelse-topic
+      - flex-arkitektur
+      - flex-quarto-template
+      - flex-datafortelling
+      - flex-slack-metrikker
+
+  - reponame:
       - flex-internal-frontend
       - flex-testdata-generator
     checks:
@@ -63,12 +74,3 @@ repos:
     checks:
       - Bygg og lint
 
-  - reponame:
-      - flex-bigquery-terraform
-      - flex-slack-reminders
-      - flexjar-infoskjerm
-      - flex-bigquery-soda
-      - omrade-helse-etterlevelse-topic
-      - flex-arkitektur
-      - flex-quarto-template
-      - flex-datafortelling
