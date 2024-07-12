@@ -28,7 +28,6 @@ repos:
       - playwright
 
   - reponame:
-      - flex-modia-kontakt-metrikk
       - flexjar-backend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering

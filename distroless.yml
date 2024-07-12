@@ -14,7 +14,6 @@ distroless:
     appname:
       - sykepengesoknad-backend
       - flex-inntektsmelding-status
-      - flex-modia-kontakt-metrikk
       - flexjar-backend
       - ditt-sykefravaer-backend
       - spinnsyn-arkivering
