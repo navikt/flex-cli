@@ -29,6 +29,7 @@ distroless:
       - syfosoknadbrukernotifikasjon
       - flex-joark-mottak
       - flex-identer-cache
+      - flex-slack-metrikker
 ignore:
   - flex-bigquery-terraform
   - flex-slack-reminders

@@ -1,6 +1,11 @@
 owner: navikt
 repos:
   - reponame:
+      - flex-slack-metrikker
+    checks:
+      - Bygg, test og publiser docker image
+
+  - reponame:
       - flex-bigquery-terraform
       - flex-slack-reminders
       - flexjar-infoskjerm
@@ -9,7 +14,6 @@ repos:
       - flex-arkitektur
       - flex-quarto-template
       - flex-datafortelling
-      - flex-slack-metrikker
 
   - reponame:
       - flex-internal-frontend

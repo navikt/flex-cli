@@ -10,9 +10,6 @@ export async function verifiserRepoer() {
     const githubrepos = (await getAllRepos()).map((it) => it.name)
     for (const r of config.repos) {
         log(`${r.name}`)
-        if (!githubrepos.includes(r.name)) {
-            log(`Repo ${r.name} finnes ikke på github`)
-        }
         await verifiserRepo(r)
     }
 
