@@ -45,16 +45,19 @@ export async function distrolessbump() {
             },
         ])
         if (oppgradere.ok) {
-            const response = await fetch(`https://gcr.io/v2/distroless/${r.image}/tags/list`)
-            const res = (await response.json()) as DistrolessTags // HTML string
-            let latestSha: string | null = null
+            // const response = await fetch(`https://gcr.io/v2/distroless/${r.image}/tags/list`)
+            ///  const res = (await response.json()) as DistrolessTags // HTML string
+            const latestSha: string | null = 'sha256:e4cb46a49683df2fd5a93bc669f0c56942d75ea6d08b08f506cc70ca686c5e57'
 
-            for (const sha in res.manifest) {
-                if (res.manifest[sha].tag.includes('latest')) {
-                    latestSha = sha
-                    break // Break out of loop once we find the 'latest' tag
+                /*
+                for (const sha in res.manifest) {
+                    if (res.manifest[sha].tag.includes('latest')) {
+                        latestSha = sha
+                        break // Break out of loop once we find the 'latest' tag
+                    }
                 }
-            }
+                */
+
             if (!latestSha) {
                 log(`Fant ikke latest tag for ${r.image}`)
                 process.exit(1)
