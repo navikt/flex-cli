@@ -12,12 +12,12 @@
         "format": "npm run lint:fix && npm run prettier:write"
     },
     "dependencies": {
-        "@octokit/rest": "^20.0.2",
+        "@octokit/rest": "^21.0.2",
         "date-fns": "^3.3.1",
         "dotenv": "^16.3.1",
         "eslint": "^8.50.0",
         "libsodium-wrappers": "^0.7.13",
-        "octokit": "^3.1.2",
+        "octokit": "^4.0.2",
         "prompts": "^2.4.2",
         "remeda": "^1.27.0",
         "typescript": "^5.2.2",

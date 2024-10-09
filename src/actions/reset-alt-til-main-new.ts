@@ -130,12 +130,12 @@ export async function resetAltTilMainNew() {
         process.exit(1)
     }
 
+    // eslint-disable-next-line no-console
     console.log('Resetter alt til main')
 
     for (const repo of config.repos) {
         const relativePath = `../${repo.name}`
         const repoPath = path.resolve(relativePath)
-        console.log(`Checking ${repoPath}`)
         if (repo.name === 'flex-cli') {
             log(`Repo ${repo.name} er flex-cli. Ignorerer`)
             continue
@@ -148,7 +148,6 @@ export async function resetAltTilMainNew() {
             continue
         }
 
-        console.log('ready to reset')
         await resetRepoToMain(repoPath)
     }
 }

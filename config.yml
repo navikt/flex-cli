@@ -76,4 +76,3 @@ repos:
       - flex-cli
     checks:
       - Bygg og lint
-
