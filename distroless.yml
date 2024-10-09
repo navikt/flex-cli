@@ -20,6 +20,7 @@ distroless:
       - spinnsyn-backend
       - spinnsyn-brukernotifikasjon
       - flex-syketilfelle
+      - flex-sykmeldinger-backend
       - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
       - sykepengesoknad-kvitteringer
