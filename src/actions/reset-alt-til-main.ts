@@ -116,7 +116,7 @@ export async function resetRepoToMain(repoPath: string) {
     new Error('Error: Did not expect to get here, a case was not covered')
 }
 
-export async function resetAltTilMainNew() {
+export async function resetAltTilMain() {
     const response = await prompts([
         {
             type: 'confirm',

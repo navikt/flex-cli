@@ -5,7 +5,7 @@ import prompts from 'prompts'
 import { log } from '../common/log.ts'
 import { getAllRepos } from '../common/get-all-repos.ts'
 
-import { resetAltTilMainNew } from './reset-alt-til-main-new.js'
+import { resetAltTilMain } from './reset-alt-til-main.js'
 import { branchCommitPushAuto } from './branch-commit-push.ts'
 
 export async function gradleBump() {
@@ -21,7 +21,7 @@ export async function gradleBump() {
         },
     ])
     if (!pullok.ok) {
-        await resetAltTilMainNew()
+        await resetAltTilMain()
     }
 
     const repoerMedEndringer: string[] = []
