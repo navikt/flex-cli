@@ -14,6 +14,7 @@ repos:
       - flex-arkitektur
       - flex-quarto-template
       - flex-datafortelling
+      - terraform-google-bigquery-datastream
 
   - reponame:
       - flex-internal-frontend
