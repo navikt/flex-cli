@@ -13,6 +13,7 @@ distroless:
   - image: java21-debian12
     appname:
       - sykepengesoknad-backend
+      - flex-auditlogger
       - flex-inntektsmelding-status
       - flexjar-backend
       - ditt-sykefravaer-backend
@@ -42,3 +43,4 @@ ignore:
   - omrade-helse-etterlevelse-topic
   - flex-quarto-template
   - flex-datafortelling
+  - terraform-google-bigquery-datastream
