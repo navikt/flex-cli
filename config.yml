@@ -61,6 +61,10 @@ repos:
       - felles-workflow / cypress (1)
       - felles-workflow / cypress (2)
       - felles-workflow / cypress (3)
+      - felles-workflow / playwright (1)
+      - felles-workflow / playwright (2)
+      - felles-workflow / playwright (3)
+      - felles-workflow / playwright (4)
       - felles-workflow / lint
       - felles-workflow / unit-test
 
