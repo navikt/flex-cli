@@ -6,6 +6,11 @@ repos:
       - Bygg, test og publiser docker image
 
   - reponame:
+      - flex-auditlogger
+    checks:
+      - Bygg, test og publiser docker image
+
+  - reponame:
       - flex-bigquery-terraform
       - flex-slack-reminders
       - flexjar-infoskjerm
