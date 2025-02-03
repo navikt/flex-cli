@@ -51,6 +51,7 @@ repos:
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
       - flex-identer-cache
+      - flex-brreg-proxy
     checks:
       - felles-workflow / Bygg og publiser
       - felles-workflow / Lint
