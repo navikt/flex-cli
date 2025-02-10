@@ -52,6 +52,7 @@ repos:
       - syfosoknadbrukernotifikasjon
       - flex-identer-cache
       - flex-brreg-proxy
+      - flex-arbeidssokerregister-oppdatering
     checks:
       - felles-workflow / Bygg og publiser
       - felles-workflow / Lint
