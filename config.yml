@@ -24,6 +24,7 @@ repos:
   - reponame:
       - flex-internal-frontend
       - flex-testdata-generator
+      - sprototyp
     checks:
       - felles-workflow / Bygg, test og publiser docker image
 

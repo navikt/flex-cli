@@ -9,6 +9,7 @@ distroless:
       - ditt-sykefravaer
       - flex-arkitektur
       - flexjar-infoskjerm
+      - sprototyp
 
   - image: java21-debian12
     appname:
