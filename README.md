@@ -19,8 +19,8 @@ GITHUB_PAT=ghp_123abc....
 
 ### Oppsett
 
-- Du må ha [Node.js](https://nodejs.org/en/) installert.
-- Du må ha [bun.sh](https://bun.sh) installert, dette kan installeres med curl (`curl -fsSL https://bun.sh/install | bash`)
+-   Du må ha [Node.js](https://nodejs.org/en/) installert.
+-   Du må ha [bun.sh](https://bun.sh) installert, dette kan installeres med curl (`curl -fsSL https://bun.sh/install | bash`)
 
 ### Hvordan kjøre flex cli
 
