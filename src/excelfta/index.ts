@@ -121,7 +121,7 @@ rows.forEach((row, i) => {
             fom: format(nyVedtaksFom, 'yyyy-MM-dd'),
             tom: format(tom, 'yyyy-MM-dd'),
             status: 'FATTET',
-            statusAt: '2025-03-019T00:00:00.000000Z',
+            statusAt: '2025-03-20T00:00:00.000000Z',
             statusBy: 'Initiell import',
         },
     }
