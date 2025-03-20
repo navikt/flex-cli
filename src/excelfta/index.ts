@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from 'fs'
 
 import * as XLSX from 'xlsx'
 import { v4 } from 'uuid'
-import { addDays, format, isFriday, isMonday, isSunday } from 'date-fns'
+import { addDays, format, isSunday } from 'date-fns'
 
 const buf = readFileSync('fa-prod-19-3.xlsx')
 
@@ -16,13 +16,16 @@ const result = [] as any[]
 
 function excelDateToDate(excelDate: number) {
     // Excel bruker 1899-12-30 som startdato, og 1 dag = 86400 sekunder
-    let date = new Date((excelDate - 25569) * 86400 * 1000)
+    const date = new Date((excelDate - 25569) * 86400 * 1000)
     format(date, 'yyyy-MM-dd') // Test format for at den skal kaste feil
     return date
 }
 
-const radMedFeil = [] as string []
-const fnrs = [] as string []
+const radMedFeil = [] as string[]
+const fnrs = [] as string[]
+const seenFnr = [] as string[]
+const duplikatFnr = [] as string[]
+
 // Iterer over radene og print kolonnene separert med space
 rows.forEach((row, i) => {
     if (row.length === 0 || i == 0) return
@@ -42,13 +45,18 @@ rows.forEach((row, i) => {
 
     let personident = ''
     try {
-
         personident = fnr()
     } catch (e) {
         radMedFeil.push(row[0] + ' Fødselsnummer uleselig i rad: ' + (i + 1))
         return
     }
     fnrs.push(personident)
+
+    if (seenFnr.includes(personident)) {
+        duplikatFnr.push(personident)
+    } else {
+        seenFnr.push(personident)
+    }
 
     let fom: Date | undefined = undefined
     let tom: Date | undefined = undefined
@@ -92,7 +100,6 @@ rows.forEach((row, i) => {
         return
     }
 
-
     function skapNyVedtaksFom() {
         if (utbetalt) {
             return addDays(utbetalt, 1)
@@ -101,7 +108,6 @@ rows.forEach((row, i) => {
     }
 
     const nyVedtaksFom = skapNyVedtaksFom()
-
 
     if (utbetalt) {
         if (!isSunday(utbetalt)) {
@@ -128,16 +134,20 @@ rows.forEach((row, i) => {
     result.push(obj)
 })
 
-// Pretty print result objekt json til en ny fil i /build mappa
+const resultUtenDuplikateFnr = result.filter((r) => !duplikatFnr.includes(r.friskTilArbeidVedtakStatus.personident))
 
 // Skriv til fil
-const json = JSON.stringify(result, null, 2)
+const json = JSON.stringify(resultUtenDuplikateFnr, null, 2)
 const filename = 'build/result.json'
 writeFileSync(filename, json)
-
 
 const feilFilename = 'build/feil.txt'
 writeFileSync(feilFilename, radMedFeil.join('\n'))
 
 const fnrfil = 'build/fnr.txt'
 writeFileSync(fnrfil, fnrs.join('\n'))
+
+const duplikateFnrSomSet = new Set(duplikatFnr)
+
+const duplikateFnrFil = 'build/dupFnr.txt'
+writeFileSync(duplikateFnrFil, Array.from(duplikateFnrSomSet).join('\n'))
