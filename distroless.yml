@@ -48,3 +48,4 @@ ignore:
   - flex-quarto-template
   - flex-datafortelling
   - terraform-google-bigquery-datastream
+  - pino-logger
