@@ -30,7 +30,6 @@ distroless:
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
       - flex-joark-mottak
-      - flex-identer-cache
       - flex-slack-metrikker
       - flex-auditlogger
       - flex-brreg-proxy

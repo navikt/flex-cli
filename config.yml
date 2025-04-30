@@ -47,7 +47,6 @@ repos:
       - sykepengesoknad-ikke-sendt-altinnvarsel
       - sykepengesoknad-narmesteleder-varsler
       - syfosoknadbrukernotifikasjon
-      - flex-identer-cache
       - flex-brreg-proxy
       - flex-arbeidssokerregister-oppdatering
     checks:
