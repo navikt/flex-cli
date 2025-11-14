@@ -60,10 +60,6 @@ repos:
       - spinnsyn-frontend
     checks:
       - felles-workflow / Bygg, test og publiser docker image
-      - felles-workflow / cypress (0)
-      - felles-workflow / cypress (1)
-      - felles-workflow / cypress (2)
-      - felles-workflow / cypress (3)
       - felles-workflow / playwright (1, 4)
       - felles-workflow / playwright (2, 4)
       - felles-workflow / playwright (3, 4)
