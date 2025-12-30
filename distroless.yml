@@ -2,14 +2,12 @@ distroless:
   - image: nodejs20-debian12
     appname:
       - flexjar-frontend
-      - flex-internal-frontend
       - flex-testdata-generator
       - spinnsyn-frontend
       - sykepengesoknad-frontend
       - ditt-sykefravaer
       - flex-arkitektur
       - flexjar-infoskjerm
-      - sprototyp
 
   - image: java21-debian12
     appname:
@@ -31,9 +29,7 @@ distroless:
       - syfosoknadbrukernotifikasjon
       - flex-joark-mottak
       - flex-slack-metrikker
-      - flex-auditlogger
       - flex-brreg-proxy
-      - flex-arbeidssokerregister-oppdatering
 ignore:
   - flex-bigquery-terraform
   - flex-slack-reminders
@@ -48,3 +44,5 @@ ignore:
   - flex-datafortelling
   - terraform-google-bigquery-datastream
   - pino-logger
+  - flex-arbeidssokerregister-oppdatering
+  - flex-internal-frontend
