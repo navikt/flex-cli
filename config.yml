@@ -6,14 +6,14 @@ repos:
       - Bygg, test og publiser docker image
 
   - reponame:
+      - flex-arkitektur
+      - flex-bigquery-soda
       - flex-bigquery-terraform
+      - flex-datafortelling
+      - flex-quarto-template
       - flex-slack-reminders
       - flexjar-infoskjerm
-      - flex-bigquery-soda
       - omrade-helse-etterlevelse-topic
-      - flex-arkitektur
-      - flex-quarto-template
-      - flex-datafortelling
       - terraform-google-bigquery-datastream
 
   - reponame:
@@ -29,25 +29,25 @@ repos:
       - playwright
 
   - reponame:
-      - flexjar-backend
-      - flex-auditlogger
       - ditt-sykefravaer-backend
+      - flex-arbeidssokerregister-oppdatering
+      - flex-auditlogger
+      - flex-brreg-proxy
+      - flex-inntektsmelding-status
+      - flex-joark-mottak
+      - flex-syketilfelle
+      - flex-sykmeldinger-backend
+      - flexjar-backend
       - spinnsyn-arkivering
       - spinnsyn-backend
       - spinnsyn-brukernotifikasjon
-      - flex-inntektsmelding-status
-      - flex-syketilfelle
-      - flex-sykmeldinger-backend
-      - flex-joark-mottak
+      - syfosoknadbrukernotifikasjon
       - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
       - sykepengesoknad-backend
-      - sykepengesoknad-kvitteringer
       - sykepengesoknad-ikke-sendt-altinnvarsel
+      - sykepengesoknad-kvitteringer
       - sykepengesoknad-narmesteleder-varsler
-      - syfosoknadbrukernotifikasjon
-      - flex-brreg-proxy
-      - flex-arbeidssokerregister-oppdatering
     checks:
       - felles-workflow / Bygg og publiser
       - felles-workflow / Lint
@@ -55,8 +55,8 @@ repos:
 
   - reponame:
       - ditt-sykefravaer
-      - sykepengesoknad-frontend
       - spinnsyn-frontend
+      - sykepengesoknad-frontend
     checks:
       - felles-workflow / Bygg, test og publiser docker image
       - felles-workflow / playwright (1, 4)
@@ -72,9 +72,9 @@ repos:
       - Bygg, test og publiser docker image
 
   - reponame:
+      - flex-alerts
       - flex-github-actions-workflows
       - sykepengesoknad-kafka
-      - flex-alerts
 
   - reponame:
       - flex-cli

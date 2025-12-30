@@ -1,48 +1,48 @@
 distroless:
   - image: nodejs20-debian12
     appname:
-      - flexjar-frontend
-      - flex-testdata-generator
-      - spinnsyn-frontend
-      - sykepengesoknad-frontend
       - ditt-sykefravaer
       - flex-arkitektur
+      - flex-testdata-generator
+      - flexjar-frontend
       - flexjar-infoskjerm
+      - spinnsyn-frontend
+      - sykepengesoknad-frontend
 
   - image: java21-debian12
     appname:
-      - sykepengesoknad-backend
-      - flex-auditlogger
-      - flex-inntektsmelding-status
-      - flexjar-backend
       - ditt-sykefravaer-backend
+      - flex-auditlogger
+      - flex-brreg-proxy
+      - flex-inntektsmelding-status
+      - flex-joark-mottak
+      - flex-slack-metrikker
+      - flex-syketilfelle
+      - flex-sykmeldinger-backend
+      - flexjar-backend
       - spinnsyn-arkivering
       - spinnsyn-backend
       - spinnsyn-brukernotifikasjon
-      - flex-syketilfelle
-      - flex-sykmeldinger-backend
+      - syfosoknadbrukernotifikasjon
       - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
-      - sykepengesoknad-kvitteringer
+      - sykepengesoknad-backend
       - sykepengesoknad-ikke-sendt-altinnvarsel
+      - sykepengesoknad-kvitteringer
       - sykepengesoknad-narmesteleder-varsler
-      - syfosoknadbrukernotifikasjon
-      - flex-joark-mottak
-      - flex-slack-metrikker
-      - flex-brreg-proxy
 ignore:
-  - flex-bigquery-terraform
-  - flex-slack-reminders
-  - flex-bigquery-soda
-  - flex-cli
-  - flex-github-actions-workflows
-  - sykepengesoknad-kafka
   - flex-alerts
+  - flex-arbeidssokerregister-oppdatering
+  - flex-bigquery-soda
+  - flex-bigquery-terraform
+  - flex-cli
+  - flex-datafortelling
+  - flex-github-actions-workflows
+  - flex-internal-frontend
+  - flex-quarto-template
+  - flex-slack-reminders
   - flex-sykepengesoknad-pdfgen
   - omrade-helse-etterlevelse-topic
-  - flex-quarto-template
-  - flex-datafortelling
-  - terraform-google-bigquery-datastream
   - pino-logger
-  - flex-arbeidssokerregister-oppdatering
-  - flex-internal-frontend
+  - sykepengesoknad-kafka
+  - terraform-google-bigquery-datastream

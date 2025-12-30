@@ -1,6 +1,6 @@
 repo:
-  - flex-cli
-  - flex-bigquery-terraform
-  - flex-slack-reminders
   - flex-bigquery-soda
+  - flex-bigquery-terraform
+  - flex-cli
+  - flex-slack-reminders
   - flexjar-frontend
