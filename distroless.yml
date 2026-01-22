@@ -12,6 +12,7 @@ distroless:
   - image: java21-debian12
     appname:
       - ditt-sykefravaer-backend
+      - flex-arbeidssokerregister-oppdatering
       - flex-auditlogger
       - flex-brreg-proxy
       - flex-inntektsmelding-status
@@ -32,7 +33,6 @@ distroless:
       - sykepengesoknad-narmesteleder-varsler
 ignore:
   - flex-alerts
-  - flex-arbeidssokerregister-oppdatering
   - flex-bigquery-soda
   - flex-bigquery-terraform
   - flex-cli
