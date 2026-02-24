@@ -1,4 +1,8 @@
 distroless:
+  - image: nodejs24-debian12
+    appname:
+      - flex-internal-frontend
+
   - image: nodejs20-debian12
     appname:
       - ditt-sykefravaer
@@ -38,7 +42,6 @@ ignore:
   - flex-cli
   - flex-datafortelling
   - flex-github-actions-workflows
-  - flex-internal-frontend
   - flex-quarto-template
   - flex-slack-reminders
   - flex-sykepengesoknad-pdfgen
