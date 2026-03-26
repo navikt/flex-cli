@@ -19,7 +19,7 @@
         "libsodium-wrappers": "^0.7.13",
         "octokit": "^4.0.2",
         "prompts": "^2.4.2",
-        "remeda": "^1.27.0",
+        "remeda": "^2.33.6",
         "typescript": "^5.2.2",
         "yaml": "^2.3.2",
         "yargs": "^17.7.2"
