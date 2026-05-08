@@ -1,17 +1,14 @@
 distroless:
   - image: nodejs24-debian13
     appname:
-      - flex-internal-frontend
       - ditt-sykefravaer
-      - spinnsyn-frontend
-      - sykepengesoknad-frontend
-
-  - image: nodejs20-debian13
-    appname:
       - flex-arkitektur
+      - flex-internal-frontend
       - flex-testdata-generator
       - flexjar-frontend
       - flexjar-infoskjerm
+      - spinnsyn-frontend
+      - sykepengesoknad-frontend
 
   - image: java21-debian13
     appname:
