@@ -59,10 +59,12 @@ repos:
       - sykepengesoknad-frontend
     checks:
       - felles-workflow / Bygg, test og publiser docker image
-      - felles-workflow / playwright (1, 4)
-      - felles-workflow / playwright (2, 4)
-      - felles-workflow / playwright (3, 4)
-      - felles-workflow / playwright (4, 4)
+      - felles-workflow / playwright (1, 6)
+      - felles-workflow / playwright (2, 6)
+      - felles-workflow / playwright (3, 6)
+      - felles-workflow / playwright (4, 6)
+      - felles-workflow / playwright (5, 6)
+      - felles-workflow / playwright (6, 6)
       - felles-workflow / lint
       - felles-workflow / unit-test
 
