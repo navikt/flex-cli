@@ -26,10 +26,8 @@ distroless:
       - spinnsyn-backend
       - spinnsyn-brukernotifikasjon
       - syfosoknadbrukernotifikasjon
-      - sykepengesoknad-altinn
       - sykepengesoknad-arkivering-oppgave
       - sykepengesoknad-backend
-      - sykepengesoknad-ikke-sendt-altinnvarsel
       - sykepengesoknad-kvitteringer
       - sykepengesoknad-narmesteleder-varsler
 ignore:
