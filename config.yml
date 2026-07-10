@@ -9,7 +9,6 @@ repos:
       - flex-arkitektur
       - flex-bigquery-soda
       - flex-bigquery-terraform
-      - flex-datafortelling
       - flex-quarto-template
       - flex-slack-reminders
       - flexjar-infoskjerm
