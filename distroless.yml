@@ -35,7 +35,6 @@ ignore:
   - flex-bigquery-soda
   - flex-bigquery-terraform
   - flex-cli
-  - flex-datafortelling
   - flex-github-actions-workflows
   - flex-quarto-template
   - flex-slack-reminders
