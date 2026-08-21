@@ -74,7 +74,7 @@ export type OrgTeamRepoResult<AdditionalRepoProps> = OrgTeamResult<{
 
 export const removeIgnoredAndArchived: <AdditionalRepoProps>(
     nodes: BaseRepoNode<AdditionalRepoProps>[],
-) => BaseRepoNode<AdditionalRepoProps>[] = R.createPipe(
+) => BaseRepoNode<AdditionalRepoProps>[] = R.piped(
     R.filter((it) => !it.isArchived),
     R.filter(blacklisted),
 )
