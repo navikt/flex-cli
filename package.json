@@ -5,8 +5,8 @@
     "scripts": {
         "build": "bun build ./src/index.ts --outdir ./build --target bun",
         "start": "bun run src/index.ts",
-        "lint": "eslint --ext=ts src",
-        "lint:fix": "eslint --ext=ts src --fix",
+        "lint": "eslint src",
+        "lint:fix": "eslint src --fix",
         "prettier:write": "prettier --write .",
         "prettier:check": "prettier --check .",
         "format": "npm run lint:fix && npm run prettier:write"
@@ -15,31 +15,26 @@
         "@octokit/rest": "^22.0.1",
         "date-fns": "^4.4.0",
         "dotenv": "^17.4.2",
-        "eslint": "^8.50.0",
+        "eslint": "9.39.4",
         "libsodium-wrappers": "^0.8.4",
         "octokit": "^5.0.5",
         "prompts": "^2.4.2",
         "remeda": "^2.42.0",
-        "typescript": "^5.2.2",
+        "typescript": "6.0.3",
         "yaml": "^2.9.0",
         "yargs": "^18.1.0"
     },
     "devDependencies": {
-        "@navikt/eslint-config-teamsykmelding": "^4.3.0",
+        "@navikt/tsm-prettier": "^2.0.1",
         "@types/libsodium-wrappers": "^0.8.2",
         "@types/prompts": "^2.4.9",
         "@types/yargs": "^17.0.35",
         "bun-types": "^1.4.0",
-        "prettier": "^3.9.6"
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.6",
+        "globals": "^17.11.0",
+        "prettier": "^3.9.6",
+        "typescript-eslint": "^8.67.0"
     },
-    "eslintConfig": {
-        "extends": [
-            "@navikt/eslint-config-teamsykmelding"
-        ],
-        "rules": {
-            "@typescript-eslint/no-explicit-any": "off",
-            "@typescript-eslint/explicit-function-return-type": "off"
-        }
-    },
-    "prettier": "@navikt/eslint-config-teamsykmelding/prettier"
+    "prettier": "@navikt/tsm-prettier"
 }
