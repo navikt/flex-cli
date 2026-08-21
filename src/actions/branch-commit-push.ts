@@ -48,7 +48,7 @@ export async function branchCommitPushAuto(
             execSync('git diff-index --quiet HEAD', {
                 cwd: `../${r}`,
             })
-        } catch (e: any) {
+        } catch {
             endringer = true
         }
         if (endringer) {
@@ -99,7 +99,7 @@ export async function branchCommitPushAuto(
             execSync(`gh pr create --title "${commitmelding}" --body "Fra flex-cli"`, {
                 cwd: `../${repo}`,
             })
-        } catch (e: any) {
+        } catch {
             log('retry om 10 sekunder')
             await sleep(10000)
             await lagPR(repo)
@@ -132,7 +132,7 @@ export async function branchCommitPushAuto(
             execSync('gh pr merge --auto -s', {
                 cwd: `../${r}`,
             })
-        } catch (e: any) {
+        } catch {
             log('retry om 10 sekunder')
             await sleep(10000)
             await automergePr(r)

@@ -130,7 +130,6 @@ export async function resetAltTilMain() {
         process.exit(1)
     }
 
-    // eslint-disable-next-line no-console
     console.log('Resetter alt til main')
 
     for (const repo of config.repos) {
@@ -143,7 +142,7 @@ export async function resetAltTilMain() {
 
         try {
             await fs.promises.access(repoPath)
-        } catch (error) {
+        } catch {
             log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon-alle'`)
             continue
         }

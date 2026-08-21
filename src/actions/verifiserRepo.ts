@@ -85,7 +85,6 @@ export async function verifiserRepo(r: RepoConfig) {
                 has_wiki: false,
             })
         } else {
-            // eslint-disable-next-line no-console
             console.error(`Repo ${r.name} har feil oppsett`)
         }
     }
@@ -105,7 +104,6 @@ async function verifiserAdminTeams(repo: string) {
     const aksepterteTeams = ['flex']
     for (const team of adminTeams) {
         if (!aksepterteTeams.includes(team)) {
-            // eslint-disable-next-line no-console
             console.error(`Team ${team} har admin tilgang til ${repo}`)
             process.exit(1)
         }
@@ -148,7 +146,6 @@ async function verifiserDefaultBranchProtection(repo: RepoConfig, branch: string
             required_conversation_resolution: true,
         })
     } catch (e) {
-        // eslint-disable-next-line no-console
         console.error('Feil med oppdatering av branch protection', e)
     }
     const labels = await octokit.request('GET /repos/{owner}/{repo}/labels', {
