@@ -9,7 +9,6 @@ repos:
       - flex-arkitektur
       - flex-bigquery-soda
       - flex-bigquery-terraform
-      - flex-quarto-template
       - flex-slack-reminders
       - flexjar-infoskjerm
       - omrade-helse-etterlevelse-topic
