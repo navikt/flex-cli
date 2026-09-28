@@ -36,7 +36,6 @@ ignore:
   - flex-bigquery-terraform
   - flex-cli
   - flex-github-actions-workflows
-  - flex-quarto-template
   - flex-slack-reminders
   - flex-sykepengesoknad-pdfgen
   - omrade-helse-etterlevelse-topic
