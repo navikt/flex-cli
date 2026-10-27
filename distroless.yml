@@ -16,7 +16,6 @@ distroless:
       - flex-auditlogger
       - flex-brreg-proxy
       - flex-inntektsmelding-status
-      - flex-joark-mottak
       - flex-slack-metrikker
       - flex-sykmeldinger-backend
       - flexjar-backend
@@ -33,6 +32,7 @@ distroless:
     appname:
       - flex-arbeidssokerregister-oppdatering
       - flex-syketilfelle
+      - flex-joark-mottak
 
 ignore:
   - flex-alerts
