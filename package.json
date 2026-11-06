@@ -13,28 +13,29 @@
     },
     "dependencies": {
         "@octokit/rest": "^22.0.1",
+        "chalk": "^6.0.1",
         "date-fns": "^4.4.0",
         "dotenv": "^17.4.2",
-        "eslint": "9.39.4",
+        "eslint": "10.13.0",
         "libsodium-wrappers": "^0.8.4",
         "octokit": "^5.0.5",
         "prompts": "^2.4.2",
-        "remeda": "^2.42.0",
+        "remeda": "^2.57.0",
         "typescript": "6.0.3",
-        "yaml": "^2.9.0",
-        "yargs": "^18.1.0"
+        "yaml": "^2.9.1",
+        "yargs": "^18.2.0"
     },
     "devDependencies": {
         "@navikt/tsm-prettier": "^2.0.1",
         "@types/libsodium-wrappers": "^0.8.2",
         "@types/prompts": "^2.4.9",
         "@types/yargs": "^17.0.35",
-        "bun-types": "^1.4.0",
+        "bun-types": "^1.4.4",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-prettier": "^5.5.6",
-        "globals": "^17.11.0",
-        "prettier": "^3.9.6",
-        "typescript-eslint": "^8.67.0"
+        "eslint-plugin-prettier": "^5.5.7",
+        "globals": "^17.13.0",
+        "prettier": "^3.9.10",
+        "typescript-eslint": "^8.72.1"
     },
     "prettier": "@navikt/tsm-prettier"
 }
