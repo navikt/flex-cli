@@ -10,7 +10,6 @@ repos:
       - flex-bigquery-soda
       - flex-bigquery-terraform
       - flex-slack-reminders
-      - flexjar-infoskjerm
       - omrade-helse-etterlevelse-topic
       - terraform-google-bigquery-datastream
 

@@ -6,7 +6,6 @@ distroless:
       - flex-internal-frontend
       - flex-testdata-generator
       - flexjar-frontend
-      - flexjar-infoskjerm
       - spinnsyn-frontend
       - sykepengesoknad-frontend
 
