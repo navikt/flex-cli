@@ -65,6 +65,7 @@ repos:
 
   - reponame:
       - flex-sykepengesoknad-pdfgen
+      - flex-sykepengesoknad-pdfgenrs
     checks:
       - Bygg, test og publiser docker image
 
