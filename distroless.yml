@@ -9,8 +9,11 @@ distroless:
       - spinnsyn-frontend
       - sykepengesoknad-frontend
 
-  - image: java21-debian13
+  - image: java25-debian13
     appname:
+      - flex-arbeidssokerregister-oppdatering
+      - flex-syketilfelle
+      - flex-joark-mottak
       - ditt-sykefravaer-backend
       - flex-auditlogger
       - flex-brreg-proxy
@@ -26,12 +29,6 @@ distroless:
       - sykepengesoknad-backend
       - sykepengesoknad-kvitteringer
       - sykepengesoknad-narmesteleder-varsler
-
-  - image: java25-debian13
-    appname:
-      - flex-arbeidssokerregister-oppdatering
-      - flex-syketilfelle
-      - flex-joark-mottak
 
 ignore:
   - flex-alerts
