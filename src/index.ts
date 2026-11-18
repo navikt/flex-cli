@@ -7,7 +7,6 @@ import { verifiserRepoer } from './actions/verifiser.ts'
 import { resetAltTilMain } from './actions/reset-alt-til-main.ts'
 import { branchCommitPush } from './actions/branch-commit-push.ts'
 import { lastCommits } from './actions/last-commits.ts'
-import { distrolessbump } from './actions/distrolessbump.ts'
 import { secrets } from './actions/secrets.ts'
 import { approvePr } from './actions/approvePr.ts'
 import { slettGone } from './actions/slettGoneBranches.ts'
@@ -42,11 +41,6 @@ await yargs(hideBin(process.argv))
         'bcp',
         'Brancher, committer, pusher og lager pullrequest for lokale endringer i alle repoene som er på disk',
         async () => await branchCommitPush(),
-    )
-    .command(
-        'distroless-bump',
-        'Bumper distroless images til nyeste latest version',
-        async () => await distrolessbump(),
     )
     .command('patch-repoer', 'Patcher github oppsettet i alle repoer', async () => await verifiserRepoer())
     .command(

@@ -6,8 +6,6 @@ For å se alle kommandoer og en beskrivelse av hva de gjør, kjør kommandoen `n
 Fila config.yml inneholder en liste over alle repoer som kan er konfigurert med flex cli. Ved oppdatering av denne fila må man kjøre `npm start patch-alle` for å gjøre oppdateringene i github. Dette skriptet kjøres ikke i GHA, så endringer må pushes opp fra din maskin.
 Her konfigurerers hvilke checks som må gå grønt i GitHub actions før en pullrequest kan merges. Ved endringer i navn og antall sjekker så kan man måtte lage i repoet man endrer på for å få kjørt Github Actions med den riktige konfigurasjonen,
 
-Fila distroless.yml inneholder konfigurasjon for hvilke apper som bruker ulike distroless images. Dette brukes til kommandoen `npm start distroless-bump` som oppdaterer apper med nyeste distroless.
-
 # Komme i gang
 
 Lag en token på https://github.com/settings/tokens og trykk configure SSO og gi tilgang til navikt.
