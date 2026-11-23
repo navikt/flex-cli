@@ -14,7 +14,7 @@ updates:
       time: '04:00'
     open-pull-requests-limit: 10
 
-  - package-ecosystem: npm
+  - package-ecosystem: bun
     directory: '/'
     schedule:
       interval: daily
