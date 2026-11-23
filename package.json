@@ -9,7 +9,7 @@
         "lint:fix": "eslint src --fix",
         "prettier:write": "prettier --write .",
         "prettier:check": "prettier --check .",
-        "format": "npm run lint:fix && npm run prettier:write"
+        "format": "bun run lint:fix && bun run prettier:write"
     },
     "dependencies": {
         "@octokit/rest": "^22.0.1",

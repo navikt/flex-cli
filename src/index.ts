@@ -13,7 +13,7 @@ import { slettGone } from './actions/slettGoneBranches.ts'
 import { gradleBump } from './actions/gradlebump.ts'
 
 await yargs(hideBin(process.argv))
-    .scriptName('npm start')
+    .scriptName('bun start')
     .command(
         'klon-alle',
         'Kloner alle repos til disk. Hvis repoet allerede finnes, klones det ikke på nytt.',

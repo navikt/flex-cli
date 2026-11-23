@@ -143,7 +143,7 @@ export async function resetAltTilMain() {
         try {
             await fs.promises.access(repoPath)
         } catch {
-            log(`Error: Repo ${repo.name} finnes ikke. Kjør 'npm run klon-alle'`)
+            log(`Error: Repo ${repo.name} finnes ikke. Kjør 'bun start klon-alle'`)
             continue
         }
 
